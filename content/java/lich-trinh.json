@@ -1,0 +1,342 @@
+[
+  {
+    "number": 1,
+    "chapter": "Chương 1",
+    "title": "Nền tảng Java và môi trường thực thi",
+    "topic": "Giới thiệu học phần. Lịch sử Java; Java Platform: Java SE, Jakarta EE, Java ME; JVM, JIT, JDK, JRE.",
+    "mode": "Lý thuyết",
+    "activity": "Giảng lý thuyết, minh họa vai trò Java trong phát triển ứng dụng.",
+    "scheduled_output": "Cài JDK, IDE. Viết chương trình Java đơn giản.",
+    "explanation": "Bắt đầu từ một chương trình in thông báo, xác định công cụ tạo ra bytecode và công cụ thực thi. So sánh ứng dụng Console với ứng dụng doanh nghiệp để chọn đúng nền tảng. Điểm cần hiểu là mã nguồn, bytecode và JVM có vai trò riêng.",
+    "steps": [
+      "Cài JDK và IDE, tạo App có main, biên dịch rồi chạy bằng terminal.",
+      "Thay đổi thông báo và cố ý tạo lỗi cú pháp để phân biệt lỗi biên dịch với lỗi chạy.",
+      "Viết bảng giải thích Java SE, Jakarta EE, Java ME, JDK, JRE, JVM và JIT."
+    ],
+    "checks": "Đổi tên lớp nhưng giữ nguyên tên tệp; dùng sai package; quan sát lỗi và sửa lại.",
+    "deliverable": "Bản giải thích môi trường, ảnh java/javac và chương trình chạy được."
+  },
+  {
+    "number": 2,
+    "chapter": "Chương 1",
+    "title": "Maven và đóng gói ứng dụng",
+    "topic": "Cài đặt môi trường phát triển. Quản lý dự án với Maven. Đóng gói ứng dụng Java.",
+    "mode": "Thực hành",
+    "activity": "Tạo project Maven, cấu trúc thư mục, build/run.",
+    "scheduled_output": "Nộp project Maven mẫu chạy được.",
+    "explanation": "Chuyển bài Console thành project có cấu trúc chuẩn. POM là mô tả cách build và dependency, không phải mã nghiệp vụ. Theo dõi các tệp được sinh trong target và xác định manifest cần cho java -jar.",
+    "steps": [
+      "Tạo project Maven theo cấu hình của Chương 1 và kiểm tra đường dẫn package.",
+      "Làm năm bài trong Lab 1, giữ logic trong So và nhập/xuất trong App.",
+      "Build JAR, chạy ngoài IDE và viết README cho một máy khác."
+    ],
+    "checks": "Thử n=0, chuỗi không phải số và Fibonacci n=94. JAR phải chạy được khi không mở IDE.",
+    "deliverable": "Project Maven, JAR, bảng kiểm tra và báo cáo Lab 1."
+  },
+  {
+    "number": 3,
+    "chapter": "Chương 2",
+    "title": "Swing: component, container và layout",
+    "topic": "Java SE GUI: Swing, Components, Containers, Layout Managers.",
+    "mode": "Lý thuyết + demo",
+    "activity": "Thiết kế giao diện form cơ bản.",
+    "scheduled_output": "Tạo giao diện quản lý đơn giản: danh sách, form nhập liệu.",
+    "explanation": "Thiết kế màn hình quản lý với trách nhiệm rõ cho từng vùng. Bắt đầu bằng dữ liệu trong bộ nhớ để tập trung vào bố cục. Giao diện co giãn cần dựa vào layout manager thay vì một tập tọa độ cố định.",
+    "steps": [
+      "Tạo JFrame trên EDT, thêm JPanel và nhóm trường mã/họ tên.",
+      "Đặt danh sách trong JTable có JScrollPane và thanh nút ở vùng riêng.",
+      "Thử BorderLayout kết hợp FlowLayout hoặc GridLayout, kiểm tra khi đổi kích thước."
+    ],
+    "checks": "Thu nhỏ cửa sổ và nhập họ tên dài; nội dung không chồng lên nhau, bảng vẫn cuộn được.",
+    "deliverable": "Màn hình có form, bảng, thanh thao tác và ảnh ở hai kích thước."
+  },
+  {
+    "number": 4,
+    "chapter": "Chương 2",
+    "title": "Sự kiện, EDT và tác vụ nền",
+    "topic": "Event Handling. EDT và xử lý đa luồng trong GUI.",
+    "mode": "Thực hành",
+    "activity": "Bắt sự kiện button, menu, table; xử lý tác vụ nền.",
+    "scheduled_output": "Hoàn thiện form có xử lý sự kiện và kiểm tra dữ liệu.",
+    "explanation": "Mỗi thao tác cần xác định trạng thái trước và sau sự kiện. Người học sẽ thấy giao diện bị treo nếu đưa công việc dài vào listener, rồi sửa bằng SwingWorker. Dữ liệu trả về từ tác vụ nền được cập nhật trên EDT.",
+    "steps": [
+      "Thêm sự kiện Lưu, Xóa, Làm mới và chọn hàng; không cho sửa khi chưa chọn.",
+      "Kiểm tra rỗng, định dạng và thông báo ngay tại trường phù hợp.",
+      "Mô phỏng tải dữ liệu chậm bằng tác vụ nền; vô hiệu hóa nút trong lúc chạy và bật lại khi xong."
+    ],
+    "checks": "Nhấn liên tiếp nút lưu, nhập mã rỗng và đóng cửa sổ khi đang tải. Giao diện không được mất phản hồi.",
+    "deliverable": "Form tương tác có validation và minh chứng tác vụ nền."
+  },
+  {
+    "number": 5,
+    "chapter": "Chương 2",
+    "title": "JDBC và MVC cho ứng dụng desktop",
+    "topic": "Tích hợp cơ sở dữ liệu với Java SE. JDBC. Kiến trúc MVC cho ứng dụng desktop.",
+    "mode": "Thực hành",
+    "activity": "Kết nối CSDL, CRUD cơ bản.",
+    "scheduled_output": "Xây dựng module CRUD theo MVC.",
+    "explanation": "Tạo đường đi có thể theo dõi từ giao diện tới CSDL. Thử kết nối độc lập trước khi ghép JDBC vào form. Khi tách controller, service và DAO, mỗi lớp có một lý do thay đổi rõ ràng.",
+    "steps": [
+      "Tạo bảng students với khóa chính và dữ liệu mẫu, cấu hình driver JDBC.",
+      "Viết DAO thêm/sửa/xóa/tìm bằng tham số, đóng tài nguyên đúng cách.",
+      "Gọi DAO qua service/controller, tải bảng lại sau thao tác thành công."
+    ],
+    "checks": "Thử khóa trùng, mã không tồn tại và mất kết nối. CSDL không được chứa dữ liệu dở dang.",
+    "deliverable": "Module CRUD theo MVC, script tạo bảng và cấu hình mẫu."
+  },
+  {
+    "number": 6,
+    "chapter": "Chương 2",
+    "title": "Mini app Swing hoàn chỉnh",
+    "topic": "Bài tập Java Swing hoàn chỉnh.",
+    "mode": "Bài tập",
+    "activity": "Thực hành tổng hợp: GUI + JDBC + MVC.",
+    "scheduled_output": "Nộp mini app Java Swing: quản lý sinh viên/sản phẩm/nhân viên.",
+    "explanation": "Ghép các phần giao diện, sự kiện và lưu trữ thành một sản phẩm nhỏ. Mỗi chức năng phải đi tới CSDL và quay về trạng thái giao diện nhất quán. Dùng cùng bài toán quản lý để tránh tốn thời gian đổi dữ liệu.",
+    "steps": [
+      "Hoàn thiện danh sách, thêm/sửa/xóa, tìm theo từ khóa và xác nhận xóa.",
+      "Tách logic kiểm tra khỏi listener, thêm thông báo lỗi và trạng thái rỗng.",
+      "Viết kịch bản demo, kiểm tra khởi động lại và hướng dẫn chạy."
+    ],
+    "checks": "Thêm một sinh viên rồi mở lại ứng dụng; tìm mã không có; xóa bản ghi đang được chọn và kiểm tra form.",
+    "deliverable": "Mini app Swing, script CSDL, README và bảng test."
+  },
+  {
+    "number": 7,
+    "chapter": "Chương 3",
+    "title": "Jakarta EE và CDI",
+    "topic": "Tổng quan Jakarta EE. Môi trường phát triển ứng dụng Jakarta EE. CDI.",
+    "mode": "Lý thuyết",
+    "activity": "Giới thiệu kiến trúc web đa lớp, server, deployment.",
+    "scheduled_output": "Chuẩn bị server, tạo project web mẫu.",
+    "explanation": "Chuẩn bị runtime web có các API cần thiết cho chuỗi Servlet, Faces và JPA. Tập quan sát log deploy, context path và phạm vi sống của bean. Phân biệt thêm API vào POM với cài đặt một runtime thực thi.",
+    "steps": [
+      "Chọn runtime Jakarta EE 10 Web Profile và JDK tương thích, ghi phiên bản.",
+      "Tạo project WAR, khai báo API provided và deploy trang chào.",
+      "Tạo GreetingService được quản lý bằng CDI rồi inject vào thành phần web."
+    ],
+    "checks": "Deploy sai context path hoặc thiếu dependency; dùng log để giải thích lỗi thay vì chỉ đổi URL ngẫu nhiên.",
+    "deliverable": "WAR mẫu, URL truy cập và README môi trường."
+  },
+  {
+    "number": 8,
+    "chapter": "Chương 3",
+    "title": "Servlet, JSP và biểu mẫu",
+    "topic": "Servlet và JSP cơ bản.",
+    "mode": "Thực hành",
+    "activity": "Request/Response, form, submit dữ liệu, forward/redirect.",
+    "scheduled_output": "Làm chức năng đăng nhập hoặc thêm/sửa/xóa dữ liệu bằng Servlet/JSP.",
+    "explanation": "Theo dõi một request từ trình duyệt tới controller và view. Servlet nhận dữ liệu, service xử lý và JSP hiển thị. Không chuyển nghiệp vụ hay SQL sang trang JSP khi chức năng bắt đầu phức tạp.",
+    "steps": [
+      "Tạo GET /students để đọc danh sách và forward vào JSP trong WEB-INF.",
+      "Tạo biểu mẫu POST thêm dữ liệu, kiểm tra rỗng và xử lý encoding trước khi đọc tham số.",
+      "Sau POST thành công redirect tới danh sách; khi lỗi trả lại form với dữ liệu cũ."
+    ],
+    "checks": "Nhập tên tiếng Việt, gửi form rỗng, refresh sau khi thêm. Không sinh bản ghi trùng do refresh.",
+    "deliverable": "Module Servlet/JSP có form, thông báo lỗi và luồng POST-Redirect-GET."
+  },
+  {
+    "number": 9,
+    "chapter": "Chương 3",
+    "title": "Web MVC, session và filter",
+    "topic": "Servlet/JSP nâng cao. MVC trong web application.",
+    "mode": "Thực hành",
+    "activity": "Tách Controller – Model – View. Session, filter, xử lý lỗi.",
+    "scheduled_output": "Hoàn thiện module web theo mô hình MVC.",
+    "explanation": "Cùng một servlet có thể phục vụ nhiều request. Tách trạng thái request khỏi trạng thái phiên, đồng thời kiểm soát URL ở phía server. Tập trung vào luồng nhiều trang và cách kết thúc xử lý khi bị từ chối.",
+    "steps": [
+      "Sắp xếp controller/service/DAO/view, đưa JSP vào WEB-INF.",
+      "Xây dựng phiên đăng nhập minh họa, đổi session ID khi thành công và invalidate khi logout.",
+      "Thêm filter bảo vệ URL, xử lý 404/500 và ghi log phía server."
+    ],
+    "checks": "Mở trang riêng khi chưa đăng nhập, logout rồi gọi lại URL và gửi yêu cầu từ hai phiên khác nhau.",
+    "deliverable": "Module MVC có kiểm soát phiên và bảng ca kiểm tra truy cập."
+  },
+  {
+    "number": 10,
+    "chapter": "Chương 3",
+    "title": "Jakarta Faces cơ bản",
+    "topic": "JSF cơ bản.",
+    "mode": "Lý thuyết + demo",
+    "activity": "Managed Bean, Facelets, navigation, form binding.",
+    "scheduled_output": "Tạo màn hình nhập liệu và hiển thị dữ liệu bằng JSF.",
+    "explanation": "Faces gắn trạng thái giao diện với component và bean. Bắt đầu bằng form nhỏ để quan sát binding và action. Chọn CDI bean scope theo thời gian cần giữ dữ liệu, không dùng một scope lớn cho mọi tình huống.",
+    "steps": [
+      "Cấu hình Faces trên runtime đã chọn, tạo trang Facelets và bean @Named.",
+      "Tạo thuộc tính name với getter/setter, liên kết h:inputText và action lưu.",
+      "Hiển thị danh sách và thông báo, giải thích vòng đời dữ liệu ở bean."
+    ],
+    "checks": "Gửi trường rỗng, tải lại trang và mở phiên mới; mô tả trạng thái nào được giữ theo scope đã chọn.",
+    "deliverable": "Trang Faces nhập và hiển thị dữ liệu, kèm giải thích bean scope."
+  },
+  {
+    "number": 11,
+    "chapter": "Chương 3",
+    "title": "Faces: validation, template và điều hướng",
+    "topic": "JSF nâng cao. Validation, template, xử lý điều hướng.",
+    "mode": "Thực hành",
+    "activity": "Hoàn thiện module nhỏ bằng JSF.",
+    "scheduled_output": "Bổ sung validation và giao diện nhất quán.",
+    "explanation": "Giao diện nhiều trang cần một bố cục chung và thông báo lỗi nhất quán. Validation phải ngăn dữ liệu sai đi vào nghiệp vụ. So sánh action outcome với redirect để hiểu vì sao trang hoặc trạng thái thay đổi.",
+    "steps": [
+      "Tạo Facelets template cho header/menu/nội dung bằng nhận diện cá nhân.",
+      "Thêm required, độ dài hoặc Bean Validation và h:message cạnh trường.",
+      "Hoàn thiện điều hướng thêm/sửa/danh sách, xác định lúc nào cần redirect."
+    ],
+    "checks": "Nhập khoảng trắng, chuỗi dài và mở hai tab. Dữ liệu sai không được lưu hoặc ghi đè ngoài ý muốn.",
+    "deliverable": "Module Faces có template, validation và sơ đồ điều hướng."
+  },
+  {
+    "number": 12,
+    "chapter": "Chương 3",
+    "title": "JPA, Servlet Security và chốt đề tài",
+    "topic": "Jakarta Persistence JPA. Servlet Security. Kiểm tra giữa kỳ / giao đề project.",
+    "mode": "Kiểm tra + định hướng project",
+    "activity": "Mapping Entity, Repository/DAO, phân quyền cơ bản. Tổ chức kiểm tra giữa kỳ hoặc giao đề project.",
+    "scheduled_output": "Chốt nhóm, chọn đề tài project, nộp đề cương ngắn.",
+    "explanation": "Buổi này gồm ba phần: lưu trữ bằng JPA, kiểm soát quyền và chuẩn bị project. Tập trung vào một luồng ghi nhỏ có transaction. Không coi việc entity xuất hiện trong code là bằng chứng dữ liệu đã được lưu.",
+    "steps": [
+      "Tạo entity, persistence unit và service giao dịch phù hợp runtime, thay DAO JDBC của module nhỏ bằng JPA.",
+      "Khai báo quyền USER/ADMIN và ràng buộc URL; cấu hình realm/identity store theo server.",
+      "Chốt nhóm, đề tài, chức năng, ERD sơ bộ và lịch review; thực hiện kiểm tra giữa kỳ theo thông báo giảng viên."
+    ],
+    "checks": "Thử dữ liệu vi phạm ràng buộc và USER gọi URL ADMIN. Kiểm tra rollback và phản hồi từ chối truy cập.",
+    "deliverable": "CRUD JPA, bảng quyền, đề cương nhóm và kết quả kiểm tra nếu được giao."
+  },
+  {
+    "number": 13,
+    "chapter": "Chương 4",
+    "title": "Spring Boot và Thymeleaf",
+    "topic": "Spring Framework, Spring Boot, Thymeleaf.",
+    "mode": "Lý thuyết + demo",
+    "activity": "Tạo Spring Boot project, controller, view, cấu trúc thư mục.",
+    "scheduled_output": "Tạo project Spring Boot chạy được với trang chủ.",
+    "explanation": "Tạo một project Spring độc lập để tránh lẫn cấu hình của WAR Jakarta EE. Quan sát component scan, dependency injection và server nhúng. Hoàn thành trang chủ trước khi thêm persistence và bảo mật nghiệp vụ.",
+    "steps": [
+      "Tạo project theo môi trường Chương 4, giữ các dependency do Boot quản lý.",
+      "Đặt lớp ứng dụng ở package gốc; tạo controller trả tên view và template Thymeleaf.",
+      "Chạy bằng Maven rồi đóng gói chạy JAR; ghi rõ URL và phiên bản."
+    ],
+    "checks": "Đổi vị trí controller ra ngoài package scan và thử tên template sai; giải thích hai loại lỗi.",
+    "deliverable": "Project Spring Boot có trang chủ, cấu hình và hướng dẫn chạy."
+  },
+  {
+    "number": 14,
+    "chapter": "Chương 4",
+    "title": "Spring MVC, form và validation",
+    "topic": "Spring MVC.",
+    "mode": "Thực hành",
+    "activity": "Controller, Model, View, form, validation.",
+    "scheduled_output": "Xây dựng module CRUD giao diện Thymeleaf.",
+    "explanation": "Xây dựng luồng nhập liệu trước khi gắn CSDL. Form object giới hạn trường người dùng được gửi. Validation phía server quyết định dữ liệu có được đi tiếp hay không, kể cả khi trình duyệt bỏ qua kiểm tra HTML.",
+    "steps": [
+      "Tạo controller GET form và POST xử lý, Model và template có th:object/th:field.",
+      "Thêm @Valid và BindingResult đúng thứ tự, hiển thị lỗi cạnh trường.",
+      "Dùng danh sách tạm qua service để thử CRUD và chuyển sang redirect sau POST thành công."
+    ],
+    "checks": "Gửi form thiếu trường hoặc chỉ có khoảng trắng; dữ liệu và thông báo lỗi phải còn khi trả lại form.",
+    "deliverable": "Module MVC CRUD trong bộ nhớ với form validation."
+  },
+  {
+    "number": 15,
+    "chapter": "Chương 4",
+    "title": "Spring Data JPA và dữ liệu bền vững",
+    "topic": "Spring Data JPA.",
+    "mode": "Thực hành",
+    "activity": "Entity, Repository, Service layer, kết nối CSDL.",
+    "scheduled_output": "Hoàn thiện CRUD có lưu CSDL.",
+    "explanation": "Thay danh sách trong bộ nhớ bằng entity/repository. Theo dõi thời điểm phát sinh truy vấn và ranh giới giao dịch. Tắt open-in-view trong cấu hình học để thấy yêu cầu tải dữ liệu đầy đủ trước khi render view.",
+    "steps": [
+      "Tạo Student entity và JpaRepository; thêm truy vấn tìm theo tên.",
+      "Đưa nghiệp vụ vào service, đặt @Transactional ở thao tác ghi nhiều bước.",
+      "Cấu hình H2 dạng file hoặc CSDL quan hệ đã chọn, tạo dữ liệu demo và script/migration."
+    ],
+    "checks": "Khởi động lại, thêm dữ liệu trùng và gây lỗi ở bước sau của một giao dịch. Dữ liệu phải được bảo toàn nhất quán.",
+    "deliverable": "CRUD lưu CSDL, tìm kiếm và minh chứng dữ liệu còn sau restart."
+  },
+  {
+    "number": 16,
+    "chapter": "Chương 4",
+    "title": "Spring Security và mini app tổng hợp",
+    "topic": "Spring Security. Bài tập Spring Framework hoàn chỉnh.",
+    "mode": "Bài tập",
+    "activity": "Đăng nhập, phân quyền, bảo vệ URL, hoàn thiện mini app.",
+    "scheduled_output": "Chốt yêu cầu project, CSDL, phân công nhóm, chuẩn bị review.",
+    "explanation": "Hoàn thiện quyền truy cập cùng các luồng đã có. Kiểm tra bằng request trực tiếp và nhiều vai trò, vì menu chỉ thể hiện giao diện. Sau khi đóng chức năng bắt buộc, chuẩn bị bằng chứng cho review kiến trúc.",
+    "steps": [
+      "Thêm SecurityFilterChain, form login, tài khoản demo được băm password và quyền USER/ADMIN.",
+      "Bảo vệ URL/thao tác, giữ CSRF cho form, xác nhận logout và thông báo lỗi.",
+      "Rà soát CRUD, validation, exception, README, CSDL và phân công nhóm."
+    ],
+    "checks": "USER mở URL ADMIN; gửi POST thiếu CSRF; logout rồi thử thao tác cũ; không được vượt quyền.",
+    "deliverable": "Mini app Spring có bảo mật, bảng test và phạm vi project đã chốt."
+  },
+  {
+    "number": 17,
+    "chapter": "Project",
+    "title": "Review 1: phân tích và thiết kế",
+    "topic": "Review project 1: Phân tích và thiết kế.",
+    "mode": "Review project",
+    "activity": "Sinh viên trình bày bài toán, chức năng, use case, CSDL, giao diện mẫu.",
+    "scheduled_output": "Chỉnh phạm vi đề tài, chốt chức năng bắt buộc và chức năng mở rộng.",
+    "explanation": "Rà soát đề tài trước khi xây thêm chức năng. Một phạm vi rõ giúp nhóm biết chức năng nào phải có trong demo. Cần chứng minh dữ liệu và giao diện hỗ trợ được luồng nghiệp vụ đã chọn.",
+    "steps": [
+      "Trình bày người dùng, use case, phạm vi và yêu cầu chức năng.",
+      "Đối chiếu ERD, khóa/ràng buộc với giao diện mẫu và luồng xử lý.",
+      "Ghi góp ý thành task có người phụ trách, hạn hoàn thành và tiêu chí kiểm tra."
+    ],
+    "checks": "Chọn một luồng nghiệp vụ, kiểm tra có đủ dữ liệu đầu vào và đầu ra; xử lý trường hợp xóa dữ liệu liên quan.",
+    "deliverable": "Đề cương đã chỉnh, ERD, prototype và backlog."
+  },
+  {
+    "number": 18,
+    "chapter": "Project",
+    "title": "Review 2: kiến trúc và chức năng lõi",
+    "topic": "Review project 2: Kiến trúc và chức năng lõi.",
+    "mode": "Review project",
+    "activity": "Kiểm tra cấu trúc project, mô hình MVC/layer, Entity, Repository/DAO, Service, CRUD.",
+    "scheduled_output": "Hoàn thiện các chức năng chính, sửa lỗi kiến trúc và luồng xử lý.",
+    "explanation": "Demo một luồng đầy đủ từ giao diện tới dữ liệu và quay lại. Tập giải thích trách nhiệm của từng lớp, nơi đặt nghiệp vụ và cách xử lý lỗi. Hoàn thiện đường đi chính trước khi trang trí giao diện.",
+    "steps": [
+      "Trình bày cấu trúc project, controller, service và DAO/repository.",
+      "Demo CRUD và một nghiệp vụ chính có lưu trữ, chỉ ra transaction.",
+      "Ghi lỗi kiến trúc và chức năng, ưu tiên sửa các lỗi làm sai hoặc mất dữ liệu."
+    ],
+    "checks": "Khóa trùng, dữ liệu không tồn tại, mất kết nối và lỗi giữa giao dịch; giải thích kết quả.",
+    "deliverable": "Phiên bản chạy chức năng lõi và danh sách việc sau review."
+  },
+  {
+    "number": 19,
+    "chapter": "Project",
+    "title": "Review 3: chất lượng và bàn giao thử",
+    "topic": "Review project 3: Hoàn thiện, bảo mật, kiểm thử, báo cáo.",
+    "mode": "Review project",
+    "activity": "Kiểm tra login, phân quyền, validation, xử lý lỗi, giao diện, dữ liệu demo, báo cáo.",
+    "scheduled_output": "Hoàn thiện báo cáo, slide demo, dữ liệu mẫu, checklist nộp bài.",
+    "explanation": "Đánh giá sản phẩm từ góc nhìn người sử dụng và người cài lại. Các ca lỗi cần có kết quả thực tế, không chỉ đánh dấu hoàn thành. Báo cáo phải phản ánh đúng mã nguồn và cấu hình hiện tại.",
+    "steps": [
+      "Thử đăng nhập/phân quyền nếu có, validation, lỗi dữ liệu và giao diện.",
+      "Chạy lại từ source theo README, kiểm tra script CSDL và cấu hình mẫu.",
+      "Hoàn thiện bảng test, báo cáo, slide và dữ liệu demo, ghi rõ lỗi còn mở."
+    ],
+    "checks": "Nhờ một thành viên khác cài theo README; thử đầu vào sai và gọi URL trực tiếp với quyền thấp.",
+    "deliverable": "Bản ứng viên demo, báo cáo, test và checklist nộp bài."
+  },
+  {
+    "number": 20,
+    "chapter": "Project",
+    "title": "Review 4: demo cuối và đánh giá",
+    "topic": "Review project 4: Demo cuối và đánh giá.",
+    "mode": "Review project",
+    "activity": "Các nhóm demo sản phẩm, phản biện, góp ý, chấm điểm.",
+    "scheduled_output": "Nộp source code, database script, báo cáo, slide, video demo nếu cần.",
+    "explanation": "Trình bày một kịch bản nghiệp vụ liền mạch. Mỗi thành viên giải thích phần mình xây dựng và cách nó tích hợp với các phần khác. Bàn giao đủ tài liệu để có thể dựng lại đúng phiên bản đã demo.",
+    "steps": [
+      "Demo luồng chính, dữ liệu biên, lưu trữ và xử lý lỗi trong thời gian thống nhất.",
+      "Trả lời câu hỏi về lựa chọn công nghệ, kiến trúc, phân quyền và kiểm thử.",
+      "Nộp source, database script, README, báo cáo, slide và mốc commit."
+    ],
+    "checks": "Build từ nguồn, chạy với dữ liệu mẫu và xác minh chức năng trùng với báo cáo.",
+    "deliverable": "Bộ sản phẩm hoàn chỉnh và bản tổng kết đóng góp nhóm."
+  }
+]

@@ -1,0 +1,81 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Chương 2. Ứng dụng desktop với Java SE | HoangTN</title><meta name="author" content="Trần Nguyên Hoàng"><meta name="description" content="Ứng dụng desktop với Java SE"><meta property="og:title" content="Chương 2. Ứng dụng desktop với Java SE | HoangTN"><meta property="og:description" content="Ứng dụng desktop với Java SE"><meta property="og:type" content="article"><meta property="og:url" content="https://hoangtnedu.github.io/java/chuong-2.html"><link rel="canonical" href="https://hoangtnedu.github.io/java/chuong-2.html"><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/css/site.css"><link rel="stylesheet" href="../assets/css/java.css"><script defer src="../assets/js/site.js"></script><script defer src="../assets/js/java.js"></script></head><body class="java"><a class="skip" href="#noi-dung">Đến nội dung</a><header class="top"><a class="brand" href="../index.html">HoangTN<span>Nghiên cứu và lập trình</span></a><nav aria-label="Điều hướng chính"><a href="../index.html">Trang chủ</a><a href="../dotnet/">Lập trình .NET</a><a href="index.html" aria-current="page">Công nghệ Java</a><button class="mobile-nav" type="button" aria-controls="navigation" aria-expanded="false">Mục lục</button></nav></header><div class="progress" aria-hidden="true"></div><div class="layout"><aside class="sidebar" id="navigation" aria-label="Lộ trình Java"><div class="profile"><strong>Trần Nguyên Hoàng</strong><p>Ghi chép lập trình · HoangTN</p><a href="../index.html">← Trang chủ</a></div><h2>Công nghệ Java</h2><label class="tiny" for="toc-search">Tìm chương hoặc buổi</label><input type="search" id="toc-search" placeholder="Swing, JDBC, buổi 12…"><ul class="toc-list"><li data-search="tong quan va lich trinh 20 buoi"><a href="index.html">Tổng quan và lịch trình 20 buổi</a></li><li data-search="chuong 1. tong quan va phat trien ung dung java"><a href="chuong-1.html">Chương 1. Tổng quan và phát triển ứng dụng Java</a></li><li data-search="chuong 2. ung dung desktop voi java se"><a href="chuong-2.html" class="active" aria-current="page">Chương 2. Ứng dụng desktop với Java SE</a></li><li data-search="chuong 3. ung dung da lop voi jakarta ee"><a href="chuong-3.html">Chương 3. Ứng dụng đa lớp với Jakarta EE</a></li><li data-search="chuong 4. phat trien ung dung voi spring framework"><a href="chuong-4.html">Chương 4. Phát triển ứng dụng với Spring Framework</a></li><li data-search="lab 1. console, maven va jar"><a href="lab-01.html">Lab 1. Console, Maven và JAR</a></li><li data-search="bai tap theo buoi"><a href="bai-tap.html">Bài tập theo buổi</a></li><li data-search="huong dan review project"><a href="project.html">Hướng dẫn review project</a></li><li data-search="tai lieu tham khao"><a href="tai-lieu.html">Tài liệu tham khảo</a></li><li data-search="buoi 1. nen tang java va moi truong thuc thi"><a href="buoi-01.html">Buổi 1. Nền tảng Java và môi trường thực thi</a></li><li data-search="buoi 2. maven va dong goi ung dung"><a href="buoi-02.html">Buổi 2. Maven và đóng gói ứng dụng</a></li><li data-search="buoi 3. swing: component, container va layout"><a href="buoi-03.html">Buổi 3. Swing: component, container và layout</a></li><li data-search="buoi 4. su kien, edt va tac vu nen"><a href="buoi-04.html">Buổi 4. Sự kiện, EDT và tác vụ nền</a></li><li data-search="buoi 5. jdbc va mvc cho ung dung desktop"><a href="buoi-05.html">Buổi 5. JDBC và MVC cho ứng dụng desktop</a></li><li data-search="buoi 6. mini app swing hoan chinh"><a href="buoi-06.html">Buổi 6. Mini app Swing hoàn chỉnh</a></li><li data-search="buoi 7. jakarta ee va cdi"><a href="buoi-07.html">Buổi 7. Jakarta EE và CDI</a></li><li data-search="buoi 8. servlet, jsp va bieu mau"><a href="buoi-08.html">Buổi 8. Servlet, JSP và biểu mẫu</a></li><li data-search="buoi 9. web mvc, session va filter"><a href="buoi-09.html">Buổi 9. Web MVC, session và filter</a></li><li data-search="buoi 10. jakarta faces co ban"><a href="buoi-10.html">Buổi 10. Jakarta Faces cơ bản</a></li><li data-search="buoi 11. faces: validation, template va dieu huong"><a href="buoi-11.html">Buổi 11. Faces: validation, template và điều hướng</a></li><li data-search="buoi 12. jpa, servlet security va chot de tai"><a href="buoi-12.html">Buổi 12. JPA, Servlet Security và chốt đề tài</a></li><li data-search="buoi 13. spring boot va thymeleaf"><a href="buoi-13.html">Buổi 13. Spring Boot và Thymeleaf</a></li><li data-search="buoi 14. spring mvc, form va validation"><a href="buoi-14.html">Buổi 14. Spring MVC, form và validation</a></li><li data-search="buoi 15. spring data jpa va du lieu ben vung"><a href="buoi-15.html">Buổi 15. Spring Data JPA và dữ liệu bền vững</a></li><li data-search="buoi 16. spring security va mini app tong hop"><a href="buoi-16.html">Buổi 16. Spring Security và mini app tổng hợp</a></li><li data-search="buoi 17. review 1: phan tich va thiet ke"><a href="buoi-17.html">Buổi 17. Review 1: phân tích và thiết kế</a></li><li data-search="buoi 18. review 2: kien truc va chuc nang loi"><a href="buoi-18.html">Buổi 18. Review 2: kiến trúc và chức năng lõi</a></li><li data-search="buoi 19. review 3: chat luong va ban giao thu"><a href="buoi-19.html">Buổi 19. Review 3: chất lượng và bàn giao thử</a></li><li data-search="buoi 20. review 4: demo cuoi va danh gia"><a href="buoi-20.html">Buổi 20. Review 4: demo cuối và đánh giá</a></li></ul><p class="empty-result" hidden>Không có mục phù hợp.</p></aside><main class="article" id="noi-dung"><p class="eyebrow">HoangTN · Công nghệ Java</p><h1>Chương 2. Ứng dụng desktop với Java SE</h1><div class="meta"><span>Trần Nguyên Hoàng</span><span>Cập nhật 27/10/2026</span></div><details class="page-toc"><summary>Trong bài này</summary><ol><li><a href="#muc-1">1. Từ Console sang giao diện theo sự kiện</a></li><li><a href="#muc-2">2. Cửa sổ và xử lý sự kiện tối thiểu</a></li><li><a href="#muc-3">3. EDT và công việc chạy nền</a></li><li><a href="#muc-4">4. JDBC và truy vấn tham số</a></li><li><a href="#muc-5">5. Phân chia trách nhiệm bằng MVC và các lớp dịch vụ</a></li><li><a href="#muc-6">6. Bài thực hành tổng hợp</a></li><li><a href="#muc-7">Nguồn đọc theo chủ đề</a></li></ol></details><h2 id="muc-1">1. Từ Console sang giao diện theo sự kiện</h2>
+<p>Trong Console, chương trình thường chủ động hỏi và đọc dữ liệu theo thứ tự. Với Swing, người dùng quyết định lúc nào nhấn nút, chọn hàng hoặc đóng cửa sổ. Chương trình đăng ký bộ lắng nghe để phản hồi các sự kiện. Vì vậy, cần thiết kế trạng thái giao diện: khi chưa chọn bản ghi thì nút sửa/xóa phải xử lý như thế nào, sau khi lưu thì bảng và form phải hiển thị dữ liệu gì.</p>
+<p><code>JFrame</code> là cửa sổ chính; <code>JPanel</code> nhóm các thành phần; <code>JLabel</code>, <code>JTextField</code>, <code>JButton</code> phục vụ hiển thị và nhập liệu; <code>JTable</code> hiển thị dữ liệu dạng bảng. Container chứa component. Layout manager phân bố component khi cửa sổ thay đổi kích thước. <code>BorderLayout</code> phù hợp bố cục tổng thể, <code>FlowLayout</code> cho thanh thao tác, <code>GridLayout</code> cho nhóm ô có kích thước đều.</p>
+<p>Tránh đặt toàn bộ tọa độ tuyệt đối vì giao diện dễ hỏng khi đổi font, độ phân giải hoặc nội dung tiếng Việt. Màn hình quản lý sinh viên nên có vùng bộ lọc, bảng danh sách, form chi tiết và thanh thao tác riêng.</p>
+<h2 id="muc-2">2. Cửa sổ và xử lý sự kiện tối thiểu</h2>
+<p>Ví dụ sau là một lớp hoàn chỉnh dùng thư viện chuẩn. Lưu tại <code>src/main/java/io/github/hoangtnedu/java/StudentWindow.java</code>. Nếu chạy bằng JAR, cập nhật <code>mainClass</code> sang lớp này. Giao diện được tạo trên Event Dispatch Thread bằng <code>invokeLater</code>.</p>
+<div class="code-wrap"><button class="copy" type="button" data-target="code-5">Sao chép</button><pre><code id="code-5" class="language-java">package io.github.hoangtnedu.java;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class StudentWindow {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -&gt; {
+            JFrame frame = new JFrame(&quot;HoangTN - Sinh vien&quot;);
+            JTextField name = new JTextField(20);
+            JLabel status = new JLabel(&quot;Nhap ho ten sinh vien&quot;);
+            JButton save = new JButton(&quot;Kiem tra&quot;);
+            save.addActionListener(event -&gt; {
+                String value = name.getText().trim();
+                status.setText(value.isBlank()
+                    ? &quot;Ho ten khong duoc trong&quot; : &quot;Hop le: &quot; + value);
+            });
+            JPanel form = new JPanel(new FlowLayout());
+            form.add(new JLabel(&quot;Ho ten&quot;));
+            form.add(name);
+            form.add(save);
+            frame.add(form, BorderLayout.CENTER);
+            frame.add(status, BorderLayout.SOUTH);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+    }
+}</code></pre></div>
+<p>Listener đọc dữ liệu, kiểm tra và cập nhật thông báo. Khi mở rộng, đừng đưa toàn bộ nghiệp vụ và SQL vào listener. Một phương thức dài xử lý cả giao diện, kiểm tra và CSDL sẽ khó cô lập lỗi, đặc biệt khi có nhiều nút cùng sử dụng một quy tắc.</p>
+<h2 id="muc-3">3. EDT và công việc chạy nền</h2>
+<p>EDT xử lý sự kiện và cập nhật Swing. Một truy vấn kéo dài trong listener có thể làm cửa sổ ngừng phản hồi. <code>SwingWorker</code> cho phép xử lý việc tốn thời gian trong <code>doInBackground</code>; <code>done</code> trở lại EDT để nhận kết quả. Không cập nhật component trực tiếp từ luồng nền.</p>
+<p>Đoạn sau là mẫu ghép trong một listener khi đã có <code>save</code>, <code>status</code> và <code>service</code>. <code>service.countStudents()</code> là phương thức do người học xây dựng; không phải API Swing.</p>
+<div class="code-wrap"><button class="copy" type="button" data-target="code-6">Sao chép</button><pre><code id="code-6" class="language-java">save.setEnabled(false);
+new SwingWorker&lt;Integer, Void&gt;() {
+    protected Integer doInBackground() throws Exception {
+        return service.countStudents();
+    }
+    protected void done() {
+        try {
+            status.setText(&quot;So sinh vien: &quot; + get());
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+            status.setText(&quot;Tac vu bi gian doan&quot;);
+        } catch (java.util.concurrent.ExecutionException ex) {
+            status.setText(&quot;Khong the tai du lieu&quot;);
+        } finally {
+            save.setEnabled(true);
+        }
+    }
+}.execute();</code></pre></div>
+<p>Không gọi <code>get()</code> ngay sau <code>execute()</code> trên EDT vì sẽ chặn giao diện. Với bảng dữ liệu, nên đưa kết quả truy vấn về một danh sách rồi cập nhật table model khi tác vụ kết thúc. Vô hiệu hóa nút phù hợp trong lúc lưu để tránh người dùng gửi lặp thao tác.</p>
+<h2 id="muc-4">4. JDBC và truy vấn tham số</h2>
+<p>JDBC là API truy cập CSDL; driver cụ thể do hệ quản trị cung cấp. Thực hành bắt đầu bằng việc tạo bảng <code>students(id, name)</code> rồi thử kết nối độc lập trước khi ghép vào giao diện. Khi dùng Maven, thêm đúng driver theo CSDL lựa chọn. URL, tài khoản và mật khẩu nên đọc từ cấu hình môi trường.</p>
+<p>Đoạn mẫu dưới cần có biến <code>dataSource</code> kiểu <code>javax.sql.DataSource</code> đã được cấu hình và hai biến <code>id</code>, <code>name</code>. Trong Java SE, namespace <code>javax.sql</code> vẫn được dùng; không thay mọi <code>javax</code> thành <code>jakarta</code>.</p>
+<div class="code-wrap"><button class="copy" type="button" data-target="code-7">Sao chép</button><pre><code id="code-7" class="language-java">String sql = &quot;INSERT INTO students(id, name) VALUES (?, ?)&quot;;
+try (var connection = dataSource.getConnection();
+     var statement = connection.prepareStatement(sql)) {
+    statement.setString(1, id);
+    statement.setString(2, name);
+    int affected = statement.executeUpdate();
+    if (affected != 1) {
+        throw new java.sql.SQLException(&quot;Khong them duoc sinh vien&quot;);
+    }
+}</code></pre></div>
+<p>Tham số được đánh số từ 1. <code>executeQuery</code> dùng cho truy vấn trả <code>ResultSet</code>, còn <code>executeUpdate</code> trả số dòng bị tác động. Dùng try-with-resources để đóng kết nối, statement và result set khi kết thúc. Khi sửa/xóa, kiểm tra số dòng bị tác động để phát hiện mã không tồn tại. Gộp nhiều cập nhật liên quan bằng transaction, rollback nếu một bước thất bại.</p>
+<h2 id="muc-5">5. Phân chia trách nhiệm bằng MVC và các lớp dịch vụ</h2>
+<p>Model biểu diễn dữ liệu và trạng thái nghiệp vụ; View hiển thị và nhận thao tác; Controller điều phối hành động. Trong ứng dụng quản lý, Service giữ quy tắc như mã không trùng, còn DAO thực hiện truy vấn. Không đồng nhất Model với một bảng CSDL: model còn có thể chứa trạng thái biểu mẫu và kết quả tính toán.</p>
+<p>Ví dụ luồng thêm sinh viên: người dùng bấm Lưu; controller đọc form; service kiểm tra quy tắc; DAO ghi CSDL; kết quả quay về để View tải lại bảng và xóa form. Nếu thất bại, giữ dữ liệu đã nhập để người dùng sửa. Chỉ cập nhật giao diện thành công khi CSDL đã xác nhận thao tác.</p>
+<h2 id="muc-6">6. Bài thực hành tổng hợp</h2>
+<ul><li>Buổi 3: thiết kế cửa sổ quản lý có bảng và form, co giãn được.</li><li>Buổi 4: thêm kiểm tra rỗng, sự kiện chọn hàng, tác vụ nền và trạng thái nút.</li><li>Buổi 5: viết DAO cho thêm, sửa, xóa, tìm kiếm bằng JDBC; tách controller và service.</li><li>Buổi 6: hoàn thiện mini app, thử mã trùng, dữ liệu rỗng, mất kết nối và khởi động lại.</li><li>Tự giải thích: tại sao bảng hiển thị tên mới nhưng CSDL vẫn giữ tên cũ? Thiết kế của em cập nhật thành công ở thời điểm nào?</li></ul>
+<p>Các nhiệm vụ này là phần biên soạn bổ sung theo lịch trình. Đọc yêu cầu, sản phẩm và ca kiểm tra ở <a href="bai-tap.html">danh sách bài tập</a>.</p>
+<h2 id="muc-7">Nguồn đọc theo chủ đề</h2>
+<p>Giáo trình OOP được cung cấp: lớp và đối tượng, đóng gói, ngoại lệ, collection. Đối chiếu <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/SwingWorker.html">SwingWorker JDK 21</a>, <a href="https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html">JDBC Prepared Statements</a> và <a href="https://math.hws.edu/javanotes-swing/">sách Java bản Swing của David J. Eck</a>. Tài liệu JDBC Tutorial dùng ví dụ JDK 8; các ví dụ của chuyên mục giữ nguyên tắc tham số hóa và đóng tài nguyên.</p><nav class="lesson-nav" aria-label="Bài trước và bài sau"><a href="chuong-1.html">← Chương 1</a><a href="chuong-3.html">Chương 3 →</a></nav></main></div><footer>© 2026 Trần Nguyên Hoàng · HoangTN · Ghi chép nghiên cứu và học tập.</footer><button class="top-button" type="button" aria-label="Về đầu trang">↑</button></body></html>

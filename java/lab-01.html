@@ -1,0 +1,168 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lab 1. Java SE Console, Maven và JAR | HoangTN</title><meta name="author" content="Trần Nguyên Hoàng"><meta name="description" content="Lab 1. Java SE Console, Maven và JAR"><meta property="og:title" content="Lab 1. Java SE Console, Maven và JAR | HoangTN"><meta property="og:description" content="Lab 1. Java SE Console, Maven và JAR"><meta property="og:type" content="article"><meta property="og:url" content="https://hoangtnedu.github.io/java/lab-01.html"><link rel="canonical" href="https://hoangtnedu.github.io/java/lab-01.html"><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/css/site.css"><link rel="stylesheet" href="../assets/css/java.css"><script defer src="../assets/js/site.js"></script><script defer src="../assets/js/java.js"></script></head><body class="java"><a class="skip" href="#noi-dung">Đến nội dung</a><header class="top"><a class="brand" href="../index.html">HoangTN<span>Nghiên cứu và lập trình</span></a><nav aria-label="Điều hướng chính"><a href="../index.html">Trang chủ</a><a href="../dotnet/">Lập trình .NET</a><a href="index.html" aria-current="page">Công nghệ Java</a><button class="mobile-nav" type="button" aria-controls="navigation" aria-expanded="false">Mục lục</button></nav></header><div class="progress" aria-hidden="true"></div><div class="layout"><aside class="sidebar" id="navigation" aria-label="Lộ trình Java"><div class="profile"><strong>Trần Nguyên Hoàng</strong><p>Ghi chép lập trình · HoangTN</p><a href="../index.html">← Trang chủ</a></div><h2>Công nghệ Java</h2><label class="tiny" for="toc-search">Tìm chương hoặc buổi</label><input type="search" id="toc-search" placeholder="Swing, JDBC, buổi 12…"><ul class="toc-list"><li data-search="tong quan va lich trinh 20 buoi"><a href="index.html">Tổng quan và lịch trình 20 buổi</a></li><li data-search="chuong 1. tong quan va phat trien ung dung java"><a href="chuong-1.html">Chương 1. Tổng quan và phát triển ứng dụng Java</a></li><li data-search="chuong 2. ung dung desktop voi java se"><a href="chuong-2.html">Chương 2. Ứng dụng desktop với Java SE</a></li><li data-search="chuong 3. ung dung da lop voi jakarta ee"><a href="chuong-3.html">Chương 3. Ứng dụng đa lớp với Jakarta EE</a></li><li data-search="chuong 4. phat trien ung dung voi spring framework"><a href="chuong-4.html">Chương 4. Phát triển ứng dụng với Spring Framework</a></li><li data-search="lab 1. console, maven va jar"><a href="lab-01.html" class="active" aria-current="page">Lab 1. Console, Maven và JAR</a></li><li data-search="bai tap theo buoi"><a href="bai-tap.html">Bài tập theo buổi</a></li><li data-search="huong dan review project"><a href="project.html">Hướng dẫn review project</a></li><li data-search="tai lieu tham khao"><a href="tai-lieu.html">Tài liệu tham khảo</a></li><li data-search="buoi 1. nen tang java va moi truong thuc thi"><a href="buoi-01.html">Buổi 1. Nền tảng Java và môi trường thực thi</a></li><li data-search="buoi 2. maven va dong goi ung dung"><a href="buoi-02.html">Buổi 2. Maven và đóng gói ứng dụng</a></li><li data-search="buoi 3. swing: component, container va layout"><a href="buoi-03.html">Buổi 3. Swing: component, container và layout</a></li><li data-search="buoi 4. su kien, edt va tac vu nen"><a href="buoi-04.html">Buổi 4. Sự kiện, EDT và tác vụ nền</a></li><li data-search="buoi 5. jdbc va mvc cho ung dung desktop"><a href="buoi-05.html">Buổi 5. JDBC và MVC cho ứng dụng desktop</a></li><li data-search="buoi 6. mini app swing hoan chinh"><a href="buoi-06.html">Buổi 6. Mini app Swing hoàn chỉnh</a></li><li data-search="buoi 7. jakarta ee va cdi"><a href="buoi-07.html">Buổi 7. Jakarta EE và CDI</a></li><li data-search="buoi 8. servlet, jsp va bieu mau"><a href="buoi-08.html">Buổi 8. Servlet, JSP và biểu mẫu</a></li><li data-search="buoi 9. web mvc, session va filter"><a href="buoi-09.html">Buổi 9. Web MVC, session và filter</a></li><li data-search="buoi 10. jakarta faces co ban"><a href="buoi-10.html">Buổi 10. Jakarta Faces cơ bản</a></li><li data-search="buoi 11. faces: validation, template va dieu huong"><a href="buoi-11.html">Buổi 11. Faces: validation, template và điều hướng</a></li><li data-search="buoi 12. jpa, servlet security va chot de tai"><a href="buoi-12.html">Buổi 12. JPA, Servlet Security và chốt đề tài</a></li><li data-search="buoi 13. spring boot va thymeleaf"><a href="buoi-13.html">Buổi 13. Spring Boot và Thymeleaf</a></li><li data-search="buoi 14. spring mvc, form va validation"><a href="buoi-14.html">Buổi 14. Spring MVC, form và validation</a></li><li data-search="buoi 15. spring data jpa va du lieu ben vung"><a href="buoi-15.html">Buổi 15. Spring Data JPA và dữ liệu bền vững</a></li><li data-search="buoi 16. spring security va mini app tong hop"><a href="buoi-16.html">Buổi 16. Spring Security và mini app tổng hợp</a></li><li data-search="buoi 17. review 1: phan tich va thiet ke"><a href="buoi-17.html">Buổi 17. Review 1: phân tích và thiết kế</a></li><li data-search="buoi 18. review 2: kien truc va chuc nang loi"><a href="buoi-18.html">Buổi 18. Review 2: kiến trúc và chức năng lõi</a></li><li data-search="buoi 19. review 3: chat luong va ban giao thu"><a href="buoi-19.html">Buổi 19. Review 3: chất lượng và bàn giao thử</a></li><li data-search="buoi 20. review 4: demo cuoi va danh gia"><a href="buoi-20.html">Buổi 20. Review 4: demo cuối và đánh giá</a></li></ul><p class="empty-result" hidden>Không có mục phù hợp.</p></aside><main class="article" id="noi-dung"><p class="eyebrow">HoangTN · Công nghệ Java</p><h1>Lab 1. Java SE Console, Maven và JAR</h1><div class="meta"><span>Trần Nguyên Hoàng</span><span>Cập nhật 27/10/2026</span></div><details class="page-toc"><summary>Trong bài này</summary><ol><li><a href="#muc-1">Mục tiêu và chuẩn bị</a></li><li><a href="#muc-2">Bài 1. Tổng số chẵn</a></li><li><a href="#muc-3">Bài 2. Tổng nghịch đảo</a></li><li><a href="#muc-4">Bài 3. Số nguyên tố</a></li><li><a href="#muc-5">Bài 4. Kiểm tra và phân loại tam giác</a></li><li><a href="#muc-6">Bài 5. Dãy Fibonacci</a></li><li><a href="#muc-7">Tổ chức project và mã minh họa</a></li><li><a href="#muc-8">Build, chạy và kiểm tra</a></li><li><a href="#muc-9">Sản phẩm và tiêu chí đánh giá</a></li><li><a href="#ma-nguon">Mã nguồn để đọc và sao chép</a></li></ol></details><h2 id="muc-1">Mục tiêu và chuẩn bị</h2>
+<p>Xây dựng ứng dụng Java SE Console bằng Maven, nhận dữ liệu qua bàn phím, tách logic vào lớp <code>So</code>, đóng gói JAR và chạy bằng JVM. Lab giữ năm bài toán trong tệp Lab 1 được cung cấp. Mã được biên tập lại để xử lý nhập sai và làm rõ miền giá trị.</p>
+<p>Dùng JDK 17 hoặc 21, Maven 3.x, IDE tùy chọn và terminal. Chạy <code>java -version</code>, <code>javac -version</code>, <code>mvn -version</code>, kiểm tra JDK nhất quán. Đọc <a href="chuong-1.html">Chương 1</a> trước khi bắt đầu.</p>
+<h2 id="muc-2">Bài 1. Tổng số chẵn</h2>
+<p>Nhập số nguyên dương <code>n</code>, tính tổng 2 + 4 + ... đến số chẵn lớn nhất không vượt <code>n</code>. Bản đầu dùng vòng lặp; bản mở rộng dùng <code>k = n / 2</code>, tổng bằng <code>k * (k + 1)</code>. Dùng <code>long</code> cho kết quả và chuyển kiểu trước phép nhân.</p>
+<ul><li>Kiểm tra: n=10 cho 30; n=9 cho 20; n=1 cho 0.</li><li>n=0 và n âm phải bị từ chối. Thử một n lớn để giải thích vì sao không dùng <code>int</code> cho tổng.</li></ul>
+<h2 id="muc-3">Bài 2. Tổng nghịch đảo</h2>
+<p>Tính 1 + 1/2 + ... + 1/n với n nguyên dương. Dùng <code>1.0 / i</code> để tránh phép chia nguyên. Mã minh họa giới hạn n không vượt một triệu để thao tác tương tác không chạy quá lâu.</p>
+<ul><li>Kiểm tra: n=1 cho 1; n=4 cho xấp xỉ 2.0833 khi in bốn chữ số thập phân.</li><li>So sánh kết quả theo sai số, không yêu cầu hai số thực tính theo thứ tự khác nhau phải giống tuyệt đối.</li></ul>
+<h2 id="muc-4">Bài 3. Số nguyên tố</h2>
+<p>Nhận một số nguyên n và trả kết quả đúng/sai. Các số nhỏ hơn 2 không là nguyên tố. Sau khi xét 2 và loại số chẵn, chỉ cần thử các ước lẻ đến căn bậc hai của n. Mã dùng điều kiện <code>i &lt;= n / i</code> để tránh phép nhân <code>i * i</code> vượt miền kiểu số.</p>
+<ul><li>Kiểm tra: -5, 0, 1 cho sai; 2 và 17 cho đúng; 21 và 49 cho sai.</li><li>Giải thích vì sao không cần thử mọi ước đến n-1.</li></ul>
+<h2 id="muc-5">Bài 4. Kiểm tra và phân loại tam giác</h2>
+<p>Nhập ba cạnh a, b, c. Từ chối giá trị không hữu hạn, không dương hoặc không thỏa bất đẳng thức tam giác. Nếu hợp lệ, phân loại đều, vuông cân, vuông, cân hoặc thường. Thứ tự kiểm tra cần tránh gán tam giác đều thành tam giác cân.</p>
+<ul><li>Kiểm tra: (3,4,5) vuông; (3,3,3) đều; (2,2,3) cân; (2,3,4) thường; (1,2,3) không phải tam giác.</li><li>Thử đảo thứ tự cạnh và nhập NaN/Infinity. Kết quả không được phụ thuộc thứ tự nhập.</li><li>Mã minh họa chuẩn hóa cạnh theo cạnh lớn nhất và dùng sai số 1e-9 cho so sánh phân loại. Đây là quy ước tính toán của lab; dữ liệu gần suy biến chịu giới hạn biểu diễn số thực.</li></ul>
+<h2 id="muc-6">Bài 5. Dãy Fibonacci</h2>
+<p>Hiển thị n số đầu bắt đầu bằng 0, 1, 1, 2... Với kiểu <code>long</code>, giới hạn lab là 1 đến 93 phần tử, tức đến F92. Chỉ cộng để tạo phần tử tiếp theo khi còn cần xuất, tránh tính dư một phần tử gây tràn.</p>
+<ul><li>Kiểm tra: n=1 cho <code>0</code>; n=2 cho <code>0 1</code>; n=7 cho <code>0 1 1 2 3 5 8</code>.</li><li>n=93 kết thúc bằng 7540113804746346429; n=94 bị từ chối.</li><li>Bài mở rộng: dùng BigInteger để bỏ giới hạn <code>long</code>, kèm một giới hạn n phù hợp cho giao diện.</li></ul>
+<h2 id="muc-7">Tổ chức project và mã minh họa</h2>
+<p>Tạo thư mục <code>lab01-java-console</code>, dùng <code>pom.xml</code> và hai lớp <code>App.java</code>, <code>So.java</code> ở đúng đường dẫn package. <code>So</code> không đọc bàn phím. <code>App</code> điều khiển menu và chuyển dữ liệu sang các hàm. Đọc từng dòng bằng <code>nextLine</code> rồi parse giúp tránh dữ liệu lỗi còn kẹt trong Scanner.</p>
+<p>Các tệp bên dưới là mã của lab đã biên tập. Nếu trình duyệt hiển thị trực tiếp, dùng Lưu thành hoặc nút sao chép; giữ đúng tên tệp và thư mục.</p>
+<ul><li><a href="examples/lab01/pom.xml">pom.xml</a></li><li><a href="examples/lab01/src/main/java/io/github/hoangtnedu/java/So.java">So.java</a></li><li><a href="examples/lab01/src/main/java/io/github/hoangtnedu/java/App.java">App.java</a></li><li><a href="examples/lab01/README.md">README và cách chạy</a></li></ul>
+<h2 id="muc-8">Build, chạy và kiểm tra</h2>
+<div class="code-wrap"><button class="copy" type="button" data-target="code-19">Sao chép</button><pre><code id="code-19" class="language-sh">mvn clean package
+java -jar target/lab01-java-console-1.0.0.jar</code></pre></div>
+<p>Thử đủ năm bài, dữ liệu biên, dữ liệu rỗng và chuỗi không phải số. Nhập sai phải nhận thông báo và quay về menu. Phân biệt ba loại lỗi: môi trường không tìm thấy lệnh; biên dịch không tìm thấy lớp/package; chương trình chạy nhưng tính sai.</p>
+<h2 id="muc-9">Sản phẩm và tiêu chí đánh giá</h2>
+<p>Nộp project Maven, JAR chạy được, ảnh kiểm tra môi trường, kết quả năm bài và báo cáo giải thích <code>.java</code> → <code>.class</code> → JVM. Đặt gói nộp <code>Lab01_MSSV_HoTen.zip</code> và không chứa mật khẩu hoặc tệp cá nhân không liên quan.</p>
+<ul><li>Môi trường phát triển hoạt động: 1,5 điểm.</li><li>Cấu trúc project, package và POM: 1,5 điểm.</li><li>Lớp So và kiểm tra dữ liệu: 2,0 điểm.</li><li>Kết quả năm bài Console: 2,5 điểm.</li><li>Menu, nhập dữ liệu và thông báo: 1,0 điểm.</li><li>Đóng gói và chạy JAR: 1,0 điểm.</li><li>Báo cáo, bằng chứng và cách nộp: 0,5 điểm.</li></ul>
+<p>Tổng 10 điểm, giữ cơ cấu tiêu chí của lab nguồn. Chỉ tính hoàn thành khi có kết quả chạy, không chỉ có ảnh mã nguồn.</p><h2 id="ma-nguon">Mã nguồn để đọc và sao chép</h2><h3>pom.xml</h3><div class="code-wrap"><button class="copy" type="button" data-target="code-20">Sao chép</button><pre><code id="code-20" class="language-xml">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;groupId&gt;io.github.hoangtnedu&lt;/groupId&gt;
+  &lt;artifactId&gt;lab01-java-console&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0&lt;/version&gt;
+  &lt;properties&gt;
+    &lt;maven.compiler.release&gt;17&lt;/maven.compiler.release&gt;
+    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+  &lt;/properties&gt;
+  &lt;build&gt;&lt;plugins&gt;
+    &lt;plugin&gt;
+      &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+      &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;&lt;version&gt;3.13.0&lt;/version&gt;
+    &lt;/plugin&gt;
+    &lt;plugin&gt;
+      &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+      &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;&lt;version&gt;3.4.2&lt;/version&gt;
+      &lt;configuration&gt;&lt;archive&gt;&lt;manifest&gt;
+        &lt;mainClass&gt;io.github.hoangtnedu.java.App&lt;/mainClass&gt;
+      &lt;/manifest&gt;&lt;/archive&gt;&lt;/configuration&gt;
+    &lt;/plugin&gt;
+  &lt;/plugins&gt;&lt;/build&gt;
+&lt;/project&gt;</code></pre></div><h3>src/main/java/io/github/hoangtnedu/java/So.java</h3><div class="code-wrap"><button class="copy" type="button" data-target="code-21">Sao chép</button><pre><code id="code-21" class="language-java">package io.github.hoangtnedu.java;
+
+import java.util.Arrays;
+
+public final class So {
+    private So() { }
+
+    public static long tongChanDenN(int n) {
+        kiemTraNguyenDuong(n);
+        long k = n / 2L;
+        return k * (k + 1);
+    }
+
+    public static double tongNghichDao(int n) {
+        kiemTraNguyenDuong(n);
+        if (n &gt; 1_000_000) {
+            throw new IllegalArgumentException(&quot;Bai demo gioi han n &lt;= 1000000&quot;);
+        }
+        double sum = 0;
+        for (int i = 1; i &lt;= n; i++) sum += 1.0 / i;
+        return sum;
+    }
+
+    public static boolean laSoNguyenTo(int n) {
+        if (n &lt; 2) return false;
+        if (n % 2 == 0) return n == 2;
+        for (int i = 3; i &lt;= n / i; i += 2) {
+            if (n % i == 0) return false;
+        }
+        return true;
+    }
+
+    public static String loaiTamGiac(double a, double b, double c) {
+        if (!Double.isFinite(a) || !Double.isFinite(b) || !Double.isFinite(c)
+                || a &lt;= 0 || b &lt;= 0 || c &lt;= 0) return &quot;Khong phai tam giac&quot;;
+        double[] sides = {a, b, c};
+        Arrays.sort(sides);
+        // Normalize to avoid overflow when adding or squaring large inputs.
+        double x = sides[0] / sides[2], y = sides[1] / sides[2];
+        if (x + y &lt;= 1.0) return &quot;Khong phai tam giac&quot;;
+        final double eps = 1e-9;
+        boolean deu = Math.abs(x - 1) &lt; eps;
+        boolean can = Math.abs(x - y) &lt; eps || Math.abs(y - 1) &lt; eps;
+        boolean vuong = Math.abs(x * x + y * y - 1) &lt; eps;
+        if (deu) return &quot;Tam giac deu&quot;;
+        if (can &amp;&amp; vuong) return &quot;Tam giac vuong can&quot;;
+        if (vuong) return &quot;Tam giac vuong&quot;;
+        if (can) return &quot;Tam giac can&quot;;
+        return &quot;Tam giac thuong&quot;;
+    }
+
+    public static String dayFibonacci(int n) {
+        kiemTraNguyenDuong(n);
+        if (n &gt; 93) throw new IllegalArgumentException(&quot;Can 1 &lt;= n &lt;= 93 cho kieu long&quot;);
+        StringBuilder output = new StringBuilder();
+        long previous = 0, current = 1;
+        for (int i = 0; i &lt; n; i++) {
+            if (i &gt; 0) output.append(&#x27; &#x27;);
+            if (i == 0) output.append(previous);
+            else {
+                output.append(current);
+                if (i &lt; n - 1) {
+                    long next = Math.addExact(previous, current);
+                    previous = current;
+                    current = next;
+                }
+            }
+        }
+        return output.toString();
+    }
+
+    private static void kiemTraNguyenDuong(int n) {
+        if (n &lt;= 0) throw new IllegalArgumentException(&quot;n phai la so nguyen duong&quot;);
+    }
+}</code></pre></div><h3>src/main/java/io/github/hoangtnedu/java/App.java</h3><div class="code-wrap"><button class="copy" type="button" data-target="code-22">Sao chép</button><pre><code id="code-22" class="language-java">package io.github.hoangtnedu.java;
+
+import java.util.Scanner;
+
+public final class App {
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (true) {
+                System.out.println(&quot;1. Tong chan  2. Tong nghich dao  3. Nguyen to&quot;);
+                System.out.println(&quot;4. Tam giac  5. Fibonacci  0. Thoat&quot;);
+                try {
+                    int choice = readInt(scanner, &quot;Chon bai: &quot;);
+                    if (choice == 0) break;
+                    switch (choice) {
+                        case 1 -&gt; System.out.println(So.tongChanDenN(readInt(scanner, &quot;n = &quot;)));
+                        case 2 -&gt; System.out.printf(&quot;%.4f%n&quot;, So.tongNghichDao(readInt(scanner, &quot;n = &quot;)));
+                        case 3 -&gt; System.out.println(So.laSoNguyenTo(readInt(scanner, &quot;n = &quot;))
+                                ? &quot;Nguyen to&quot; : &quot;Khong nguyen to&quot;);
+                        case 4 -&gt; System.out.println(So.loaiTamGiac(
+                                readDouble(scanner, &quot;a = &quot;), readDouble(scanner, &quot;b = &quot;),
+                                readDouble(scanner, &quot;c = &quot;)));
+                        case 5 -&gt; System.out.println(So.dayFibonacci(readInt(scanner, &quot;n = &quot;)));
+                        default -&gt; System.out.println(&quot;Lua chon khong hop le&quot;);
+                    }
+                } catch (IllegalArgumentException ex) {
+                    System.out.println(&quot;Loi: &quot; + ex.getMessage());
+                } catch (java.util.NoSuchElementException ex) {
+                    break;
+                }
+            }
+        }
+    }
+    private static int readInt(Scanner scanner, String prompt) {
+        System.out.print(prompt);
+        return Integer.parseInt(scanner.nextLine().trim());
+    }
+    private static double readDouble(Scanner scanner, String prompt) {
+        System.out.print(prompt + &quot;(dau thap phan: .) &quot;);
+        return Double.parseDouble(scanner.nextLine().trim());
+    }
+}</code></pre></div><nav class="lesson-nav" aria-label="Bài trước và bài sau"><a href="index.html">← Lộ trình</a></nav></main></div><footer>© 2026 Trần Nguyên Hoàng · HoangTN · Ghi chép nghiên cứu và học tập.</footer><button class="top-button" type="button" aria-label="Về đầu trang">↑</button></body></html>

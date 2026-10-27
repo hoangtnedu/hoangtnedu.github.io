@@ -43,3 +43,15 @@ Tài liệu GitHub Pages: https://docs.github.com/en/pages/getting-started-with-
 - HTML sinh ra được commit cùng nguồn; GitHub Pages phục vụ trực tiếp.
 - Môi trường lab: Windows, .NET Framework 4.8, SQL Server; Crystal Reports tương thích cho bài báo cáo. Phần web dùng project .NET hiện đại riêng.
 - Chỉ dùng nhận diện cá nhân HoangTN. Các tài liệu gốc có nhận diện tổ chức không được đưa vào chuyên mục. Nguồn đọc thêm được liên kết tại `dotnet/tai-lieu.html`.
+
+
+## Công nghệ Java
+
+- Trang học liệu: `java/index.html`, gồm 4 chương và 20 trang theo buổi, với 4 buổi review project cuối.
+- Nguồn nội dung: `content/java/*.md`, lịch trình và nhiệm vụ bổ sung: `content/java/lich-trinh.json`.
+- Lab 1 giữ 5 bài toán của lab được cung cấp; các bài thực hành còn lại được ghi rõ là bổ sung theo lịch trình.
+- Mã mẫu Maven có thể tải từng tệp tại `java/examples/lab01/`.
+- Tái tạo 29 trang và cập nhật riêng URL Java trong sitemap: `python3 tools/build_java.py` (Python 3, thư viện chuẩn).
+- Phần Java SE dùng JDK 17/21; Jakarta EE dùng runtime Web Profile phù hợp; ví dụ Spring chọn Boot 3.5.x/JDK 21 và project riêng.
+- Đã viết lại nội dung và đổi package sang nhận diện cá nhân. Không phát hành tài liệu gốc có nhận diện tổ chức, mẫu slide, biểu mẫu hay PDF thương mại.
+- Trang nguồn tham khảo giải thích rõ phạm vi sử dụng sách Struts 1.x và Spring/Hibernate 2010, kèm liên kết tài liệu chính thức hiện hành.
