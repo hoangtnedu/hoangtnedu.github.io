@@ -2,7 +2,9 @@
 
 Khung chuyên mục lấy từ file lịch trình học tập Công nghệ Java được cung cấp: 20 buổi, 4 chương; buổi 17–20 dành cho review project. File kế hoạch giảng dạy dùng để đối chiếu tên chủ đề. Khi hai nguồn phân phối buổi khác nhau, chuyên mục ưu tiên lịch trình 20 buổi có bốn buổi review cuối theo yêu cầu.
 
-Lab_1_Cong_Nghe_Java.docx là lab Java có trong bộ tệp của lần biên soạn này. Năm bài toán gốc được giữ: tổng chẵn, tổng nghịch đảo, nguyên tố, tam giác và Fibonacci. Mã minh họa được biên tập lại với package cá nhân, kiểm tra đầu vào, giới hạn miền dữ liệu và cấu hình Maven nhất quán. Các bài thực hành ở buổi 3–16 là bài bổ sung theo lịch trình, không được gắn nhãn là lab gốc chưa cung cấp.
+Bộ Lab 1–16 đã được cung cấp đầy đủ dưới dạng PDF, kèm bản Word Lab 1. Nội dung bài tập, bài tự làm, yêu cầu nộp và đánh giá được đưa lên web; package và thông tin nhận diện tổ chức được đổi sang nhận diện cá nhân HoangTN. Có bản văn bản đã biên tập ở từng trang lab.
+
+Mã gợi ý trong tài liệu được giữ để đọc và học. Một bộ mã mẫu thực thi riêng ở `java/examples/` bổ sung cấu hình Maven, lớp còn thiếu, validation, transaction, kiểm soát quyền và kiểm thử. GitHub Actions biên dịch và chạy các project thực thi này, không có nghĩa mọi đoạn mã rời trích từ PDF là một ứng dụng hoàn chỉnh. Các bài tự làm vẫn là nhiệm vụ dành cho người học.
 
 Nội dung trên website do HoangTN biên soạn phục vụ học tập. Không đưa các bản gốc đề cương, biểu mẫu, mẫu slide hoặc tệp có nhận diện tổ chức lên chuyên mục. Tên tác giả, thư viện và nguồn kỹ thuật được giữ để người học tra cứu.
 

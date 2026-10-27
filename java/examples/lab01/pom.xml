@@ -21,7 +21,7 @@
     <plugin>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-surefire-plugin</artifactId><version>3.5.2</version>
-      <configuration><failIfNoTests>true</failIfNoTests></configuration>
+      <configuration><forkedProcessTimeoutInSeconds>180</forkedProcessTimeoutInSeconds><forkedProcessExitTimeoutInSeconds>10</forkedProcessExitTimeoutInSeconds><failIfNoTests>true</failIfNoTests></configuration>
     </plugin>
     <plugin>
       <groupId>org.apache.maven.plugins</groupId>

@@ -1,6 +1,6 @@
 ## Phạm vi và cách tổ chức nhóm
 
-Chọn một bài toán quản lý có dữ liệu quan hệ, ví dụ thư viện, bán hàng, sinh viên hoặc đặt lịch. Mục tiêu là giải thích được luồng nghiệp vụ và xây dựng được sản phẩm chạy lặp lại từ mã nguồn. Chọn một hướng chính: desktop Swing/JDBC, Jakarta EE hoặc Spring Boot. Không ghép cả ba vào một ứng dụng nếu đề tài không cần.
+Chọn một bài toán quản lý có dữ liệu quan hệ, ví dụ thư viện, bán hàng, sinh viên hoặc đặt lịch. Mục tiêu là giải thích được luồng nghiệp vụ và xây dựng được sản phẩm chạy lặp lại từ mã nguồn. Chọn một hướng chính: desktop Swing/JDBC, Jakarta EE hoặc Spring Boot. Với Lab 16, triển khai ba ứng dụng độc lập dùng chung dữ liệu theo yêu cầu tích hợp; xem [Lab 16](lab-16.html).
 
 Mỗi nhóm thống nhất chức năng bắt buộc, chức năng mở rộng, phân công và tiêu chí hoàn thành. Dùng issue hoặc bảng công việc để theo dõi người phụ trách, trạng thái và bằng chứng. Mỗi thành viên phải hiểu phần mình làm và luồng chung của sản phẩm. Tránh chia việc theo kiểu một người viết toàn bộ code, các thành viên còn lại chỉ làm báo cáo.
 

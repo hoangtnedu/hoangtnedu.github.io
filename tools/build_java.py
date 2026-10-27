@@ -12,6 +12,7 @@ OUT.mkdir(exist_ok=True)
 E=html.escape
 chapters=['Tổng quan và phát triển ứng dụng Java','Ứng dụng desktop với Java SE','Ứng dụng đa lớp với Jakarta EE','Phát triển ứng dụng với Spring Framework']
 lessons=json.loads((SRC/'lich-trinh.json').read_text())
+labs=json.loads((SRC/'labs.json').read_text())
 counter=0
 
 def normalize(s):
@@ -62,7 +63,8 @@ def markdown(text):
     flush();return '\n'.join(result)
 
 def sidebar(active):
-    links=[('index.html','Tổng quan và lịch trình 20 buổi')]+[(f'chuong-{i}.html',f'Chương {i}. {t}') for i,t in enumerate(chapters,1)]+[('lab-01.html','Lab 1. Console, Maven và JAR'),('bai-tap.html','Bài tập theo buổi'),('project.html','Hướng dẫn review project'),('tai-lieu.html','Tài liệu tham khảo')]
+    links=[('index.html','Tổng quan và lịch trình 20 buổi')]+[(f'chuong-{i}.html',f'Chương {i}. {t}') for i,t in enumerate(chapters,1)]+[('bai-tap.html','Bộ 16 bài lab và lịch trình'),('project.html','Hướng dẫn review project'),('tai-lieu.html','Tài liệu tham khảo')]
+    links += [(f'lab-{l["number"]:02}.html',f'Lab {l["number"]}. {l["title"]}') for l in labs]
     links += [(f'buoi-{l["number"]:02}.html',f'Buổi {l["number"]}. {l["title"]}') for l in lessons]
     toc=''.join(f'<li data-search="{E(normalize(t))}"><a href="{p}"'+(' class="active" aria-current="page"' if p==active else '')+'>'+E(t)+'</a></li>' for p,t in links)
     return '<aside class="sidebar" id="navigation" aria-label="Lộ trình Java"><div class="profile"><strong>Trần Nguyên Hoàng</strong><p>Ghi chép lập trình · HoangTN</p><a href="../index.html">← Trang chủ</a></div><h2>Công nghệ Java</h2><label class="tiny" for="toc-search">Tìm chương hoặc buổi</label><input type="search" id="toc-search" placeholder="Swing, JDBC, buổi 12…"><ul class="toc-list">'+toc+'</ul><p class="empty-result" hidden>Không có mục phù hợp.</p></aside>'
@@ -81,8 +83,39 @@ def table():
     rows=''.join(f'<tr><td><a href="buoi-{l["number"]:02}.html">Buổi {l["number"]}</a></td><td>{E(l["chapter"])}<br>{E(l["title"])}</td><td>{E(l["mode"])}</td><td>{E(l["scheduled_output"])}</td></tr>' for l in lessons)
     return '<label class="filter-label" for="lesson-filter">Lọc theo buổi, chương hoặc công nghệ</label><input class="lesson-filter" id="lesson-filter" type="search" placeholder="Ví dụ: Swing, JPA, review…"><p class="source" id="lesson-count" aria-live="polite">20 buổi phù hợp</p><div class="table-scroll"><table id="lesson-table"><thead><tr><th>Buổi</th><th>Nội dung</th><th>Hình thức</th><th>Sản phẩm theo lịch trình</th></tr></thead><tbody>'+rows+'</tbody></table></div><p id="lesson-empty" hidden>Không có buổi phù hợp.</p>'
 
+def source_blocks(text):
+    blocks=[]
+    for part in re.split(r'\n\s*\n',text):
+        if not part.strip():continue
+        lines=part.splitlines()
+        if re.search(r'(?m)^\s*(package |import |public |private |protected |@|<[/!?a-zA-Z]|CREATE |INSERT |UPDATE |SELECT |mvn |java -jar|[{}])',part):
+            start=next((i for i,line in enumerate(lines) if re.search(r'^\s*(package |import |public |private |protected |@|<[/!?a-zA-Z]|CREATE |INSERT |UPDATE |SELECT |mvn |java -jar|[{}])',line)),0)
+            if start:blocks.append('<p>'+E(' '.join(line.strip() for line in lines[:start]))+'</p>')
+            import textwrap
+            blocks.append(code(textwrap.dedent('\n'.join(lines[start:])),'text'))
+        elif any(re.search(r'\S\s{4,}\S',line) for line in lines):
+            blocks.append('<div class="table-scroll"><pre class="lab-table">'+E(part)+'</pre></div>')
+        else:blocks.append('<p>'+E(' '.join(line.strip() for line in lines))+'</p>')
+    return ''.join(blocks)
+
+def lab_cards():
+    return '<div class="chapter-grid">'+''.join(f'<a class="chapter-card" href="lab-{l["number"]:02}.html"><span>Lab {l["number"]:02} · Chương {l["chapter"]}</span><h2>'+E(l['title'])+'</h2></a>' for l in labs)+'</div><p><a href="../java/examples/README.md">Cách lấy toàn bộ mã nguồn và chạy →</a> · <a href="https://github.com/hoangtnedu/hoangtnedu.github.io/actions/workflows/java-examples.yml">Kết quả GitHub Actions</a></p>'
+
+for lab in labs:
+    n=lab['number']
+    if n==1:continue
+    body='<p class="lede">Chương '+str(lab['chapter'])+' · Nội dung, bài có hướng dẫn và bài tự thực hiện theo tài liệu được cung cấp.</p>'
+    body+='<div class="downloads"><a class="download" href="https://github.com/hoangtnedu/hoangtnedu.github.io/tree/main/java/examples/lab'+f'{n:02}'+'">Mở project Maven và kiểm thử →</a><a class="download" href="../content/java/source-text/lab-'+f'{n:02}'+'.txt">Bản văn bản đã biên tập</a></div>'
+    body+='<p>Mã mẫu thực thi trong repository được biên tập thành project có thể build. Các khối code gợi ý bên dưới giữ vai trò hướng dẫn trong bài, có thể cần hoàn thiện hoặc ghép vào project. Xem README của từng lab để biết phạm vi đã triển khai và cách chạy.</p>'
+    if n==16:body+='<figure><img class="figure" src="../assets/figures/java-lab16.svg" alt="Ba ứng dụng Jakarta EE, Swing và Spring dùng chung cơ sở dữ liệu"><figcaption>Ba nền tảng trao đổi trạng thái thông qua cùng cơ sở dữ liệu.</figcaption></figure>'
+    for i,section in enumerate(lab['sections'],1):
+        body+=f'<h2 id="nguon-{i}">'+E(section['title'])+'</h2>'+source_blocks(section['text'])
+    body+='<p class="source">Biên tập từ '+E(lab['source'])+'. Package, dữ liệu minh họa và nhận diện đã chuyển sang HoangTN.</p>'
+    page(f'lab-{n:02}.html',f'Lab {n}. {lab["title"]}',body,lab['title'],(f'lab-{n-1:02}.html',f'← Lab {n-1}'),(f'lab-{n+1:02}.html',f'Lab {n+1} →') if n<16 else ('project.html','Hướng dẫn project →'))
+
 for i,title in enumerate(chapters,1):
     body=markdown((SRC/f'chuong-{i}.md').read_text())
+    body+='<h2>Bài lab của chương</h2><ul>'+''.join(f'<li><a href="lab-{l["number"]:02}.html">Lab {l["number"]}. '+E(l['title'])+'</a></li>' for l in labs if l['chapter']==i)+'</ul>'
     page(f'chuong-{i}.html',f'Chương {i}. {title}',body,title,('index.html','← Lộ trình') if i==1 else (f'chuong-{i-1}.html',f'← Chương {i-1}'),('project.html','Review project →') if i==4 else (f'chuong-{i+1}.html',f'Chương {i+1} →'))
 
 for slug,title in [('lab-01','Lab 1. Java SE Console, Maven và JAR'),('project','Project: bốn buổi review và bàn giao'),('tai-lieu','Tài liệu và nguồn tham khảo')]:
@@ -96,7 +129,7 @@ for slug,title in [('lab-01','Lab 1. Java SE Console, Maven và JAR'),('project'
 for l in lessons:
     n=l['number'];c=int(l['chapter'][-1]) if n<=16 else None
     theory=f'chuong-{c}.html' if c else 'project.html'
-    note='Năm bài tập Lab 1 lấy từ tệp lab được cung cấp; xem hướng dẫn đầy đủ và mã nguồn.' if n in [1,2] else 'Bài thực hành bổ sung được biên soạn theo nội dung và sản phẩm trong lịch trình.' if n<=16 else 'Buổi review theo lịch trình; đối chiếu hướng dẫn project và ghi lại góp ý sau mỗi lần review.'
+    note='Đọc lý thuyết và làm lab tương ứng trong bộ 16 lab đã cung cấp. Hướng dẫn theo buổi bổ sung cách thực hiện và kiểm tra sản phẩm.' if n<=16 else 'Buổi review theo lịch trình; đối chiếu hướng dẫn project và ghi lại góp ý sau mỗi lần review.'
     md=f'''## Nội dung theo lịch trình
 
 {l['topic']}
@@ -133,15 +166,17 @@ Gói thực hành: {l['deliverable']}
 - [Lab 1: Console và Maven](lab-01.html)
 - [Nguồn tham khảo](tai-lieu.html)
 '''
+    related={1:[1],2:[2],3:[3],4:[4],5:[5],6:[5],7:[6],8:[6],9:[7],10:[8],11:[8],12:[9,10],13:[11],14:[12],15:[13],16:[14,15,16]}.get(n,[16])
+    md=md.replace('- [Lab 1: Console và Maven](lab-01.html)','\n'.join(f'- [Lab {k}: '+E(labs[k-1]['title'])+f'](lab-{k:02}.html)' for k in related))
     body='<div class="callout"><p>'+E(note)+'</p></div>'+markdown(md)
     page(f'buoi-{n:02}.html',f'Buổi {n}. {l["title"]}',body,l['topic'],('index.html','← Lộ trình') if n==1 else (f'buoi-{n-1:02}.html',f'← Buổi {n-1}'),('project.html','Tổng kết project →') if n==20 else (f'buoi-{n+1:02}.html',f'Buổi {n+1} →'))
 
 cards=''.join(f'<a class="chapter-card" href="chuong-{i}.html"><span>Chương {i:02}</span><h2>{E(t)}</h2><p>'+['Buổi 1–2 · Java Platform, JDK/JVM, Maven, JAR.','Buổi 3–6 · Swing, sự kiện, EDT, JDBC và MVC.','Buổi 7–12 · CDI, Servlet/JSP, Faces, JPA và bảo mật.','Buổi 13–16 · Boot, MVC, Thymeleaf, Data JPA, Security.'][i-1]+'</p></a>' for i,t in enumerate(chapters,1))
-intro='<p class="lede">Từ ứng dụng Java Console đến desktop và web nhiều lớp, học theo lịch trình 20 buổi với mã minh họa, bài tập và sản phẩm sau từng buổi.</p><div class="course-stats"><span><strong>04</strong> chương lý thuyết</span><span><strong>20</strong> buổi học và review</span><span><strong>05</strong> bài toán Lab 1</span></div><div class="downloads"><a class="download" href="chuong-1.html">Bắt đầu Chương 1 →</a><a class="download" href="lab-01.html">Làm Lab 1</a><a class="download" href="bai-tap.html">Bài tập theo buổi</a></div><h2 id="lo-trinh">Lộ trình kiến thức</h2><div class="chapter-grid">'+cards+'</div><h2 id="moi-truong">Chuẩn bị trước khi học</h2><p>Nắm biến, điều kiện, vòng lặp, lớp và SQL cơ bản. Java SE dùng JDK 17 hoặc 21 và Maven 3.x. Phần Jakarta EE chọn runtime Web Profile tương thích; phần Spring dùng project riêng theo cấu hình Boot 3.5.x được nêu trong bài. Các ví dụ Java chạy trên máy người học.</p><h2 id="lich-trinh">Lịch trình 20 buổi</h2>'+table()+'<h2 id="project">Bốn buổi cuối: review project</h2><p>Buổi 17: phân tích và thiết kế. Buổi 18: kiến trúc và chức năng lõi. Buổi 19: chất lượng, bảo mật và báo cáo. Buổi 20: demo và bàn giao. Xem <a href="project.html">yêu cầu và sản phẩm từng lần review</a>.</p><h2 id="hoc-lieu">Học liệu và bài tập</h2><p>Khung dựa trên lịch trình giảng dạy. Năm bài Console giữ theo Lab 1 đã cung cấp; nhiệm vụ thực hành các buổi còn lại được biên soạn bổ sung và ghi rõ nguồn gốc. Lý thuyết viết lại từ giáo trình, sách tham khảo và đối chiếu tài liệu kỹ thuật chính thức. Xem <a href="tai-lieu.html">danh mục nguồn</a>.</p>'
+intro='<p class="lede">Từ ứng dụng Java Console đến desktop và web nhiều lớp, học theo lịch trình 20 buổi với mã minh họa, bài tập và sản phẩm sau từng buổi.</p><div class="course-stats"><span><strong>04</strong> chương lý thuyết</span><span><strong>20</strong> buổi học và review</span><span><strong>16</strong> bài lab đầy đủ</span></div><div class="downloads"><a class="download" href="chuong-1.html">Bắt đầu Chương 1 →</a><a class="download" href="lab-01.html">Làm Lab 1</a><a class="download" href="bai-tap.html">Bài tập theo buổi</a></div><h2 id="lo-trinh">Lộ trình kiến thức</h2><div class="chapter-grid">'+cards+'</div><h2 id="moi-truong">Chuẩn bị trước khi học</h2><p>Nắm biến, điều kiện, vòng lặp, lớp và SQL cơ bản. Java SE dùng JDK 17 hoặc 21 và Maven 3.x. Phần Jakarta EE chọn runtime Web Profile tương thích; phần Spring dùng project riêng theo cấu hình Boot 3.5.x được nêu trong bài. Các ví dụ Java chạy trên máy người học.</p><h2 id="lich-trinh">Lịch trình 20 buổi</h2>'+table()+'<h2 id="project">Bốn buổi cuối: review project</h2><p>Buổi 17: phân tích và thiết kế. Buổi 18: kiến trúc và chức năng lõi. Buổi 19: chất lượng, bảo mật và báo cáo. Buổi 20: demo và bàn giao. Xem <a href="project.html">yêu cầu và sản phẩm từng lần review</a>.</p><h2 id="hoc-lieu">Học liệu và bài tập</h2><p>Khung dựa trên lịch trình giảng dạy. Đã có đủ Lab 1–16 từ các tệp được cung cấp. Mỗi lab có nội dung, bài có hướng dẫn, bài tự làm và mã mẫu thực thi tương ứng; nhiệm vụ theo từng buổi vẫn giữ theo lịch trình. Lý thuyết viết lại từ giáo trình, sách tham khảo và đối chiếu tài liệu kỹ thuật chính thức. Xem <a href="tai-lieu.html">danh mục nguồn</a>.</p>'
 page('index.html','Công nghệ Java',intro,'4 chương Công nghệ Java theo 20 buổi: Maven, Swing, JDBC, Jakarta EE, Spring và review project.')
 
-tasks='<p class="lede">Làm Lab 1 trước, sau đó thực hành theo từng buổi để phát triển ứng dụng desktop và web.</p><div class="callout"><p>Lab 1 gồm 5 bài toán từ tệp lab được cung cấp. Các nhiệm vụ ở buổi 3–16 là phần bổ sung theo lịch trình. Buổi 17–20 dành cho review project.</p></div><div class="downloads"><a class="download" href="lab-01.html">Mở Lab 1 và mã nguồn →</a><a class="download" href="project.html">Hướng dẫn project</a></div>'+table()+'<h2 id="nop-bai">Cách ghi kết quả thực hành</h2><p>Mỗi buổi lưu mã nguồn, cấu hình mẫu, dữ liệu giả lập và README. Ghi ca thử, kết quả mong đợi/thực tế, ảnh hoặc log phù hợp. Không đưa mật khẩu, dữ liệu cá nhân hoặc thư mục build vào repository.</p>'
-page('bai-tap.html','Bài tập và sản phẩm theo từng buổi',tasks,'Lab 1 với năm bài Console và bài thực hành bổ sung theo lịch trình Java.')
+tasks='<p class="lede">Bộ 16 lab: Java SE, Swing, JDBC, Jakarta EE, Spring và hệ thống đơn hàng đa nền tảng.</p><div class="callout"><p>Nội dung Lab 1–16 được biên tập từ bộ PDF đã cung cấp. Các bài tự làm vẫn được giữ riêng. Mã mẫu thực thi có project Maven và kiểm thử trên GitHub Actions.</p></div>'+lab_cards()+'<h2>Lịch trình học tập 20 buổi</h2><div class="downloads"><a class="download" href="lab-01.html">Mở Lab 1 và mã nguồn →</a><a class="download" href="project.html">Hướng dẫn project</a></div>'+table()+'<h2 id="nop-bai">Cách ghi kết quả thực hành</h2><p>Mỗi buổi lưu mã nguồn, cấu hình mẫu, dữ liệu giả lập và README. Ghi ca thử, kết quả mong đợi/thực tế, ảnh hoặc log phù hợp. Không đưa mật khẩu, dữ liệu cá nhân hoặc thư mục build vào repository.</p>'
+page('bai-tap.html','Bộ 16 bài thực hành Công nghệ Java',tasks,'Lab 1 với năm bài Console và bài thực hành bổ sung theo lịch trình Java.')
 
 # Update only this section's sitemap entries; retain every other existing URL.
 ns='http://www.sitemaps.org/schemas/sitemap/0.9'

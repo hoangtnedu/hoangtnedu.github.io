@@ -1,0 +1,322 @@
+LAB 15
+     CHƯƠNG 4: PHÁT TRIỂN ỨNG DỤNG VỚI SPRING FRAMEWORK
+        Bài tập tổng hợp: Xây dựng ứng dụng hoàn chỉnh với Spring Framework
+
+
+ Học phần                                          Công nghệ Java
+                                                   Bài tập tổng hợp: Xây dựng ứng dụng hoàn chỉnh
+ Tên bài lab
+                                                   với Spring Framework
+                                                   Spring Boot, Spring MVC, Thymeleaf, Spring Data
+ Công nghệ Chương 4
+                                                   JPA, Spring Security
+ Thời lượng                                        01 buổi thực hành, 3 tiết
+ Project gợi ý                                     lab15-spring-final-project
+                                                   Project hoàn chỉnh + CSDL + ảnh demo + báo cáo
+ Sản phẩm nộp
+                                                   kiến trúc
+
+
+1. Căn cứ nội dung Chương 4
+Lab này bám theo Chương 4 của học phần Công nghệ Java: giới thiệu Spring Framework và Spring
+Boot, công cụ phát triển ứng dụng Spring, Thymeleaf, Spring MVC, Spring Data JPA, Spring
+Security và bài tập xây dựng ứng dụng hoàn chỉnh với Spring Framework.
+ Nội dung Chương 4                                 Thể hiện trong bài lab
+ 4.1 Spring Boot/Thymeleaf                         Tạo project và giao diện web hoàn chỉnh.
+                                                   Xây dựng Controller, Form, điều hướng và
+ 4.2 Spring MVC
+                                                   validation.
+                                                   Thiết kế Entity, Repository, Service và quan hệ dữ
+ 4.3 Spring Data JPA
+                                                   liệu.
+ 4.4 Spring Security                               Bảo vệ chức năng, phân quyền ADMIN/USER.
+                                                   Tổng hợp thành hệ thống quản lý sinh viên và đăng
+ 4.5 Bài tập hoàn chỉnh
+                                                   ký học phần.
+
+
+2. Mục tiêu
+ STT                                               Mục tiêu cần đạt
+ 1                                                 Tích hợp các nội dung đã học trong Chương 4.
+                                                   Thiết kế ứng dụng Spring Boot theo kiến trúc nhiều
+                                                   tầng.
+
+
+ STT                                                   Mục tiêu cần đạt
+ 3                                                     Xây dựng CRUD cho nhiều entity.
+ 4                                                     Thiết lập quan hệ giữa sinh viên và khóa học.
+                                                       Áp dụng đăng nhập, phân quyền và bảo vệ chức
+                                                       năng.
+ 6                                                     Hoàn thiện sản phẩm có thể demo cuối chương.
+
+
+3. Công cụ sử dụng
+ Công cụ                                               Mục đích sử dụng
+ JDK 17 hoặc JDK 21                                    Biên dịch và chạy ứng dụng Spring Boot.
+ Apache Maven 3.x                                      Quản lý dependency, build và chạy project.
+ IntelliJ IDEA / Eclipse / VS Code                     Soạn thảo mã nguồn, chạy và debug ứng dụng.
+ Spring Initializr                                     Khởi tạo project Spring Boot đúng cấu trúc.
+ Trình duyệt web                                       Kiểm thử giao diện web.
+ Git hoặc file ZIP                                     Quản lý mã nguồn và nộp bài.
+ Các dependency Spring tương ứng                       Sử dụng đúng dependency theo từng bài lab.
+
+
+4. Yêu cầu công nghệ trước khi lập trình
+Sinh viên cần kiểm tra môi trường Java và Maven đã hoạt động trước khi bắt đầu viết code. Project
+phải chạy được bằng IDE và bằng lệnh Maven.
+Lệnh kiểm tra môi trường và chạy project
+ java -version
+ javac -version
+ mvn -version
+ mvn spring-boot:run
+
+
+5. Cấu trúc dự án yêu cầu
+Tên dự án gợi ý: lab15-spring-final-project. Sinh viên tổ chức mã nguồn theo package
+io.github.hoangtnedu.java.lab15.
+Cấu trúc thư mục chuẩn
+ lab15-spring-final-project/
+ ├── pom.xml
+ └── src/main/
+     ├── java/io/github/hoangtnedu/java/lab15/
+     │   ├── config/SecurityConfig.java
+     │   ├── controller/
+     │   │   ├── StudentController.java
+     │   │   ├── CourseController.java
+     │   │   └── EnrollmentController.java
+     │   ├── entity/
+     │   │   ├── Student.java
+     │   │   ├── Course.java
+     │   │   └── Enrollment.java
+     │   ├── repository/
+
+
+     │   └── service/
+     └── resources/templates/
+
+
+6. Chức năng tổng thể của ứng dụng
+ Phân hệ                                               Chức năng
+ Sinh viên                                             Thêm, sửa, xóa, tìm kiếm sinh viên.
+ Khóa học                                              Thêm, sửa, xóa, tìm kiếm khóa học.
+ Đăng ký học phần                                      Sinh viên đăng ký hoặc hủy đăng ký khóa học.
+ Bảo mật                                               Login, logout, phân quyền admin/user.
+
+
+6. Nội dung bài tập có code gợi ý
+Sinh viên thực hiện lần lượt 5 bài tập dưới đây. Code gợi ý chỉ là khung tham khảo, sinh viên cần
+đọc hiểu, chỉnh sửa package và hoàn thiện getter/setter, view hoặc cấu hình còn thiếu.
+
+Bài 1. Thiết kế entity Course
+Tạo entity Course để quản lý thông tin môn học/khóa học.
+Course.java
+ package io.github.hoangtnedu.java.lab15.entity;
+
+ import jakarta.persistence.*;
+
+ @Entity
+ @Table(name = "courses")
+ public class Course {
+     @Id
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+     private Long id;
+
+     private String courseCode;
+     private String courseName;
+     private Integer credits;
+
+     // getter, setter
+ }
+
+
+Bài 2. Thiết kế entity Enrollment
+Tạo entity Enrollment thể hiện quan hệ sinh viên đăng ký môn học.
+Enrollment.java
+ package io.github.hoangtnedu.java.lab15.entity;
+
+ import jakarta.persistence.*;
+ import java.time.LocalDate;
+
+ @Entity
+ @Table(name = "enrollments")
+ public class Enrollment {
+     @Id
+
+
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+     private Long id;
+
+     private LocalDate enrollDate;
+
+     @ManyToOne
+     @JoinColumn(name = "student_id")
+     private Student student;
+
+     @ManyToOne
+     @JoinColumn(name = "course_id")
+     private Course course;
+
+     // getter, setter
+ }
+
+
+Bài 3. Tạo Repository cho đăng ký học phần
+Tạo EnrollmentRepository để tìm danh sách đăng ký và kiểm tra trùng đăng ký.
+EnrollmentRepository.java
+ package io.github.hoangtnedu.java.lab15.repository;
+
+ import org.springframework.data.jpa.repository.JpaRepository;
+ import io.github.hoangtnedu.java.lab15.entity.Enrollment;
+ import java.util.List;
+
+ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
+     List<Enrollment> findByStudentId(Long studentId);
+     boolean existsByStudentIdAndCourseId(Long studentId, Long courseId);
+ }
+
+
+Bài 4. Tạo Service đăng ký học phần
+Tạo nghiệp vụ đăng ký học phần, kiểm tra sinh viên/môn học tồn tại và không đăng ký trùng.
+EnrollmentService.java
+ package io.github.hoangtnedu.java.lab15.service;
+
+ import org.springframework.stereotype.Service;
+ import io.github.hoangtnedu.java.lab15.entity.*;
+ import io.github.hoangtnedu.java.lab15.repository.*;
+ import java.time.LocalDate;
+
+ @Service
+ public class EnrollmentService {
+     private final EnrollmentRepository enrollmentRepository;
+     private final StudentRepository studentRepository;
+     private final CourseRepository courseRepository;
+
+     public EnrollmentService(EnrollmentRepository enrollmentRepository,
+                              StudentRepository studentRepository,
+                              CourseRepository courseRepository) {
+         this.enrollmentRepository = enrollmentRepository;
+         this.studentRepository = studentRepository;
+         this.courseRepository = courseRepository;
+     }
+
+     public void enroll(Long studentId, Long courseId) {
+
+
+         if (enrollmentRepository.existsByStudentIdAndCourseId(studentId, courseId)) {
+             throw new RuntimeException("Sinh viên đã đăng ký môn học này");
+         }
+
+         Student student = studentRepository.findById(studentId)
+             .orElseThrow(() -> new RuntimeException("Không tìm thấy sinh viên"));
+         Course course = courseRepository.findById(courseId)
+             .orElseThrow(() -> new RuntimeException("Không tìm thấy môn học"));
+
+         Enrollment enrollment = new Enrollment();
+         enrollment.setStudent(student);
+         enrollment.setCourse(course);
+         enrollment.setEnrollDate(LocalDate.now());
+         enrollmentRepository.save(enrollment);
+     }
+ }
+
+
+Bài 5. Controller đăng ký học phần
+Tạo form chọn sinh viên, chọn môn học và xử lý đăng ký.
+EnrollmentController.java
+ package io.github.hoangtnedu.java.lab15.controller;
+
+ import org.springframework.stereotype.Controller;
+ import org.springframework.ui.Model;
+ import org.springframework.web.bind.annotation.*;
+ import io.github.hoangtnedu.java.lab15.service.*;
+
+ @Controller
+ @RequestMapping("/enrollments")
+ public class EnrollmentController {
+     private final EnrollmentService enrollmentService;
+     private final StudentService studentService;
+     private final CourseService courseService;
+
+     public EnrollmentController(EnrollmentService enrollmentService,
+                                 StudentService studentService,
+                                 CourseService courseService) {
+         this.enrollmentService = enrollmentService;
+         this.studentService = studentService;
+         this.courseService = courseService;
+     }
+
+     @GetMapping("/create")
+     public String create(Model model) {
+         model.addAttribute("students", studentService.findAll());
+         model.addAttribute("courses", courseService.findAll());
+         return "enrollments/form";
+     }
+
+     @PostMapping("/save")
+     public String save(@RequestParam Long studentId,
+                        @RequestParam Long courseId) {
+         enrollmentService.enroll(studentId, courseId);
+         return "redirect:/enrollments/create";
+     }
+ }
+
+
+7. Bài tập không có code gợi ý
+ Bài                                                      Yêu cầu
+                                                          Xây dựng trang danh sách đăng ký học phần gồm
+ Bài 6
+                                                          sinh viên, môn học, ngày đăng ký.
+ Bài 7                                                    Viết chức năng hủy đăng ký học phần.
+                                                          Viết chức năng xem danh sách môn học mà một
+ Bài 8
+                                                          sinh viên đã đăng ký.
+                                                          Thêm dashboard thống kê tổng số sinh viên, tổng số
+ Bài 9
+                                                          môn học, tổng số lượt đăng ký.
+                                                          Hoàn thiện giao diện, menu, thông báo lỗi/thành
+ Bài 10
+                                                          công và phân quyền toàn bộ hệ thống.
+
+
+8. Biên dịch, chạy và kiểm thử
+Sau khi hoàn thành, sinh viên cần chạy ứng dụng, kiểm thử các URL/chức năng chính, chụp ảnh
+minh chứng và ghi lại lỗi nếu có.
+Lệnh build và chạy
+ mvn clean package
+ mvn spring-boot:run
+ # Truy cập ứng dụng tại:
+ # http://localhost:8080
+
+
+9. Sản phẩm cần nộp
+ STT                                                      Sản phẩm
+ 1                                                        Project hoàn chỉnh lab15-spring-final-project.
+ 2                                                        CSDL có bảng students, courses, enrollments.
+ 3                                                        Ảnh demo CRUD sinh viên.
+ 4                                                        Ảnh demo CRUD khóa học.
+ 5                                                        Ảnh demo đăng ký học phần.
+ 6                                                        Ảnh demo login và phân quyền.
+ 7                                                        Báo cáo ngắn mô tả kiến trúc hệ thống.
+ 8                                                        ZIP: Lab15_MSSV_HoTen.zip.
+
+
+10. Tiêu chí đánh giá
+ Tiêu chí                                                 Điểm
+ Kiến trúc Controller - Service - Repository - Entity
+                                                          2.0
+ đúng
+ CRUD sinh viên và khóa học                               2.0
+ Chức năng đăng ký học phần                               2.0
+ Spring Security và phân quyền                            1.5
+ Giao diện, điều hướng, thông báo                         1.0
+
+
+ Tiêu chí                                             Điểm
+ Báo cáo, ảnh minh chứng, nộp đúng quy định           1.5
+
+
+11. Tài liệu tham khảo
+[1] Kế hoạch giảng dạy học phần Công nghệ Java: Chương 4 - Phát triển ứng dụng với Spring
+Framework.
+[2] Spring Framework Documentation, Spring Website, 2024.
+[3] Spring Persistence with Hibernate, Paul Tepper Fisher & Brian D. Murphy, Apress.

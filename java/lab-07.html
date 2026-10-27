@@ -1,0 +1,189 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lab 7. CRUD theo MVC với Servlet và JSP | HoangTN</title><meta name="author" content="Trần Nguyên Hoàng"><meta name="description" content="CRUD theo MVC với Servlet và JSP"><meta property="og:title" content="Lab 7. CRUD theo MVC với Servlet và JSP | HoangTN"><meta property="og:description" content="CRUD theo MVC với Servlet và JSP"><meta property="og:type" content="article"><meta property="og:url" content="https://hoangtnedu.github.io/java/lab-07.html"><link rel="canonical" href="https://hoangtnedu.github.io/java/lab-07.html"><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/css/site.css"><link rel="stylesheet" href="../assets/css/java.css"><script defer src="../assets/js/site.js"></script><script defer src="../assets/js/java.js"></script></head><body class="java"><a class="skip" href="#noi-dung">Đến nội dung</a><header class="top"><a class="brand" href="../index.html">HoangTN<span>Nghiên cứu và lập trình</span></a><nav aria-label="Điều hướng chính"><a href="../index.html">Trang chủ</a><a href="../dotnet/">Lập trình .NET</a><a href="index.html" aria-current="page">Công nghệ Java</a><button class="mobile-nav" type="button" aria-controls="navigation" aria-expanded="false">Mục lục</button></nav></header><div class="progress" aria-hidden="true"></div><div class="layout"><aside class="sidebar" id="navigation" aria-label="Lộ trình Java"><div class="profile"><strong>Trần Nguyên Hoàng</strong><p>Ghi chép lập trình · HoangTN</p><a href="../index.html">← Trang chủ</a></div><h2>Công nghệ Java</h2><label class="tiny" for="toc-search">Tìm chương hoặc buổi</label><input type="search" id="toc-search" placeholder="Swing, JDBC, buổi 12…"><ul class="toc-list"><li data-search="tong quan va lich trinh 20 buoi"><a href="index.html">Tổng quan và lịch trình 20 buổi</a></li><li data-search="chuong 1. tong quan va phat trien ung dung java"><a href="chuong-1.html">Chương 1. Tổng quan và phát triển ứng dụng Java</a></li><li data-search="chuong 2. ung dung desktop voi java se"><a href="chuong-2.html">Chương 2. Ứng dụng desktop với Java SE</a></li><li data-search="chuong 3. ung dung da lop voi jakarta ee"><a href="chuong-3.html">Chương 3. Ứng dụng đa lớp với Jakarta EE</a></li><li data-search="chuong 4. phat trien ung dung voi spring framework"><a href="chuong-4.html">Chương 4. Phát triển ứng dụng với Spring Framework</a></li><li data-search="bo 16 bai lab va lich trinh"><a href="bai-tap.html">Bộ 16 bài lab và lịch trình</a></li><li data-search="huong dan review project"><a href="project.html">Hướng dẫn review project</a></li><li data-search="tai lieu tham khao"><a href="tai-lieu.html">Tài liệu tham khảo</a></li><li data-search="lab 1. java se console, jdk/jvm va maven"><a href="lab-01.html">Lab 1. Java SE Console, JDK/JVM và Maven</a></li><li data-search="lab 2. moi truong java, maven va dong goi jar"><a href="lab-02.html">Lab 2. Môi trường Java, Maven và đóng gói JAR</a></li><li data-search="lab 3. java swing: giao dien va xu ly su kien"><a href="lab-03.html">Lab 3. Java Swing: giao diện và xử lý sự kiện</a></li><li data-search="lab 4. edt, tac vu nen va swingworker"><a href="lab-04.html">Lab 4. EDT, tác vụ nền và SwingWorker</a></li><li data-search="lab 5. minishop: java swing va jdbc"><a href="lab-05.html">Lab 5. MiniShop: Java Swing và JDBC</a></li><li data-search="lab 6. servlet, jsp, jstl, filter va listener"><a href="lab-06.html">Lab 6. Servlet, JSP, JSTL, Filter và Listener</a></li><li data-search="lab 7. crud theo mvc voi servlet va jsp"><a href="lab-07.html" class="active" aria-current="page">Lab 7. CRUD theo MVC với Servlet và JSP</a></li><li data-search="lab 8. jakarta faces: validation va message"><a href="lab-08.html">Lab 8. Jakarta Faces: validation và message</a></li><li data-search="lab 9. jpa: entity, repository va transaction"><a href="lab-09.html">Lab 9. JPA: Entity, Repository và Transaction</a></li><li data-search="lab 10. dang nhap, role va bao ve url"><a href="lab-10.html">Lab 10. Đăng nhập, role và bảo vệ URL</a></li><li data-search="lab 11. spring boot va thymeleaf"><a href="lab-11.html">Lab 11. Spring Boot và Thymeleaf</a></li><li data-search="lab 12. spring mvc: form, validation va crud"><a href="lab-12.html">Lab 12. Spring MVC: form, validation và CRUD</a></li><li data-search="lab 13. spring data jpa va co so du lieu"><a href="lab-13.html">Lab 13. Spring Data JPA và cơ sở dữ liệu</a></li><li data-search="lab 14. spring security: dang nhap va phan quyen"><a href="lab-14.html">Lab 14. Spring Security: đăng nhập và phân quyền</a></li><li data-search="lab 15. project spring: dang ky hoc phan"><a href="lab-15.html">Lab 15. Project Spring: đăng ký học phần</a></li><li data-search="lab 16. he thong don hang da nen tang"><a href="lab-16.html">Lab 16. Hệ thống đơn hàng đa nền tảng</a></li><li data-search="buoi 1. nen tang java va moi truong thuc thi"><a href="buoi-01.html">Buổi 1. Nền tảng Java và môi trường thực thi</a></li><li data-search="buoi 2. maven va dong goi ung dung"><a href="buoi-02.html">Buổi 2. Maven và đóng gói ứng dụng</a></li><li data-search="buoi 3. swing: component, container va layout"><a href="buoi-03.html">Buổi 3. Swing: component, container và layout</a></li><li data-search="buoi 4. su kien, edt va tac vu nen"><a href="buoi-04.html">Buổi 4. Sự kiện, EDT và tác vụ nền</a></li><li data-search="buoi 5. jdbc va mvc cho ung dung desktop"><a href="buoi-05.html">Buổi 5. JDBC và MVC cho ứng dụng desktop</a></li><li data-search="buoi 6. mini app swing hoan chinh"><a href="buoi-06.html">Buổi 6. Mini app Swing hoàn chỉnh</a></li><li data-search="buoi 7. jakarta ee va cdi"><a href="buoi-07.html">Buổi 7. Jakarta EE và CDI</a></li><li data-search="buoi 8. servlet, jsp va bieu mau"><a href="buoi-08.html">Buổi 8. Servlet, JSP và biểu mẫu</a></li><li data-search="buoi 9. web mvc, session va filter"><a href="buoi-09.html">Buổi 9. Web MVC, session và filter</a></li><li data-search="buoi 10. jakarta faces co ban"><a href="buoi-10.html">Buổi 10. Jakarta Faces cơ bản</a></li><li data-search="buoi 11. faces: validation, template va dieu huong"><a href="buoi-11.html">Buổi 11. Faces: validation, template và điều hướng</a></li><li data-search="buoi 12. jpa, servlet security va chot de tai"><a href="buoi-12.html">Buổi 12. JPA, Servlet Security và chốt đề tài</a></li><li data-search="buoi 13. spring boot va thymeleaf"><a href="buoi-13.html">Buổi 13. Spring Boot và Thymeleaf</a></li><li data-search="buoi 14. spring mvc, form va validation"><a href="buoi-14.html">Buổi 14. Spring MVC, form và validation</a></li><li data-search="buoi 15. spring data jpa va du lieu ben vung"><a href="buoi-15.html">Buổi 15. Spring Data JPA và dữ liệu bền vững</a></li><li data-search="buoi 16. spring security va mini app tong hop"><a href="buoi-16.html">Buổi 16. Spring Security và mini app tổng hợp</a></li><li data-search="buoi 17. review 1: phan tich va thiet ke"><a href="buoi-17.html">Buổi 17. Review 1: phân tích và thiết kế</a></li><li data-search="buoi 18. review 2: kien truc va chuc nang loi"><a href="buoi-18.html">Buổi 18. Review 2: kiến trúc và chức năng lõi</a></li><li data-search="buoi 19. review 3: chat luong va ban giao thu"><a href="buoi-19.html">Buổi 19. Review 3: chất lượng và bàn giao thử</a></li><li data-search="buoi 20. review 4: demo cuoi va danh gia"><a href="buoi-20.html">Buổi 20. Review 4: demo cuối và đánh giá</a></li></ul><p class="empty-result" hidden>Không có mục phù hợp.</p></aside><main class="article" id="noi-dung"><p class="eyebrow">HoangTN · Công nghệ Java</p><h1>Lab 7. CRUD theo MVC với Servlet và JSP</h1><div class="meta"><span>Trần Nguyên Hoàng</span><span>Cập nhật 27/10/2026</span></div><details class="page-toc"><summary>Trong bài này</summary><ol><li><a href="#nguon-1">Giới thiệu</a></li><li><a href="#nguon-2">1. Mục tiêu</a></li><li><a href="#nguon-3">2. Công cụ sử dụng</a></li><li><a href="#nguon-4">3. Cấu trúc project yêu cầu</a></li><li><a href="#nguon-5">4. File cấu hình Maven</a></li><li><a href="#nguon-6">Bài 1. Tạo trang chủ và menu điều hướng</a></li><li><a href="#nguon-7">Bài 2. Tạo Model và Repository cho sinh viên</a></li><li><a href="#nguon-8">Bài 3. Tạo Controller xử lý CRUD sinh viên</a></li><li><a href="#nguon-9">Bài 4. Tạo View JSP hiển thị danh sách và form</a></li><li><a href="#nguon-10">Bài 5. Tạo đăng nhập và Filter bảo vệ URL quản trị</a></li><li><a href="#nguon-11">Bài 6. Quản lý sách</a></li><li><a href="#nguon-12">Bài 7. Quản lý sản phẩm</a></li><li><a href="#nguon-13">Bài 8. Quản lý lớp học</a></li><li><a href="#nguon-14">Bài 9. Quản lý điểm sinh viên</a></li><li><a href="#nguon-15">Bài 10. Quản lý giỏ hàng bằng Session</a></li><li><a href="#nguon-16">Bài 12. Listener ghi log ứng dụng</a></li><li><a href="#nguon-17">Bài 13. Bài tổng hợp MVC</a></li><li><a href="#nguon-18">7. Yêu cầu tổng hợp cuối lab</a></li></ol></details><p class="lede">Chương 3 · Nội dung, bài có hướng dẫn và bài tự thực hiện theo tài liệu được cung cấp.</p><div class="downloads"><a class="download" href="https://github.com/hoangtnedu/hoangtnedu.github.io/tree/main/java/examples/lab07">Mở project Maven và kiểm thử →</a><a class="download" href="../content/java/source-text/lab-07.txt">Bản văn bản đã biên tập</a></div><p>Mã mẫu thực thi trong repository được biên tập thành project có thể build. Các khối code gợi ý bên dưới giữ vai trò hướng dẫn trong bài, có thể cần hoàn thiện hoặc ghép vào project. Xem README của từng lab để biết phạm vi đã triển khai và cách chạy.</p><h2 id="nguon-1">Giới thiệu</h2><p>LAB 7 CHƯƠNG 3: PHÁT TRIỂN ỨNG DỤNG ĐA LỚP TRONG JAKARTA EE</p><p>Xây dựng CRUD bằng Servlet + JSP, dùng MVC đơn giản</p><div class="table-scroll"><pre class="lab-table">Học phần                                                 Công nghệ Java</pre></div><p>Lab 7 - Xây dựng CRUD bằng Servlet + JSP, dùng MVC Tên bài lab đơn giản</p><div class="table-scroll"><pre class="lab-table">Công nghệ Chương 3                                       Servlet, JSP, JSTL, MVC/Model 2, Session, Filter
+Thời lượng                                               01 buổi thực hành</pre></div><p>Mã nguồn Maven Web Project + ảnh chạy chương trình Sản phẩm nộp + báo cáo ngắn</p><p>Vị trí của Lab 7 Lab 6 đã tạo Maven Web project, cấu hình server và chạy servlet đầu tiên. Lab 7 tiếp tục bằng việc xây dựng CRUD với Servlet + JSP theo MVC đơn giản. Lab 8 sẽ chuyển một form sang JSF, thêm validation và message.</p><h2 id="nguon-2">1. Mục tiêu</h2><div class="table-scroll"><pre class="lab-table">STT                                                      Mục tiêu cần đạt
+1                                                        Tạo được ứng dụng CRUD đơn giản bằng Servlet + JSP.</pre></div><p>Tách được Model, Repository, Controller và View theo mô hình MVC.</p><p>Sử dụng request, session, forward và redirect đúng tình huống.</p><div class="table-scroll"><pre class="lab-table">4                                                        Hiển thị danh sách bằng JSP/JSTL và xử lý form nhập liệu.</pre></div><p>Thực hiện thêm, sửa, xóa, xem chi tiết và tìm kiếm dữ liệu trong bộ nhớ.</p><div class="table-scroll"><pre class="lab-table">6                                                        Tạo Filter đăng nhập đơn giản để bảo vệ khu vực quản trị.</pre></div><div class="table-scroll"><pre class="lab-table">7                                                        Chuẩn bị nền tảng để chuyển một form sang JSF ở Lab 8.</pre></div><h2 id="nguon-3">2. Công cụ sử dụng</h2><div class="table-scroll"><pre class="lab-table">Công cụ                                                  Mục đích sử dụng
+JDK 17 hoặc JDK 21                                       Biên dịch và chạy mã nguồn Java.</pre></div><div class="table-scroll"><pre class="lab-table">Apache Tomcat 10.x                                       Chạy Servlet/JSP sử dụng namespace jakarta.*.</pre></div><div class="table-scroll"><pre class="lab-table">Apache Maven                                             Quản lý project và thư viện JSTL.</pre></div><div class="table-scroll"><pre class="lab-table">IntelliJ IDEA / Eclipse / NetBeans                            Soạn thảo, cấu hình server và deploy project.</pre></div><div class="table-scroll"><pre class="lab-table">Trình duyệt web                                               Kiểm thử giao diện và chức năng.</pre></div><h2 id="nguon-4">3. Cấu trúc project yêu cầu</h2><p>Cấu trúc thư mục gợi ý lab07-crud-mvc/ ├── pom.xml └── src/main/ ├── java/io/github/hoangtnedu/java/lab7/ │   ├── controller/ │   ├── filter/ │   ├── model/ │   └── repository/ └── webapp/ ├── index.jsp ├── login.jsp ├── views/sinhvien/ │   ├── list.jsp │   ├── form.jsp │   └── detail.jsp └── WEB-INF/web.xml</p><h2 id="nguon-5">4. File cấu hình Maven</h2><p>pom.xml</p><div class="code-wrap"><button class="copy" type="button" data-target="code-324">Sao chép</button><pre><code id="code-324" class="language-text">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;io.github.hoangtnedu.java&lt;/groupId&gt;
+    &lt;artifactId&gt;lab07-crud-mvc&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;properties&gt;
+        &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;6.0.0&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.servlet.jsp.jstl&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.servlet.jsp.jstl-api&lt;/artifactId&gt;
+            &lt;version&gt;3.0.0&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.glassfish.web&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.servlet.jsp.jstl&lt;/artifactId&gt;
+            &lt;version&gt;3.0.1&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;build&gt;&lt;finalName&gt;lab07-crud-mvc&lt;/finalName&gt;&lt;/build&gt;
+&lt;/project&gt;</code></pre></div><h2 id="nguon-6">Bài 1. Tạo trang chủ và menu điều hướng</h2><p>Yêu cầu: tạo trang index.jsp có menu dẫn đến module sinh viên, sách, sản phẩm và đăng nhập. index.jsp &lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot; %&gt;</p><div class="code-wrap"><button class="copy" type="button" data-target="code-325">Sao chép</button><pre><code id="code-325" class="language-text">&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Lab 7 - CRUD MVC&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;Lab 7 - CRUD bằng Servlet + JSP, dùng MVC đơn giản&lt;/h2&gt;
+&lt;ul&gt;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-326">Sao chép</button><pre><code id="code-326" class="language-text">    &lt;li&gt;&lt;a href=&quot;${pageContext.request.contextPath}/sinh-vien&quot;&gt;Quản lý sinh viên&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;${pageContext.request.contextPath}/sach&quot;&gt;Quản lý sách&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;${pageContext.request.contextPath}/san-pham&quot;&gt;Quản lý sản phẩm&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;${pageContext.request.contextPath}/login.jsp&quot;&gt;Đăng nhập&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><h2 id="nguon-7">Bài 2. Tạo Model và Repository cho sinh viên</h2><p>Yêu cầu: tạo lớp SinhVien và SinhVienRepository lưu dữ liệu bằng List trong bộ nhớ. SinhVien.java</p><div class="code-wrap"><button class="copy" type="button" data-target="code-327">Sao chép</button><pre><code id="code-327" class="language-text">package io.github.hoangtnedu.java.lab7.model;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-328">Sao chép</button><pre><code id="code-328" class="language-text">public class SinhVien {
+    private int id;
+    private String maSinhVien;
+    private String hoTen;
+    private String email;
+    private String lop;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-329">Sao chép</button><pre><code id="code-329" class="language-text">    public SinhVien() {}
+    public SinhVien(int id, String maSinhVien, String hoTen, String email, String lop) {
+        this.id = id; this.maSinhVien = maSinhVien; this.hoTen = hoTen;
+        this.email = email; this.lop = lop;
+    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getMaSinhVien() { return maSinhVien; }
+    public void setMaSinhVien(String maSinhVien) { this.maSinhVien = maSinhVien; }
+    public String getHoTen() { return hoTen; }
+    public void setHoTen(String hoTen) { this.hoTen = hoTen; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public String getLop() { return lop; }
+    public void setLop(String lop) { this.lop = lop; }
+}</code></pre></div><p>SinhVienRepository.java</p><div class="code-wrap"><button class="copy" type="button" data-target="code-330">Sao chép</button><pre><code id="code-330" class="language-text">package io.github.hoangtnedu.java.lab7.repository;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-331">Sao chép</button><pre><code id="code-331" class="language-text">import io.github.hoangtnedu.java.lab7.model.SinhVien;
+import java.util.*;
+import java.util.stream.Collectors;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-332">Sao chép</button><pre><code id="code-332" class="language-text">public class SinhVienRepository {
+    private static final List&lt;SinhVien&gt; data = new ArrayList&lt;&gt;();
+    private static int autoId = 3;
+    static {
+        data.add(new SinhVien(1, &quot;20240001&quot;, &quot;Nguyễn Văn An&quot;, &quot;an@gmail.com&quot;, &quot;JAVA01&quot;));
+        data.add(new SinhVien(2, &quot;20240002&quot;, &quot;Trần Thị Bình&quot;, &quot;binh@gmail.com&quot;, &quot;JAVA01&quot;));
+    }
+    public List&lt;SinhVien&gt; findAll() { return data; }
+    public SinhVien findById(int id) { return data.stream().filter(x -&gt; x.getId() == id).findFirst().orElse(null); }
+    public void add(SinhVien sv) { sv.setId(autoId++); data.add(sv); }
+    public void update(SinhVien sv) {
+        SinhVien old = findById(sv.getId());
+        if (old != null) { old.setMaSinhVien(sv.getMaSinhVien()); old.setHoTen(sv.getHoTen()); old.setEmail(sv.getEmail());
+old.setLop(sv.getLop()); }
+    }
+    public void delete(int id) { data.removeIf(x -&gt; x.getId() == id); }
+    public List&lt;SinhVien&gt; search(String key) {
+        if (key == null || key.trim().isEmpty()) return data;
+        String k = key.toLowerCase();
+        return data.stream().filter(x -&gt; x.getHoTen().toLowerCase().contains(k) ||
+x.getLop().toLowerCase().contains(k)).collect(Collectors.toList());
+    }
+}</code></pre></div><h2 id="nguon-8">Bài 3. Tạo Controller xử lý CRUD sinh viên</h2><p>Yêu cầu: Servlet xử lý action list, new, edit, detail, delete; POST dùng cho lưu dữ liệu. SinhVienController.java</p><div class="code-wrap"><button class="copy" type="button" data-target="code-333">Sao chép</button><pre><code id="code-333" class="language-text">package io.github.hoangtnedu.java.lab7.controller;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-334">Sao chép</button><pre><code id="code-334" class="language-text">import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+import io.github.hoangtnedu.java.lab7.model.SinhVien;
+import io.github.hoangtnedu.java.lab7.repository.SinhVienRepository;
+import java.io.IOException;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-335">Sao chép</button><pre><code id="code-335" class="language-text">@WebServlet(&quot;/sinh-vien&quot;)
+public class SinhVienController extends HttpServlet {
+    private final SinhVienRepository repo = new SinhVienRepository();</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-336">Sao chép</button><pre><code id="code-336" class="language-text">    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding(&quot;UTF-8&quot;);
+        String action = req.getParameter(&quot;action&quot;);
+        if (&quot;new&quot;.equals(action)) { req.getRequestDispatcher(&quot;/views/sinhvien/form.jsp&quot;).forward(req, resp); return; }
+        if (&quot;edit&quot;.equals(action)) { req.setAttribute(&quot;sv&quot;, repo.findById(Integer.parseInt(req.getParameter(&quot;id&quot;))));
+req.getRequestDispatcher(&quot;/views/sinhvien/form.jsp&quot;).forward(req, resp); return; }
+        if (&quot;detail&quot;.equals(action)) { req.setAttribute(&quot;sv&quot;, repo.findById(Integer.parseInt(req.getParameter(&quot;id&quot;))));
+req.getRequestDispatcher(&quot;/views/sinhvien/detail.jsp&quot;).forward(req, resp); return; }
+        if (&quot;delete&quot;.equals(action)) { repo.delete(Integer.parseInt(req.getParameter(&quot;id&quot;)));
+resp.sendRedirect(req.getContextPath() + &quot;/sinh-vien&quot;); return; }
+        req.setAttribute(&quot;dsSinhVien&quot;, repo.search(req.getParameter(&quot;keyword&quot;)));
+        req.getRequestDispatcher(&quot;/views/sinhvien/list.jsp&quot;).forward(req, resp);
+    }</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-337">Sao chép</button><pre><code id="code-337" class="language-text">    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.setCharacterEncoding(&quot;UTF-8&quot;);
+        String id = req.getParameter(&quot;id&quot;);
+        SinhVien sv = new SinhVien(id == null || id.isBlank() ? 0 : Integer.parseInt(id), req.getParameter(&quot;maSinhVien&quot;),
+req.getParameter(&quot;hoTen&quot;), req.getParameter(&quot;email&quot;), req.getParameter(&quot;lop&quot;));
+        if (sv.getId() == 0) repo.add(sv); else repo.update(sv);
+        resp.sendRedirect(req.getContextPath() + &quot;/sinh-vien&quot;);
+    }
+}</code></pre></div><h2 id="nguon-9">Bài 4. Tạo View JSP hiển thị danh sách và form</h2><p>Yêu cầu: dùng JSTL để duyệt danh sách; form dùng chung cho thêm và sửa. views/sinhvien/list.jsp &lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot; %&gt; &lt;%@ taglib prefix=&quot;c&quot; uri=&quot;jakarta.tags.core&quot; %&gt;</p><div class="code-wrap"><button class="copy" type="button" data-target="code-338">Sao chép</button><pre><code id="code-338" class="language-text">&lt;h2&gt;Danh sách sinh viên&lt;/h2&gt;
+&lt;form method=&quot;get&quot; action=&quot;${pageContext.request.contextPath}/sinh-vien&quot;&gt;
+    &lt;input name=&quot;keyword&quot; placeholder=&quot;Tìm theo tên hoặc lớp&quot;&gt;
+    &lt;button type=&quot;submit&quot;&gt;Tìm&lt;/button&gt;
+&lt;/form&gt;
+&lt;p&gt;&lt;a href=&quot;${pageContext.request.contextPath}/sinh-vien?action=new&quot;&gt;Thêm sinh viên&lt;/a&gt;&lt;/p&gt;
+&lt;table border=&quot;1&quot; cellpadding=&quot;6&quot;&gt;
+&lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;Mã SV&lt;/th&gt;&lt;th&gt;Họ tên&lt;/th&gt;&lt;th&gt;Email&lt;/th&gt;&lt;th&gt;Lớp&lt;/th&gt;&lt;th&gt;Thao tác&lt;/th&gt;&lt;/tr&gt;
+&lt;c:forEach var=&quot;sv&quot; items=&quot;${dsSinhVien}&quot;&gt;
+&lt;tr&gt;
+    &lt;td&gt;${sv.id}&lt;/td&gt;&lt;td&gt;${sv.maSinhVien}&lt;/td&gt;
+    &lt;td&gt;&lt;a href=&quot;${pageContext.request.contextPath}/sinh-vien?action=detail&amp;id=${sv.id}&quot;&gt;${sv.hoTen}&lt;/a&gt;&lt;/td&gt;
+    &lt;td&gt;${sv.email}&lt;/td&gt;&lt;td&gt;${sv.lop}&lt;/td&gt;
+    &lt;td&gt;
+         &lt;a href=&quot;${pageContext.request.contextPath}/sinh-vien?action=edit&amp;id=${sv.id}&quot;&gt;Sửa&lt;/a&gt; |
+         &lt;a href=&quot;${pageContext.request.contextPath}/sinh-vien?action=delete&amp;id=${sv.id}&quot; onclick=&quot;return
+confirm(&#x27;Xóa?&#x27;)&quot;&gt;Xóa&lt;/a&gt;
+    &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/c:forEach&gt;
+&lt;/table&gt;</code></pre></div><p>views/sinhvien/form.jsp &lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot; %&gt;</p><div class="code-wrap"><button class="copy" type="button" data-target="code-339">Sao chép</button><pre><code id="code-339" class="language-text">&lt;h2&gt;Form sinh viên&lt;/h2&gt;
+&lt;form method=&quot;post&quot; action=&quot;${pageContext.request.contextPath}/sinh-vien&quot;&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;${sv.id}&quot;&gt;
+    &lt;p&gt;Mã SV: &lt;input name=&quot;maSinhVien&quot; value=&quot;${sv.maSinhVien}&quot; required&gt;&lt;/p&gt;
+    &lt;p&gt;Họ tên: &lt;input name=&quot;hoTen&quot; value=&quot;${sv.hoTen}&quot; required&gt;&lt;/p&gt;
+    &lt;p&gt;Email: &lt;input name=&quot;email&quot; value=&quot;${sv.email}&quot; type=&quot;email&quot;&gt;&lt;/p&gt;
+    &lt;p&gt;Lớp: &lt;input name=&quot;lop&quot; value=&quot;${sv.lop}&quot;&gt;&lt;/p&gt;
+    &lt;button type=&quot;submit&quot;&gt;Lưu&lt;/button&gt;
+&lt;/form&gt;</code></pre></div><h2 id="nguon-10">Bài 5. Tạo đăng nhập và Filter bảo vệ URL quản trị</h2><p>Yêu cầu: đăng nhập đơn giản bằng tài khoản mẫu, lưu username vào session; Filter chặn URL /admin/* nếu chưa đăng nhập. LoginFilter.java</p><div class="code-wrap"><button class="copy" type="button" data-target="code-340">Sao chép</button><pre><code id="code-340" class="language-text">package io.github.hoangtnedu.java.lab7.filter;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-341">Sao chép</button><pre><code id="code-341" class="language-text">import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.*;
+import java.io.IOException;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-342">Sao chép</button><pre><code id="code-342" class="language-text">@WebFilter(&quot;/admin/*&quot;)
+public class LoginFilter implements Filter {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+ServletException {
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute(&quot;username&quot;) == null) {
+            resp.sendRedirect(req.getContextPath() + &quot;/login.jsp&quot;);
+            return;
+        }
+        chain.doFilter(request, response);
+    }
+}</code></pre></div><h2 id="nguon-11">Bài 6. Quản lý sách</h2><p>Tạo CRUD sách gồm mã sách, tên sách, tác giả, nhà xuất bản, năm xuất bản; có tìm kiếm theo tên hoặc tác giả.</p><h2 id="nguon-12">Bài 7. Quản lý sản phẩm</h2><p>Tạo CRUD sản phẩm gồm mã, tên, mô tả, giá, số lượng; validate giá &gt; 0 và số lượng &gt;= 0.</p><h2 id="nguon-13">Bài 8. Quản lý lớp học</h2><p>Tạo CRUD lớp học gồm mã lớp, tên lớp, cố vấn học tập, số lượng sinh viên; tìm kiếm theo mã hoặc tên lớp.</p><h2 id="nguon-14">Bài 9. Quản lý điểm sinh viên</h2><p>Tạo chức năng nhập điểm chuyên cần, giữa kỳ, cuối kỳ; tính tổng kết và xếp loại A/B/C/D/F.</p><h2 id="nguon-15">Bài 10. Quản lý giỏ hàng bằng Session</h2><p>Tạo giỏ hàng đơn giản, thêm sản phẩm, cập nhật số lượng, xóa khỏi giỏ và tính tổng tiền.</p><h2 id="nguon-16">Bài 12. Listener ghi log ứng dụng</h2><p>Tạo listener ghi log khi ứng dụng khởi động/dừng và khi session được tạo/hủy.</p><h2 id="nguon-17">Bài 13. Bài tổng hợp MVC</h2><p>Hoàn thiện ít nhất 3 module CRUD, có menu, session đăng nhập, filter và báo cáo luồng MVC.</p><h2 id="nguon-18">7. Yêu cầu tổng hợp cuối lab</h2><div class="table-scroll"><pre class="lab-table">Thành phần                                                    Yêu cầu
+Model                                                         Có JavaBean cho từng đối tượng.</pre></div><div class="table-scroll"><pre class="lab-table">Repository                                                    Dữ liệu lưu trong List, có findAll/add/update/delete/search.</pre></div><div class="table-scroll"><pre class="lab-table"> Controller                                                 Servlet xử lý action và điều hướng.</pre></div><div class="table-scroll"><pre class="lab-table"> View                                                       JSP hiển thị bằng JSTL, hạn chế Java code trong JSP.</pre></div><div class="table-scroll"><pre class="lab-table"> Session/Filter                                             Có đăng nhập hoặc bảo vệ URL quản trị.</pre></div><div class="table-scroll"><pre class="lab-table"> Báo cáo                                                    Mô tả luồng Browser -&gt; Servlet -&gt; Repository -&gt; JSP.</pre></div><div class="table-scroll"><pre class="lab-table">9. Sản phẩm cần nộp
+ STT                                  Sản phẩm                                    Yêu cầu
+ 1                                    Source code project                         Đúng cấu trúc Maven Web Project.</pre></div><div class="table-scroll"><pre class="lab-table"> 2                                    File nén ZIP                                Đặt tên Lab07_MSSV_HoTen.zip.</pre></div><div class="table-scroll"><pre class="lab-table">                                                                                  Có ảnh trang chủ, form, danh sách và
+ 3                                    Ảnh chạy chương trình
+                                                                                  chức năng chính.</pre></div><div class="table-scroll"><pre class="lab-table">                                                                                  Mô tả mục tiêu, cấu trúc project, luồng
+ 4                                    Báo cáo ngắn
+                                                                                  xử lý MVC và kết quả.</pre></div><div class="table-scroll"><pre class="lab-table">                                                                                  Nêu phần chưa hoàn thành hoặc lỗi gặp
+ 5                                    Ghi chú lỗi nếu có
+                                                                                  phải.</pre></div><div class="table-scroll"><pre class="lab-table">10. Thang điểm đánh giá
+ Tiêu chí                             Mô tả                                       Điểm</pre></div><div class="table-scroll"><pre class="lab-table">                                      Tổ chức đúng package, view,
+ Cấu trúc project                                                                 1.0
+                                      controller/bean và cấu hình Maven</pre></div><div class="table-scroll"><pre class="lab-table">                                      Chạy được các chức năng bắt buộc của
+ Chức năng chính                                                                  3.0
+                                      bài lab</pre></div><div class="table-scroll"><pre class="lab-table">                                      Model/Repository/Bean xử lý đúng, ít
+ Xử lý dữ liệu                                                                    1.5
+                                      trùng lặp</pre></div><div class="table-scroll"><pre class="lab-table">                                      Form rõ ràng, bảng dễ đọc, thông báo dễ
+ Giao diện                                                                    1.0
+                                      hiểu</pre></div><div class="table-scroll"><pre class="lab-table">                                      Có kiểm tra dữ liệu và hiển thị lỗi/thành
+ Validate/thông báo                                                               1.0
+                                      công phù hợp</pre></div><div class="table-scroll"><pre class="lab-table">                                      Hoàn thành các bài không có code gợi ý
+ Bài tự làm                                                                       1.5
+                                      theo yêu cầu</pre></div><div class="table-scroll"><pre class="lab-table">                                      Nộp đúng định dạng, có ảnh chạy và giải
+ Báo cáo và minh chứng                                                            1.0
+                                      thích luồng xử lý</pre></div><div class="table-scroll"><pre class="lab-table"> Tổng                                                                             10.0</pre></div><p>11. Câu hỏi củng cố 1.   Vì sao JSP không nên chứa logic xử lý nghiệp vụ? 2.   Khi nào dùng forward và khi nào dùng sendRedirect? 3.   Repository trong Lab 7 có vai trò gì khi chưa dùng CSDL? 4.   Session khác request ở điểm nào? 5.   Lab 8 có thể chuyển phần nào của Lab 7 sang JSF?</p><div class="table-scroll"><pre class="lab-table">12. Tài liệu tham khảo
+•    Kế hoạch giảng dạy học phần Công nghệ Java - Chương 3.
+•    Lab 6 - Tạo Maven Web project, cấu hình server, chạy servlet đầu tiên.
+•    Tài liệu Jakarta Servlet, JSP và JSTL.
+•    Tài liệu hướng dẫn mô hình MVC/Model 2 trong ứng dụng web Java.</pre></div><p class="source">Biên tập từ Lab7_Cong_Nghe_Java_CRUD_MVC_Servlet_JSP.pdf. Package, dữ liệu minh họa và nhận diện đã chuyển sang HoangTN.</p><nav class="lesson-nav" aria-label="Bài trước và bài sau"><a href="lab-06.html">← Lab 6</a><a href="lab-08.html">Lab 8 →</a></nav></main></div><footer>© 2026 Trần Nguyên Hoàng · HoangTN · Ghi chép nghiên cứu và học tập.</footer><button class="top-button" type="button" aria-label="Về đầu trang">↑</button></body></html>

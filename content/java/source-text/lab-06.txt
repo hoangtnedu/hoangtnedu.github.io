@@ -1,0 +1,767 @@
+LAB 6
+ CHƯƠNG 3: PHÁT TRIỂN ỨNG DỤNG ĐA LỚP TRONG JAKARTA EE
+         Servlet, JSP, JSTL, Filter, Listener và MVC cơ bản
+ Học phần                        Công nghệ Java
+
+                                 Xây dựng ứng dụng Web quản lý sinh viên cơ bản bằng Servlet, JSP, JSTL
+ Tên bài lab
+                                 theo mô hình MVC
+
+                                 Jakarta EE, Servlet, JSP, JSTL, Filter, Listener, Session, RequestDispatcher,
+ Công nghệ Chương 3
+                                 MVC cơ bản
+
+ Thời lượng gợi ý                01 buổi thực hành
+
+                                 Mã nguồn Maven Web Project + ảnh chạy chương trình + báo cáo ngắn + file
+ Sản phẩm nộp
+                                 ZIP
+
+ Định hướng xây dựng Lab 6 - Chương 3
+ Lab này tập trung vào nền tảng Web trong Jakarta EE: Servlet xử lý request, JSP/JSTL hiển thị dữ liệu,
+ Session lưu trạng thái đăng nhập, Filter kiểm soát truy cập và Listener ghi log vòng đời ứng dụng. Bài lab
+ được thiết kế để nối tiếp sang Lab 7 về MVC Servlet + JSP và Lab 8 về MVC kết nối cơ sở dữ liệu.
+
+
+1. Căn cứ nội dung Chương 3
+Lab này bám theo Chương 3 của học phần Công nghệ Java: tổng quan Jakarta EE, môi trường phát triển ứng
+dụng Jakarta EE, phát triển ứng dụng web với Servlet/JSP, JSF, kết nối CSDL với Jakarta Persistence và bảo
+mật ứng dụng với Servlet Security.
+ Nội dung Chương 3                                Thể hiện trong bài lab
+
+                                                  Tạo ứng dụng Web chạy trên Web Container, hiểu vai trò
+ Tổng quan Jakarta EE
+                                                  Servlet/JSP trong tầng Web.
+
+                                                  Xử lý yêu cầu bằng Servlet; hiển thị giao diện bằng JSP; truyền dữ
+ Servlet, JSP
+                                                  liệu bằng request/session.
+
+                                                  Hiển thị danh sách sinh viên và điều kiện giao diện bằng thẻ JSTL
+ JSTL
+                                                  thay cho scriptlet Java.
+
+                                                  Kiểm tra đăng nhập và ghi log truy cập tập trung trước khi request
+ Filter
+                                                  vào Controller.
+
+                                                  Theo dõi vòng đời ứng dụng và session; khởi tạo hoặc ghi log dữ
+ Listener
+                                                  liệu khi ứng dụng chạy.
+
+
+ Nội dung Chương 3                                   Thể hiện trong bài lab
+
+                                                     Tổ chức Model, View, Controller, Store để chuẩn bị cho Lab 7 và
+ MVC cơ bản
+                                                     Lab 8.
+
+
+2. Mục tiêu
+ STT                                       Mục tiêu cần đạt
+
+                                           Tạo được ứng dụng Web Java sử dụng Servlet, JSP và chạy trên Web
+                                           Container.
+
+ 2                                         Hiểu được luồng xử lý Request/Response trong Servlet.
+
+ 3                                         Truyền dữ liệu từ HTML/JSP Form đến Servlet bằng request.getParameter().
+
+                                           Chuyển dữ liệu từ Servlet sang JSP bằng request.setAttribute() và
+                                           RequestDispatcher.forward().
+
+                                           Sử dụng JSTL c:forEach, c:if, c:choose để hiển thị dữ liệu, hạn chế viết Java
+                                           code trực tiếp trong JSP.
+
+ 6                                         Sử dụng Session để lưu trạng thái đăng nhập.
+
+ 7                                         Tạo Filter kiểm tra đăng nhập trước khi truy cập trang quản trị.
+
+                                           Tạo Listener ghi log khi ứng dụng khởi động, kết thúc hoặc khi session được
+                                           tạo.
+
+ 9                                         Tổ chức mã nguồn theo mô hình MVC đơn giản: Model - View - Controller.
+
+
+3. Công cụ sử dụng
+ Công cụ                                            Mục đích sử dụng
+
+ JDK 17 hoặc JDK 21                                 Biên dịch và chạy ứng dụng Java.
+
+ Apache Maven                                       Quản lý dependency, build project và đóng gói WAR.
+
+ Apache Tomcat 10.x                                 Web Container chạy Servlet/JSP theo namespace jakarta.*.
+
+ IntelliJ IDEA / Eclipse / NetBeans                 Soạn thảo, build, deploy và debug ứng dụng.
+
+ JSTL Library                                       Dùng thẻ JSTL trong JSP để hiển thị dữ liệu động.
+
+ Trình duyệt Web                                    Kiểm thử giao diện và luồng xử lý.
+
+ Git hoặc ZIP                                       Nộp bài và quản lý mã nguồn.
+
+
+4. Yêu cầu công nghệ trước khi lập trình
+Sinh viên cần kiểm tra môi trường Java, Maven và Tomcat trước khi bắt đầu lập trình. Đây là phần bắt buộc để
+bảo đảm bài lab đúng trọng tâm Chương 3.
+Lệnh kiểm tra môi trường
+
+
+ java -version
+ javac -version
+ mvn -version
+
+
+Kiểm tra sau khi deploy
+ Tomcat Server đã được cấu hình
+ Ứng dụng deploy thành công
+ Truy cập được: http://localhost:8080/lab06-student-web/
+
+
+ Lưu ý phiên bản Servlet
+ Nếu sử dụng Tomcat 10 trở lên, dùng package jakarta.servlet.*. Nếu sử dụng Tomcat 9 trở xuống, nhiều lớp
+ sẽ dùng package javax.servlet.*. Trong bài lab này ưu tiên Tomcat 10 và Jakarta EE.
+
+
+5. Cấu trúc dự án Maven yêu cầu
+Tên dự án Maven gợi ý: lab06-student-web. Sinh viên tổ chức mã nguồn theo package io.github.hoangtnedu.java.lab6.
+Cấu trúc thư mục chuẩn
+ lab06-student-web/
+ ├── pom.xml
+ └── src/
+     └── main/
+         ├── java/
+         │   └── io/github/hoangtnedu/java/lab6/
+         │       ├── controller/
+         │       │   ├── HelloServlet.java
+         │       │   ├── StudentServlet.java
+         │       │   ├── LoginServlet.java
+         │       │   └── LogoutServlet.java
+         │       ├── filter/
+         │       │   └── AuthFilter.java
+         │       ├── listener/
+         │       │   ├── AppContextListener.java
+         │       │   └── SessionLogListener.java
+         │       ├── model/
+         │       │   └── Student.java
+         │       └── store/
+         │           └── StudentStore.java
+         └── webapp/
+             ├── index.jsp
+             ├── login.jsp
+             ├── student-form.jsp
+             ├── student-list.jsp
+             ├── welcome.jsp
+             └── WEB-INF/
+                 └── web.xml
+
+
+6. File cấu hình Maven
+File pom.xml
+ <project xmlns="http://maven.apache.org/POM/4.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+     <modelVersion>4.0.0</modelVersion>
+     <groupId>io.github.hoangtnedu.java</groupId>
+     <artifactId>lab06-student-web</artifactId>
+     <version>1.0-SNAPSHOT</version>
+     <packaging>war</packaging>
+
+     <properties>
+         <maven.compiler.source>17</maven.compiler.source>
+         <maven.compiler.target>17</maven.compiler.target>
+         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+     </properties>
+
+
+     <dependencies>
+         <dependency>
+             <groupId>jakarta.servlet</groupId>
+             <artifactId>jakarta.servlet-api</artifactId>
+             <version>6.0.0</version>
+             <scope>provided</scope>
+         </dependency>
+
+         <dependency>
+             <groupId>jakarta.servlet.jsp.jstl</groupId>
+             <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+             <version>3.0.0</version>
+         </dependency>
+
+         <dependency>
+             <groupId>org.glassfish.web</groupId>
+             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+             <version>3.0.1</version>
+         </dependency>
+     </dependencies>
+
+     <build>
+         <finalName>lab06-student-web</finalName>
+     </build>
+ </project>
+
+
+7. Nội dung bài tập có gợi ý code
+Sinh viên hoàn thành 5 bài tập dưới đây. Các bài có gợi ý code nhằm giúp sinh viên nắm được luồng xử lý cơ
+bản trước khi tự mở rộng chức năng.
+
+Bài 1. Tạo Servlet hiển thị thông báo “Hello, Servlet”
+Yêu cầu: Tạo Servlet có đường dẫn /hello, khi truy cập hiển thị thông báo Hello, Servlet - Lab 6 Công nghệ Java.
+File HelloServlet.java
+ package io.github.hoangtnedu.java.lab6.controller;
+
+ import jakarta.servlet.ServletException;
+ import jakarta.servlet.annotation.WebServlet;
+ import jakarta.servlet.http.HttpServlet;
+ import jakarta.servlet.http.HttpServletRequest;
+ import jakarta.servlet.http.HttpServletResponse;
+
+ import java.io.IOException;
+
+ @WebServlet("/hello")
+ public class HelloServlet extends HttpServlet {
+
+     @Override
+     protected void doGet(HttpServletRequest request,
+                          HttpServletResponse response)
+             throws ServletException, IOException {
+
+         response.setContentType("text/html;charset=UTF-8");
+         response.getWriter().println("<h1>Hello, Servlet - Lab 6 Cong nghe Java</h1>");
+     }
+ }
+
+
+Đường dẫn kiểm thử
+ http://localhost:8080/lab06-student-web/hello
+
+
+Bài 2. Tạo Form nhập thông tin sinh viên và gửi đến Servlet
+Yêu cầu: Tạo form nhập mã sinh viên, họ tên, lớp và email. Form gửi dữ liệu đến Servlet /students bằng phương
+thức POST.
+File student-form.jsp
+
+ <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+ <html>
+ <head>
+     <title>Thêm sinh viên</title>
+ </head>
+ <body>
+ <h2>Thêm sinh viên</h2>
+
+ <form action="${pageContext.request.contextPath}/students" method="post">
+     <label>Mã sinh viên:</label><br>
+     <input type="text" name="id"><br><br>
+
+     <label>Họ tên:</label><br>
+     <input type="text" name="name"><br><br>
+
+     <label>Lớp:</label><br>
+     <input type="text" name="className"><br><br>
+
+     <label>Email:</label><br>
+     <input type="email" name="email"><br><br>
+
+     <button type="submit">Lưu sinh viên</button>
+ </form>
+
+ </body>
+ </html>
+
+
+File Student.java
+ package io.github.hoangtnedu.java.lab6.model;
+
+ public class Student {
+     private String id;
+     private String name;
+     private String className;
+     private String email;
+
+     public Student() {
+     }
+
+     public Student(String id, String name, String className, String email) {
+         this.id = id;
+         this.name = name;
+         this.className = className;
+         this.email = email;
+     }
+
+     public String getId() {
+         return id;
+     }
+
+     public void setId(String id) {
+         this.id = id;
+     }
+
+     public String getName() {
+         return name;
+     }
+
+     public void setName(String name) {
+         this.name = name;
+     }
+
+     public String getClassName() {
+         return className;
+     }
+
+     public void setClassName(String className) {
+         this.className = className;
+     }
+
+     public String getEmail() {
+         return email;
+
+     }
+
+     public void setEmail(String email) {
+         this.email = email;
+     }
+ }
+
+
+Bài 3. Lưu danh sách sinh viên trong bộ nhớ và hiển thị bằng JSP + JSTL
+Yêu cầu: Tạo lớp StudentStore lưu danh sách sinh viên trong bộ nhớ. Servlet nhận dữ liệu từ form, thêm vào
+danh sách, sau đó chuyển sang JSP để hiển thị danh sách sinh viên.
+File StudentStore.java
+ package io.github.hoangtnedu.java.lab6.store;
+
+ import io.github.hoangtnedu.java.lab6.model.Student;
+
+ import java.util.ArrayList;
+ import java.util.List;
+
+ public class StudentStore {
+
+     private static final List<Student> students = new ArrayList<>();
+
+     static {
+         students.add(new Student("SV001", "Nguyen Van An", "DCCNTT12", "an@example.com"));
+         students.add(new Student("SV002", "Tran Thi Binh", "DCCNTT12", "binh@example.com"));
+     }
+
+     public static List<Student> findAll() {
+         return students;
+     }
+
+     public static void add(Student student) {
+         students.add(student);
+     }
+ }
+
+
+File StudentServlet.java
+ package io.github.hoangtnedu.java.lab6.controller;
+
+ import jakarta.servlet.ServletException;
+ import jakarta.servlet.annotation.WebServlet;
+ import jakarta.servlet.http.HttpServlet;
+ import jakarta.servlet.http.HttpServletRequest;
+ import jakarta.servlet.http.HttpServletResponse;
+ import io.github.hoangtnedu.java.lab6.model.Student;
+ import io.github.hoangtnedu.java.lab6.store.StudentStore;
+
+ import java.io.IOException;
+
+ @WebServlet("/students")
+ public class StudentServlet extends HttpServlet {
+
+     @Override
+     protected void doGet(HttpServletRequest request,
+                          HttpServletResponse response)
+             throws ServletException, IOException {
+
+         request.setAttribute("students", StudentStore.findAll());
+         request.getRequestDispatcher("/student-list.jsp").forward(request, response);
+     }
+
+     @Override
+     protected void doPost(HttpServletRequest request,
+                           HttpServletResponse response)
+             throws ServletException, IOException {
+
+         request.setCharacterEncoding("UTF-8");
+
+
+           String id = request.getParameter("id");
+           String name = request.getParameter("name");
+           String className = request.getParameter("className");
+           String email = request.getParameter("email");
+
+           Student student = new Student(id, name, className, email);
+           StudentStore.add(student);
+
+           response.sendRedirect(request.getContextPath() + "/students");
+     }
+ }
+
+
+File student-list.jsp
+ <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+ <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+ <html>
+ <head>
+     <title>Danh sách sinh viên</title>
+ </head>
+ <body>
+ <h2>Danh sách sinh viên</h2>
+
+ <a href="${pageContext.request.contextPath}/student-form.jsp">Thêm sinh viên</a>
+ <br><br>
+
+ <table border="1" cellpadding="8" cellspacing="0">
+     <tr>
+         <th>Mã SV</th>
+         <th>Họ tên</th>
+         <th>Lớp</th>
+         <th>Email</th>
+     </tr>
+
+     <c:forEach var="sv" items="${students}">
+         <tr>
+              <td>${sv.id}</td>
+              <td>${sv.name}</td>
+              <td>${sv.className}</td>
+              <td>${sv.email}</td>
+         </tr>
+     </c:forEach>
+ </table>
+
+ </body>
+ </html>
+
+
+Bài 4. Tạo chức năng đăng nhập bằng Servlet và Session
+Yêu cầu: Tạo trang đăng nhập. Nếu tài khoản đúng thì lưu username vào session và chuyển sang trang
+welcome.jsp. Tài khoản mẫu: admin / 123456.
+File login.jsp
+ <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+ <html>
+ <head>
+     <title>Đăng nhập</title>
+ </head>
+ <body>
+ <h2>Đăng nhập hệ thống</h2>
+
+ <form action="${pageContext.request.contextPath}/login" method="post">
+     <label>Tên đăng nhập:</label><br>
+     <input type="text" name="username"><br><br>
+
+     <label>Mật khẩu:</label><br>
+     <input type="password" name="password"><br><br>
+
+     <button type="submit">Đăng nhập</button>
+
+
+ </form>
+
+ <p style="color:red">${error}</p>
+
+ </body>
+ </html>
+
+
+File LoginServlet.java
+ package io.github.hoangtnedu.java.lab6.controller;
+
+ import jakarta.servlet.ServletException;
+ import jakarta.servlet.annotation.WebServlet;
+ import jakarta.servlet.http.HttpServlet;
+ import jakarta.servlet.http.HttpServletRequest;
+ import jakarta.servlet.http.HttpServletResponse;
+ import jakarta.servlet.http.HttpSession;
+
+ import java.io.IOException;
+
+ @WebServlet("/login")
+ public class LoginServlet extends HttpServlet {
+
+        @Override
+        protected void doPost(HttpServletRequest request,
+                              HttpServletResponse response)
+                throws ServletException, IOException {
+
+            request.setCharacterEncoding("UTF-8");
+
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+
+            if ("admin".equals(username) && "123456".equals(password)) {
+                HttpSession session = request.getSession();
+                session.setAttribute("username", username);
+
+                response.sendRedirect(request.getContextPath() + "/welcome.jsp");
+            } else {
+                request.setAttribute("error", "Sai tên đăng nhập hoặc mật khẩu");
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
+            }
+        }
+ }
+
+
+File welcome.jsp
+ <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+ <html>
+ <head>
+     <title>Trang quản trị</title>
+ </head>
+ <body>
+ <h2>Xin chào, ${sessionScope.username}</h2>
+
+ <ul>
+     <li><a href="${pageContext.request.contextPath}/students">Quản lý sinh viên</a></li>
+     <li><a href="${pageContext.request.contextPath}/logout">Đăng xuất</a></li>
+ </ul>
+
+ </body>
+ </html>
+
+
+File LogoutServlet.java
+ package io.github.hoangtnedu.java.lab6.controller;
+
+ import jakarta.servlet.ServletException;
+ import jakarta.servlet.annotation.WebServlet;
+ import jakarta.servlet.http.HttpServlet;
+ import jakarta.servlet.http.HttpServletRequest;
+ import jakarta.servlet.http.HttpServletResponse;
+
+ import jakarta.servlet.http.HttpSession;
+
+ import java.io.IOException;
+
+ @WebServlet("/logout")
+ public class LogoutServlet extends HttpServlet {
+
+     @Override
+     protected void doGet(HttpServletRequest request,
+                          HttpServletResponse response)
+             throws ServletException, IOException {
+
+         HttpSession session = request.getSession(false);
+         if (session != null) {
+             session.invalidate();
+         }
+         response.sendRedirect(request.getContextPath() + "/login.jsp");
+     }
+ }
+
+
+Bài 5. Tạo Filter kiểm tra đăng nhập và Listener ghi log
+Yêu cầu: Tạo AuthFilter để kiểm tra người dùng đã đăng nhập hay chưa. Nếu chưa đăng nhập, chuyển về
+login.jsp. Tạo Listener ghi log khi ứng dụng khởi động và khi session mới được tạo.
+File AuthFilter.java
+ package io.github.hoangtnedu.java.lab6.filter;
+
+ import jakarta.servlet.Filter;
+ import jakarta.servlet.FilterChain;
+ import jakarta.servlet.FilterConfig;
+ import jakarta.servlet.ServletException;
+ import jakarta.servlet.ServletRequest;
+ import jakarta.servlet.ServletResponse;
+ import jakarta.servlet.annotation.WebFilter;
+ import jakarta.servlet.http.HttpServletRequest;
+ import jakarta.servlet.http.HttpServletResponse;
+ import jakarta.servlet.http.HttpSession;
+
+ import java.io.IOException;
+
+ @WebFilter(urlPatterns = {"/students", "/student-form.jsp", "/welcome.jsp"})
+ public class AuthFilter implements Filter {
+
+     @Override
+     public void init(FilterConfig filterConfig) {
+         System.out.println("AuthFilter initialized");
+     }
+
+     @Override
+     public void doFilter(ServletRequest request,
+                          ServletResponse response,
+                          FilterChain chain)
+             throws IOException, ServletException {
+
+         HttpServletRequest req = (HttpServletRequest) request;
+         HttpServletResponse resp = (HttpServletResponse) response;
+
+         HttpSession session = req.getSession(false);
+         boolean loggedIn = session != null && session.getAttribute("username") != null;
+
+         if (loggedIn) {
+             chain.doFilter(request, response);
+         } else {
+             resp.sendRedirect(req.getContextPath() + "/login.jsp");
+         }
+     }
+
+     @Override
+     public void destroy() {
+         System.out.println("AuthFilter destroyed");
+     }
+
+ }
+
+
+File AppContextListener.java
+ package io.github.hoangtnedu.java.lab6.listener;
+
+ import jakarta.servlet.ServletContextEvent;
+ import jakarta.servlet.ServletContextListener;
+ import jakarta.servlet.annotation.WebListener;
+
+ @WebListener
+ public class AppContextListener implements ServletContextListener {
+
+       @Override
+       public void contextInitialized(ServletContextEvent sce) {
+           System.out.println("Ung dung Lab 6 da khoi dong");
+       }
+
+       @Override
+       public void contextDestroyed(ServletContextEvent sce) {
+           System.out.println("Ung dung Lab 6 da dung");
+       }
+ }
+
+
+File SessionLogListener.java
+ package io.github.hoangtnedu.java.lab6.listener;
+
+ import jakarta.servlet.annotation.WebListener;
+ import jakarta.servlet.http.HttpSessionEvent;
+ import jakarta.servlet.http.HttpSessionListener;
+
+ @WebListener
+ public class SessionLogListener implements HttpSessionListener {
+
+       @Override
+       public void sessionCreated(HttpSessionEvent se) {
+           System.out.println("Session moi duoc tao: " + se.getSession().getId());
+       }
+
+       @Override
+       public void sessionDestroyed(HttpSessionEvent se) {
+           System.out.println("Session da bi huy: " + se.getSession().getId());
+       }
+ }
+
+
+8. Bài tập tự làm không có gợi ý code
+Sinh viên thực hiện ít nhất 5 trong 7 bài sau. Các bài này không có code gợi ý nhằm rèn kỹ năng tự phân tích,
+tổ chức Controller, View và xử lý dữ liệu.
+ Bài                           Tên bài                           Yêu cầu chính
+
+                                                                 Bổ sung ô tìm kiếm trên trang danh sách. Tìm không phân
+ Bài 6                         Tìm kiếm sinh viên theo họ tên    biệt chữ hoa/thường. Nếu không tìm thấy, hiển thị thông
+                                                                 báo phù hợp.
+
+                                                                 Bổ sung nút Xóa ở mỗi dòng. Gửi id sinh viên đến Servlet,
+ Bài 7                         Xóa sinh viên khỏi danh sách      xóa khỏi danh sách trong bộ nhớ, sau đó quay lại trang
+                                                                 danh sách.
+
+                                                                 Bổ sung chức năng Sửa. Form sửa hiển thị dữ liệu cũ; cho
+ Bài 8                         Cập nhật thông tin sinh viên
+                                                                 phép sửa họ tên, lớp, email; không cho sửa mã sinh viên.
+
+
+Bài                    Tên bài                          Yêu cầu chính
+
+                                                        Admin được thêm/sửa/xóa; User chỉ được xem danh sách.
+Bài 9                  Phân quyền Admin/User            Nếu User truy cập chức năng quản trị, chuyển về trang
+                                                        403.jsp.
+
+                                                        Hiển thị tên người dùng, tổng số sinh viên, số sinh viên
+                       Tạo trang Dashboard sau đăng
+Bài 10                                                  theo từng lớp, thời gian đăng nhập và liên kết quản lý sinh
+                       nhập
+                                                        viên.
+
+                                                        Tạo Filter ghi log URI, method, user và thời gian truy cập
+Bài 11                 Ghi log truy cập bằng Filter
+                                                        ra console.
+
+                                                        Dùng ServletContextListener khởi tạo ít nhất 5 sinh viên
+                       Khởi tạo dữ liệu mẫu bằng
+Bài 12                                                  mẫu, lưu vào ServletContext và ghi log số lượng khi ứng
+                       Listener
+                                                        dụng dừng.
+
+
+9. Yêu cầu sản phẩm nộp
+STT                    Sản phẩm                        Yêu cầu
+
+1                      Maven Web Project               Đúng cấu trúc thư mục, đúng package io.github.hoangtnedu.java.lab6.
+
+2                      Mã nguồn Java                   Có Model, Controller, Filter, Listener, Store.
+
+                                                       Có login.jsp, welcome.jsp, student-form.jsp, student-
+3                      JSP Views
+                                                       list.jsp.
+
+4                      Ảnh chạy chương trình           Có ảnh chạy đủ 5 bài có gợi ý code.
+
+5                      Ảnh bài tự làm                  Có minh chứng tối thiểu 5 bài tự làm.
+
+6                      Báo cáo ngắn                    Trình bày luồng Request -> Servlet -> JSP -> Response.
+
+7                      File ZIP                        Đặt tên: Lab06_MSSV_HoTen.zip.
+
+
+10. Tiêu chí đánh giá
+Tiêu chí                Mô tả                                                       Điểm
+
+                        Đúng Maven Web Project, đúng package, chạy được
+Cấu trúc project                                                                    1.0
+                        trên Tomcat.
+
+                        Làm đúng /hello, xử lý GET/POST, lấy parameter từ
+Servlet cơ bản                                                                      1.5
+                        form.
+
+                        Hiển thị danh sách bằng JSTL, không lạm dụng Java
+JSP + JSTL                                                                          1.5
+                        code trong JSP.
+
+MVC đơn giản            Tách được Model, Controller, View, Store.                   1.5
+
+Đăng nhập và Session    Xử lý login, lưu session, hiển thị user đăng nhập.          1.0
+
+Filter                  Kiểm tra đăng nhập, chặn truy cập trái phép.                1.0
+
+Listener                Ghi log khởi động ứng dụng, session created/destroyed.      1.0
+
+
+ Tiêu chí                       Mô tả                                                   Điểm
+
+ Bài tự làm                     Hoàn thành ít nhất 5 bài tự làm không gợi ý code.        1.0
+
+ Báo cáo và nộp bài             Có ảnh minh chứng, trình bày rõ, đúng tên file.          0.5
+
+
+Tổng điểm: 10 điểm.
+
+11. Câu hỏi củng cố
+1. Servlet khác JSP ở điểm nào?
+2. Vì sao không nên viết nhiều Java code trực tiếp trong JSP?
+3. request.setAttribute() khác request.getParameter() như thế nào?
+4. Khi nào dùng forward, khi nào dùng sendRedirect?
+5. Session dùng để giải quyết vấn đề gì trong ứng dụng Web?
+6. Filter có vai trò gì trong kiểm tra đăng nhập?
+7. Listener khác Filter ở điểm nào?
+8. Vì sao mô hình MVC giúp ứng dụng dễ bảo trì hơn?
+9. Trong bài lab này, dữ liệu đang lưu ở đâu? Nhược điểm là gì?
+10. Nếu chuyển sang dùng CSDL ở Lab sau, cần bổ sung những lớp nào?
+
+12. Tài liệu tham khảo
+[1] Kế hoạch giảng dạy học phần Công nghệ Java - Chương 3: Phát triển ứng dụng đa lớp trong Jakarta EE.
+[2] Lab 6 - Servlet, JSP, JSTL, Filter, Listener.
+[3] Lab 7 - Xây dựng hệ thống quản lý theo mô hình MVC Servlet + JSP.
+[4] Lab 8 - Tổng hợp MVC Servlet + JSP kết nối CSDL.
+[5] Chuck Cavaness, Programming Jakarta Struts, O'Reilly.
+[6] Jakarta Servlet Documentation.
+[7] Apache Tomcat Documentation.

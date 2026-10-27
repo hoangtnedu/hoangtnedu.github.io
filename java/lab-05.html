@@ -1,0 +1,390 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lab 5. MiniShop: Java Swing và JDBC | HoangTN</title><meta name="author" content="Trần Nguyên Hoàng"><meta name="description" content="MiniShop: Java Swing và JDBC"><meta property="og:title" content="Lab 5. MiniShop: Java Swing và JDBC | HoangTN"><meta property="og:description" content="MiniShop: Java Swing và JDBC"><meta property="og:type" content="article"><meta property="og:url" content="https://hoangtnedu.github.io/java/lab-05.html"><link rel="canonical" href="https://hoangtnedu.github.io/java/lab-05.html"><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/css/site.css"><link rel="stylesheet" href="../assets/css/java.css"><script defer src="../assets/js/site.js"></script><script defer src="../assets/js/java.js"></script></head><body class="java"><a class="skip" href="#noi-dung">Đến nội dung</a><header class="top"><a class="brand" href="../index.html">HoangTN<span>Nghiên cứu và lập trình</span></a><nav aria-label="Điều hướng chính"><a href="../index.html">Trang chủ</a><a href="../dotnet/">Lập trình .NET</a><a href="index.html" aria-current="page">Công nghệ Java</a><button class="mobile-nav" type="button" aria-controls="navigation" aria-expanded="false">Mục lục</button></nav></header><div class="progress" aria-hidden="true"></div><div class="layout"><aside class="sidebar" id="navigation" aria-label="Lộ trình Java"><div class="profile"><strong>Trần Nguyên Hoàng</strong><p>Ghi chép lập trình · HoangTN</p><a href="../index.html">← Trang chủ</a></div><h2>Công nghệ Java</h2><label class="tiny" for="toc-search">Tìm chương hoặc buổi</label><input type="search" id="toc-search" placeholder="Swing, JDBC, buổi 12…"><ul class="toc-list"><li data-search="tong quan va lich trinh 20 buoi"><a href="index.html">Tổng quan và lịch trình 20 buổi</a></li><li data-search="chuong 1. tong quan va phat trien ung dung java"><a href="chuong-1.html">Chương 1. Tổng quan và phát triển ứng dụng Java</a></li><li data-search="chuong 2. ung dung desktop voi java se"><a href="chuong-2.html">Chương 2. Ứng dụng desktop với Java SE</a></li><li data-search="chuong 3. ung dung da lop voi jakarta ee"><a href="chuong-3.html">Chương 3. Ứng dụng đa lớp với Jakarta EE</a></li><li data-search="chuong 4. phat trien ung dung voi spring framework"><a href="chuong-4.html">Chương 4. Phát triển ứng dụng với Spring Framework</a></li><li data-search="bo 16 bai lab va lich trinh"><a href="bai-tap.html">Bộ 16 bài lab và lịch trình</a></li><li data-search="huong dan review project"><a href="project.html">Hướng dẫn review project</a></li><li data-search="tai lieu tham khao"><a href="tai-lieu.html">Tài liệu tham khảo</a></li><li data-search="lab 1. java se console, jdk/jvm va maven"><a href="lab-01.html">Lab 1. Java SE Console, JDK/JVM và Maven</a></li><li data-search="lab 2. moi truong java, maven va dong goi jar"><a href="lab-02.html">Lab 2. Môi trường Java, Maven và đóng gói JAR</a></li><li data-search="lab 3. java swing: giao dien va xu ly su kien"><a href="lab-03.html">Lab 3. Java Swing: giao diện và xử lý sự kiện</a></li><li data-search="lab 4. edt, tac vu nen va swingworker"><a href="lab-04.html">Lab 4. EDT, tác vụ nền và SwingWorker</a></li><li data-search="lab 5. minishop: java swing va jdbc"><a href="lab-05.html" class="active" aria-current="page">Lab 5. MiniShop: Java Swing và JDBC</a></li><li data-search="lab 6. servlet, jsp, jstl, filter va listener"><a href="lab-06.html">Lab 6. Servlet, JSP, JSTL, Filter và Listener</a></li><li data-search="lab 7. crud theo mvc voi servlet va jsp"><a href="lab-07.html">Lab 7. CRUD theo MVC với Servlet và JSP</a></li><li data-search="lab 8. jakarta faces: validation va message"><a href="lab-08.html">Lab 8. Jakarta Faces: validation và message</a></li><li data-search="lab 9. jpa: entity, repository va transaction"><a href="lab-09.html">Lab 9. JPA: Entity, Repository và Transaction</a></li><li data-search="lab 10. dang nhap, role va bao ve url"><a href="lab-10.html">Lab 10. Đăng nhập, role và bảo vệ URL</a></li><li data-search="lab 11. spring boot va thymeleaf"><a href="lab-11.html">Lab 11. Spring Boot và Thymeleaf</a></li><li data-search="lab 12. spring mvc: form, validation va crud"><a href="lab-12.html">Lab 12. Spring MVC: form, validation và CRUD</a></li><li data-search="lab 13. spring data jpa va co so du lieu"><a href="lab-13.html">Lab 13. Spring Data JPA và cơ sở dữ liệu</a></li><li data-search="lab 14. spring security: dang nhap va phan quyen"><a href="lab-14.html">Lab 14. Spring Security: đăng nhập và phân quyền</a></li><li data-search="lab 15. project spring: dang ky hoc phan"><a href="lab-15.html">Lab 15. Project Spring: đăng ký học phần</a></li><li data-search="lab 16. he thong don hang da nen tang"><a href="lab-16.html">Lab 16. Hệ thống đơn hàng đa nền tảng</a></li><li data-search="buoi 1. nen tang java va moi truong thuc thi"><a href="buoi-01.html">Buổi 1. Nền tảng Java và môi trường thực thi</a></li><li data-search="buoi 2. maven va dong goi ung dung"><a href="buoi-02.html">Buổi 2. Maven và đóng gói ứng dụng</a></li><li data-search="buoi 3. swing: component, container va layout"><a href="buoi-03.html">Buổi 3. Swing: component, container và layout</a></li><li data-search="buoi 4. su kien, edt va tac vu nen"><a href="buoi-04.html">Buổi 4. Sự kiện, EDT và tác vụ nền</a></li><li data-search="buoi 5. jdbc va mvc cho ung dung desktop"><a href="buoi-05.html">Buổi 5. JDBC và MVC cho ứng dụng desktop</a></li><li data-search="buoi 6. mini app swing hoan chinh"><a href="buoi-06.html">Buổi 6. Mini app Swing hoàn chỉnh</a></li><li data-search="buoi 7. jakarta ee va cdi"><a href="buoi-07.html">Buổi 7. Jakarta EE và CDI</a></li><li data-search="buoi 8. servlet, jsp va bieu mau"><a href="buoi-08.html">Buổi 8. Servlet, JSP và biểu mẫu</a></li><li data-search="buoi 9. web mvc, session va filter"><a href="buoi-09.html">Buổi 9. Web MVC, session và filter</a></li><li data-search="buoi 10. jakarta faces co ban"><a href="buoi-10.html">Buổi 10. Jakarta Faces cơ bản</a></li><li data-search="buoi 11. faces: validation, template va dieu huong"><a href="buoi-11.html">Buổi 11. Faces: validation, template và điều hướng</a></li><li data-search="buoi 12. jpa, servlet security va chot de tai"><a href="buoi-12.html">Buổi 12. JPA, Servlet Security và chốt đề tài</a></li><li data-search="buoi 13. spring boot va thymeleaf"><a href="buoi-13.html">Buổi 13. Spring Boot và Thymeleaf</a></li><li data-search="buoi 14. spring mvc, form va validation"><a href="buoi-14.html">Buổi 14. Spring MVC, form và validation</a></li><li data-search="buoi 15. spring data jpa va du lieu ben vung"><a href="buoi-15.html">Buổi 15. Spring Data JPA và dữ liệu bền vững</a></li><li data-search="buoi 16. spring security va mini app tong hop"><a href="buoi-16.html">Buổi 16. Spring Security và mini app tổng hợp</a></li><li data-search="buoi 17. review 1: phan tich va thiet ke"><a href="buoi-17.html">Buổi 17. Review 1: phân tích và thiết kế</a></li><li data-search="buoi 18. review 2: kien truc va chuc nang loi"><a href="buoi-18.html">Buổi 18. Review 2: kiến trúc và chức năng lõi</a></li><li data-search="buoi 19. review 3: chat luong va ban giao thu"><a href="buoi-19.html">Buổi 19. Review 3: chất lượng và bàn giao thử</a></li><li data-search="buoi 20. review 4: demo cuoi va danh gia"><a href="buoi-20.html">Buổi 20. Review 4: demo cuối và đánh giá</a></li></ul><p class="empty-result" hidden>Không có mục phù hợp.</p></aside><main class="article" id="noi-dung"><p class="eyebrow">HoangTN · Công nghệ Java</p><h1>Lab 5. MiniShop: Java Swing và JDBC</h1><div class="meta"><span>Trần Nguyên Hoàng</span><span>Cập nhật 27/10/2026</span></div><details class="page-toc"><summary>Trong bài này</summary><ol><li><a href="#nguon-1">Giới thiệu</a></li><li><a href="#nguon-2">1. Căn cứ nội dung Chương 2</a></li><li><a href="#nguon-3">2. Mục tiêu</a></li><li><a href="#nguon-4">3. Công cụ sử dụng</a></li><li><a href="#nguon-5">4. Cơ sở dữ liệu yêu cầu</a></li><li><a href="#nguon-6">5. Cấu trúc project Maven yêu cầu</a></li><li><a href="#nguon-7">6. File cấu hình Maven</a></li><li><a href="#nguon-8">7. Nội dung project MiniShop</a></li><li><a href="#nguon-9">Bài 1. Tạo kết nối cơ sở dữ liệu bằng JDBC</a></li><li><a href="#nguon-10">Bài 2. Quản lý sản phẩm</a></li><li><a href="#nguon-11">Bài 3. Quản lý khách hàng và validate số điện thoại</a></li><li><a href="#nguon-12">Bài 4. Lập hóa đơn và chi tiết hóa đơn</a></li><li><a href="#nguon-13">Bài 5. Tìm kiếm và thống kê bằng SwingWorker</a></li><li><a href="#nguon-14">9. PHẦN B - 5 bài tập/chức năng không có gợi ý code</a></li><li><a href="#nguon-15">Bài 6. Quản lý danh mục sản phẩm</a></li><li><a href="#nguon-16">Bài 7. Quản lý tồn kho</a></li><li><a href="#nguon-17">Bài 8. Xuất hóa đơn ra file TXT hoặc CSV</a></li><li><a href="#nguon-18">Bài 9. Tìm kiếm nâng cao và phân trang dữ liệu</a></li><li><a href="#nguon-19">Bài 10. Đăng nhập và phân quyền người dùng</a></li><li><a href="#nguon-20">10. Giao diện yêu cầu</a></li><li><a href="#nguon-21">11. Sản phẩm cần nộp</a></li><li><a href="#nguon-22">12. Đánh giá</a></li><li><a href="#nguon-23">13. Câu hỏi củng cố</a></li><li><a href="#nguon-24">14. Tài liệu tham khảo</a></li></ol></details><p class="lede">Chương 2 · Nội dung, bài có hướng dẫn và bài tự thực hiện theo tài liệu được cung cấp.</p><div class="downloads"><a class="download" href="https://github.com/hoangtnedu/hoangtnedu.github.io/tree/main/java/examples/lab05">Mở project Maven và kiểm thử →</a><a class="download" href="../content/java/source-text/lab-05.txt">Bản văn bản đã biên tập</a></div><p>Mã mẫu thực thi trong repository được biên tập thành project có thể build. Các khối code gợi ý bên dưới giữ vai trò hướng dẫn trong bài, có thể cần hoàn thiện hoặc ghép vào project. Xem README của từng lab để biết phạm vi đã triển khai và cách chạy.</p><h2 id="nguon-1">Giới thiệu</h2><p>LAB 5 CHƯƠNG 2: PHÁT TRIỂN ỨNG DỤNG DESKTOP TRONG JAVA SE Tích hợp cơ sở dữ liệu với Java Swing - Project MiniShop</p><div class="table-scroll"><pre class="lab-table">   Học phần                      Công nghệ Java
+   Tên bài lab                   Xây dựng ứng dụng quản lý bán hàng MiniShop bằng Java Swing và JDBC
+   Công nghệ Chương 2            Java Swing, JDBC, MySQL, mô hình 3 lớp DAL-BUS-GUI, JTable,
+                                 JComboBox, SwingWorker
+   Thời lượng gợi ý              01-02 buổi thực hành
+   Sản phẩm nộp                  Maven project + file SQL + ảnh chạy chương trình + báo cáo ngắn
+   Tên project gợi ý             lab05-minishop-swing-jdbc</pre></div><p>Định hướng xây dựng Lab 5 Lab 5 được xây dựng theo hướng một project hoàn chỉnh thay vì các bài rời rạc. Sinh viên triển khai ứng dụng MiniShop có CSDL, mô hình 3 lớp, giao diện Swing, CRUD, lập hóa đơn, thống kê và xử lý bất đồng bộ bằng SwingWorker.</p><h2 id="nguon-2">1. Căn cứ nội dung Chương 2</h2><div class="table-scroll"><pre class="lab-table">Lab này bám theo Chương 2 của học phần Công nghệ Java: lập trình ứng dụng GUI trong Java SE,
+Components, Containers, Layout Managers, Event Handling, EDT &amp; Multi-threading, tích hợp với cơ sở dữ
+liệu và kiến trúc ứng dụng theo mô hình MVC/DAL-BUS-GUI.
+        Nội dung Chương 2                                      Thể hiện trong bài lab
+    Java Swing                      Xây dựng giao diện quản lý sản phẩm, khách hàng, hóa đơn và thống kê
+                                    bằng JFrame, JPanel, JTable, JButton, JTextField, JComboBox.
+    Event Handling                  Xử lý sự kiện nút Thêm, Sửa, Xóa, Tìm kiếm, Lưu hóa đơn, Thống kê.
+    EDT &amp; Multi-threading           Không truy vấn dữ liệu lâu trực tiếp trên EDT; dùng SwingWorker cho thao
+                                    tác thống kê hoặc load dữ liệu lớn.
+               JDBC                 Kết nối MySQL, dùng PreparedStatement để truy vấn, thêm, sửa, xóa dữ
+                                    liệu.
+    Mô hình 3 lớp                   Tách rõ model, DAL, BUS và GUI để dễ bảo trì, mở rộng và kiểm thử.
+    Project hoàn chỉnh              Các chức năng liên kết với nhau theo bài toán quản lý bán hàng MiniShop.</pre></div><h2 id="nguon-3">2. Mục tiêu</h2><div class="table-scroll"><pre class="lab-table">STT                                             Mục tiêu cần đạt
+      1       Thiết kế được project Java Swing theo mô hình 3 lớp DAL-BUS-GUI.
+      2       Tạo được CSDL MySQL và kết nối CSDL bằng JDBC.</pre></div><div class="table-scroll"><pre class="lab-table">      STT                                             Mục tiêu cần đạt
+       3       Xây dựng được các lớp model: SanPham, KhachHang, HoaDon, ChiTietHoaDon.
+       4       Xây dựng được lớp DAL thao tác dữ liệu bằng PreparedStatement.
+       5       Xây dựng được lớp BUS để xử lý nghiệp vụ và validate dữ liệu.
+       6       Thiết kế được giao diện Java Swing sử dụng JFrame, JPanel, JTable, JButton, JTextField,
+               JComboBox.
+       7       Thực hiện được CRUD sản phẩm, khách hàng.
+       8       Lập được hóa đơn gồm thông tin hóa đơn và chi tiết hóa đơn.
+       9       Thực hiện được tìm kiếm, thống kê doanh thu.
+       10      Áp dụng được SwingWorker để xử lý truy vấn dữ liệu bất đồng bộ.</pre></div><h2 id="nguon-4">3. Công cụ sử dụng</h2><div class="table-scroll"><pre class="lab-table">Công cụ                                         Mục đích sử dụng
+    JDK 17 hoặc JDK 21                 Biên dịch và chạy ứng dụng Java.
+    IntelliJ IDEA / Eclipse /          Soạn thảo mã nguồn và thiết kế giao diện.
+    NetBeans
+    Apache Maven                       Quản lý project và thư viện.
+    MySQL Server                       Lưu trữ dữ liệu ứng dụng.
+    MySQL Workbench /                  Tạo CSDL, kiểm tra bảng và dữ liệu.
+    phpMyAdmin
+    MySQL Connector/J                  JDBC driver để Java kết nối MySQL.
+    Git hoặc file ZIP                  Nộp bài và quản lý mã nguồn nếu giảng viên yêu cầu.</pre></div><h2 id="nguon-5">4. Cơ sở dữ liệu yêu cầu</h2><p>Tên cơ sở dữ liệu: minishop_db. Sinh viên tạo file database/minishop_db.sql và chạy trước khi lập trình. File database/minishop_db.sql</p><div class="code-wrap"><button class="copy" type="button" data-target="code-141">Sao chép</button><pre><code id="code-141" class="language-text">CREATE DATABASE minishop_db
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;</code></pre></div><p>USE minishop_db;</p><div class="code-wrap"><button class="copy" type="button" data-target="code-142">Sao chép</button><pre><code id="code-142" class="language-text">CREATE TABLE san_pham (
+    ma_sp INT AUTO_INCREMENT PRIMARY KEY,
+    ten_sp VARCHAR(100) NOT NULL,
+    don_gia DECIMAL(12,2) NOT NULL,
+    so_luong INT NOT NULL DEFAULT 0
+);</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-143">Sao chép</button><pre><code id="code-143" class="language-text">CREATE TABLE khach_hang (
+    ma_kh INT AUTO_INCREMENT PRIMARY KEY,
+    ten_kh VARCHAR(100) NOT NULL,
+    sdt VARCHAR(10) NOT NULL,
+    dia_chi VARCHAR(255)
+);</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-144">Sao chép</button><pre><code id="code-144" class="language-text">CREATE TABLE hoa_don (
+    ma_hd INT AUTO_INCREMENT PRIMARY KEY,
+    ngay_lap DATE NOT NULL,
+    ma_kh INT NOT NULL,
+    tong_tien DECIMAL(12,2) DEFAULT 0,
+    FOREIGN KEY (ma_kh) REFERENCES khach_hang(ma_kh)
+);</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-145">Sao chép</button><pre><code id="code-145" class="language-text">CREATE TABLE chi_tiet_hoa_don (
+    ma_hd INT NOT NULL,
+    ma_sp INT NOT NULL,
+    so_luong INT NOT NULL,
+    don_gia DECIMAL(12,2) NOT NULL,
+    thanh_tien DECIMAL(12,2) NOT NULL,
+    PRIMARY KEY (ma_hd, ma_sp),
+    FOREIGN KEY (ma_hd) REFERENCES hoa_don(ma_hd),
+    FOREIGN KEY (ma_sp) REFERENCES san_pham(ma_sp)
+);</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-146">Sao chép</button><pre><code id="code-146" class="language-text">INSERT INTO san_pham(ten_sp, don_gia, so_luong) VALUES
+(&#x27;Ban phim Logitech K120&#x27;, 180000, 50),
+(&#x27;Chuot khong day Rapoo&#x27;, 220000, 40),
+(&#x27;USB Kingston 32GB&#x27;, 150000, 100),
+(&#x27;Tai nghe Sony Basic&#x27;, 350000, 30);</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-147">Sao chép</button><pre><code id="code-147" class="language-text">INSERT INTO khach_hang(ten_kh, sdt, dia_chi) VALUES
+(&#x27;Nguyen Van An&#x27;, &#x27;0912345678&#x27;, &#x27;Ha Noi&#x27;),
+(&#x27;Tran Thi Binh&#x27;, &#x27;0987654321&#x27;, &#x27;Bac Ninh&#x27;),
+(&#x27;Le Van Cuong&#x27;, &#x27;0901111222&#x27;, &#x27;Hai Duong&#x27;);</code></pre></div><h2 id="nguon-6">5. Cấu trúc project Maven yêu cầu</h2><p>Tên dự án Maven gợi ý: lab05-minishop-swing-jdbc. Sinh viên tổ chức mã nguồn theo package io.github.hoangtnedu.java.lab5. Cấu trúc thư mục chuẩn lab05-minishop-swing-jdbc/ ├── pom.xml ├── database/ │   └── minishop_db.sql └── src/main/java/io/github/hoangtnedu/java/lab5/ ├── App.java ├── config/DBHelper.java ├── model/SanPham.java ├── model/KhachHang.java ├── model/HoaDon.java ├── model/ChiTietHoaDon.java ├── dal/SanPhamDAL.java ├── dal/KhachHangDAL.java ├── dal/HoaDonDAL.java ├── dal/ThongKeDAL.java ├── bus/SanPhamBUS.java ├── bus/KhachHangBUS.java ├── bus/HoaDonBUS.java ├── bus/ThongKeBUS.java ├── ui/MainFrame.java ├── ui/SanPhamPanel.java ├── ui/KhachHangPanel.java ├── ui/HoaDonPanel.java ├── ui/ThongKePanel.java └── util/MessageUtil.java</p><h2 id="nguon-7">6. File cấu hình Maven</h2><p>File pom.xml</p><div class="code-wrap"><button class="copy" type="button" data-target="code-148">Sao chép</button><pre><code id="code-148" class="language-text">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-149">Sao chép</button><pre><code id="code-149" class="language-text">&lt;groupId&gt;io.github.hoangtnedu.java&lt;/groupId&gt;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-150">Sao chép</button><pre><code id="code-150" class="language-text">&lt;artifactId&gt;lab05-minishop-swing-jdbc&lt;/artifactId&gt;
+&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-151">Sao chép</button><pre><code id="code-151" class="language-text">&lt;properties&gt;
+    &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt;
+    &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt;
+    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+&lt;/properties&gt;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-152">Sao chép</button><pre><code id="code-152" class="language-text">    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+            &lt;version&gt;8.4.0&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre></div><h2 id="nguon-8">7. Nội dung project MiniShop</h2><div class="table-scroll"><pre class="lab-table">Nhóm chức năng                                                Mô tả
+    Kết nối CSDL                       Kết nối MySQL bằng JDBC, kiểm tra kết nối thành công.
+    Quản lý sản phẩm                   Thêm, sửa, xóa, tìm kiếm sản phẩm.
+    Quản lý khách hàng                 Thêm, sửa, xóa, tìm kiếm khách hàng, kiểm tra số điện thoại.
+    Quản lý hóa đơn                    Lập hóa đơn, chọn khách hàng, chọn sản phẩm, nhập số lượng.
+    Thống kê                           Tìm hóa đơn theo ngày, tính doanh thu, xác định sản phẩm bán chạy.
+    Xử lý bất đồng bộ                  Dùng SwingWorker để tránh treo giao diện khi load dữ liệu.</pre></div><h2 id="nguon-9">Bài 1. Tạo kết nối cơ sở dữ liệu bằng JDBC</h2><p>Yêu cầu: tạo lớp DBHelper để kết nối tới minishop_db, kiểm tra kết nối và tái sử dụng trong các lớp DAL. File src/main/java/io/github/hoangtnedu/java/lab5/config/DBHelper.java</p><div class="code-wrap"><button class="copy" type="button" data-target="code-153">Sao chép</button><pre><code id="code-153" class="language-text">package io.github.hoangtnedu.java.lab5.config;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-154">Sao chép</button><pre><code id="code-154" class="language-text">import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-155">Sao chép</button><pre><code id="code-155" class="language-text">public class DBHelper {
+    private static final String URL =
+        &quot;jdbc:mysql://localhost:3306/minishop_db?useUnicode=true&amp;characterEncoding=UTF-8&quot;;
+    private static final String USER = &quot;root&quot;;
+    private static final String PASSWORD = &quot;&quot;;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-156">Sao chép</button><pre><code id="code-156" class="language-text">public static Connection getConnection() throws SQLException {
+    return DriverManager.getConnection(URL, USER, PASSWORD);
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-157">Sao chép</button><pre><code id="code-157" class="language-text">public static void testConnection() {
+    try (Connection conn = getConnection()) {
+        if (conn != null) {
+            System.out.println(&quot;Ket noi CSDL thanh cong!&quot;);
+        }
+    } catch (SQLException e) {
+        System.out.println(&quot;Ket noi CSDL that bai!&quot;);
+        e.printStackTrace();
+    }</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-158">Sao chép</button><pre><code id="code-158" class="language-text">    }
+}</code></pre></div><p>File src/main/java/io/github/hoangtnedu/java/lab5/App.java</p><div class="code-wrap"><button class="copy" type="button" data-target="code-159">Sao chép</button><pre><code id="code-159" class="language-text">package io.github.hoangtnedu.java.lab5;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-160">Sao chép</button><pre><code id="code-160" class="language-text">import io.github.hoangtnedu.java.lab5.config.DBHelper;
+import io.github.hoangtnedu.java.lab5.ui.MainFrame;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-161">Sao chép</button><pre><code id="code-161" class="language-text">import javax.swing.SwingUtilities;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-162">Sao chép</button><pre><code id="code-162" class="language-text">public class App {
+    public static void main(String[] args) {
+        DBHelper.testConnection();</code></pre></div><p>SwingUtilities.invokeLater(() -&gt; { MainFrame frame = new MainFrame(); frame.setVisible(true);</p><div class="code-wrap"><button class="copy" type="button" data-target="code-163">Sao chép</button><pre><code id="code-163" class="language-text">        });
+    }
+}</code></pre></div><h2 id="nguon-10">Bài 2. Quản lý sản phẩm</h2><div class="table-scroll"><pre class="lab-table">Yêu cầu: hiển thị danh sách sản phẩm lên JTable; thêm, sửa, xóa và tìm kiếm sản phẩm theo tên.
+          Chức năng                                                       Mô tả
+    Hiển thị                    Load danh sách sản phẩm lên JTable.
+             Thêm               Thêm sản phẩm mới.
+              Sửa               Cập nhật tên, đơn giá, số lượng.
+              Xóa               Xóa sản phẩm theo mã.
+    Tìm kiếm                    Tìm sản phẩm theo tên.</pre></div><p>File model/SanPham.java</p><div class="code-wrap"><button class="copy" type="button" data-target="code-164">Sao chép</button><pre><code id="code-164" class="language-text">package io.github.hoangtnedu.java.lab5.model;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-165">Sao chép</button><pre><code id="code-165" class="language-text">import java.math.BigDecimal;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-166">Sao chép</button><pre><code id="code-166" class="language-text">public class SanPham {
+    private int maSp;
+    private String tenSp;
+    private BigDecimal donGia;
+    private int soLuong;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-167">Sao chép</button><pre><code id="code-167" class="language-text">public SanPham() {}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-168">Sao chép</button><pre><code id="code-168" class="language-text">public SanPham(int maSp, String tenSp, BigDecimal donGia, int soLuong) {
+    this.maSp = maSp;
+    this.tenSp = tenSp;
+    this.donGia = donGia;
+    this.soLuong = soLuong;
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-169">Sao chép</button><pre><code id="code-169" class="language-text">public int getMaSp() { return maSp; }
+public void setMaSp(int maSp) { this.maSp = maSp; }</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-170">Sao chép</button><pre><code id="code-170" class="language-text">public String getTenSp() { return tenSp; }
+public void setTenSp(String tenSp) { this.tenSp = tenSp; }</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-171">Sao chép</button><pre><code id="code-171" class="language-text">public BigDecimal getDonGia() { return donGia; }
+public void setDonGia(BigDecimal donGia) { this.donGia = donGia; }</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-172">Sao chép</button><pre><code id="code-172" class="language-text">public int getSoLuong() { return soLuong; }
+public void setSoLuong(int soLuong) { this.soLuong = soLuong; }</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-173">Sao chép</button><pre><code id="code-173" class="language-text">    @Override
+    public String toString() {
+        return tenSp;
+    }
+}</code></pre></div><p>File dal/SanPhamDAL.java</p><div class="code-wrap"><button class="copy" type="button" data-target="code-174">Sao chép</button><pre><code id="code-174" class="language-text">package io.github.hoangtnedu.java.lab5.dal;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-175">Sao chép</button><pre><code id="code-175" class="language-text">import io.github.hoangtnedu.java.lab5.config.DBHelper;
+import io.github.hoangtnedu.java.lab5.model.SanPham;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-176">Sao chép</button><pre><code id="code-176" class="language-text">import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-177">Sao chép</button><pre><code id="code-177" class="language-text">public class SanPhamDAL {</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-178">Sao chép</button><pre><code id="code-178" class="language-text">public List&lt;SanPham&gt; findAll() throws SQLException {
+    List&lt;SanPham&gt; list = new ArrayList&lt;&gt;();
+    String sql = &quot;SELECT ma_sp, ten_sp, don_gia, so_luong FROM san_pham&quot;;</code></pre></div><p>try (Connection conn = DBHelper.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {</p><p>while (rs.next()) { SanPham sp = new SanPham(); sp.setMaSp(rs.getInt(&quot;ma_sp&quot;)); sp.setTenSp(rs.getString(&quot;ten_sp&quot;)); sp.setDonGia(rs.getBigDecimal(&quot;don_gia&quot;)); sp.setSoLuong(rs.getInt(&quot;so_luong&quot;)); list.add(sp);</p><div class="code-wrap"><button class="copy" type="button" data-target="code-179">Sao chép</button><pre><code id="code-179" class="language-text">        }
+    }
+    return list;
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-180">Sao chép</button><pre><code id="code-180" class="language-text">public boolean insert(SanPham sp) throws SQLException {
+    String sql = &quot;INSERT INTO san_pham(ten_sp, don_gia, so_luong) VALUES (?, ?, ?)&quot;;
+    try (Connection conn = DBHelper.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, sp.getTenSp());
+        ps.setBigDecimal(2, sp.getDonGia());
+        ps.setInt(3, sp.getSoLuong());
+        return ps.executeUpdate() &gt; 0;
+    }
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-181">Sao chép</button><pre><code id="code-181" class="language-text">public boolean update(SanPham sp) throws SQLException {
+    String sql = &quot;UPDATE san_pham SET ten_sp = ?, don_gia = ?, so_luong = ? WHERE ma_sp = ?&quot;;
+    try (Connection conn = DBHelper.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, sp.getTenSp());
+        ps.setBigDecimal(2, sp.getDonGia());
+        ps.setInt(3, sp.getSoLuong());</code></pre></div><p>ps.setInt(4, sp.getMaSp()); return ps.executeUpdate() &gt; 0;</p><div class="code-wrap"><button class="copy" type="button" data-target="code-182">Sao chép</button><pre><code id="code-182" class="language-text">    }
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-183">Sao chép</button><pre><code id="code-183" class="language-text">public boolean delete(int maSp) throws SQLException {
+    String sql = &quot;DELETE FROM san_pham WHERE ma_sp = ?&quot;;
+    try (Connection conn = DBHelper.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, maSp);
+        return ps.executeUpdate() &gt; 0;
+    }
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-184">Sao chép</button><pre><code id="code-184" class="language-text">    public List&lt;SanPham&gt; searchByName(String keyword) throws SQLException {
+        List&lt;SanPham&gt; list = new ArrayList&lt;&gt;();
+        String sql = &quot;SELECT ma_sp, ten_sp, don_gia, so_luong FROM san_pham WHERE ten_sp LIKE ?&quot;;
+        try (Connection conn = DBHelper.getConnection();
+              PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, &quot;%&quot; + keyword + &quot;%&quot;);
+            try (ResultSet rs = ps.executeQuery()) {
+                 while (rs.next()) {
+                     SanPham sp = new SanPham();
+                     sp.setMaSp(rs.getInt(&quot;ma_sp&quot;));
+                     sp.setTenSp(rs.getString(&quot;ten_sp&quot;));
+                     sp.setDonGia(rs.getBigDecimal(&quot;don_gia&quot;));
+                     sp.setSoLuong(rs.getInt(&quot;so_luong&quot;));
+                     list.add(sp);
+                 }
+            }
+        }
+        return list;
+    }
+}</code></pre></div><p>File bus/SanPhamBUS.java</p><div class="code-wrap"><button class="copy" type="button" data-target="code-185">Sao chép</button><pre><code id="code-185" class="language-text">package io.github.hoangtnedu.java.lab5.bus;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-186">Sao chép</button><pre><code id="code-186" class="language-text">import io.github.hoangtnedu.java.lab5.dal.SanPhamDAL;
+import io.github.hoangtnedu.java.lab5.model.SanPham;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-187">Sao chép</button><pre><code id="code-187" class="language-text">import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.List;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-188">Sao chép</button><pre><code id="code-188" class="language-text">public class SanPhamBUS {
+    private final SanPhamDAL sanPhamDAL = new SanPhamDAL();</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-189">Sao chép</button><pre><code id="code-189" class="language-text">public List&lt;SanPham&gt; findAll() throws SQLException {
+    return sanPhamDAL.findAll();
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-190">Sao chép</button><pre><code id="code-190" class="language-text">public boolean save(SanPham sp) throws SQLException {
+    validate(sp);
+    if (sp.getMaSp() == 0) {
+        return sanPhamDAL.insert(sp);
+    }
+    return sanPhamDAL.update(sp);
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-191">Sao chép</button><pre><code id="code-191" class="language-text">public boolean delete(int maSp) throws SQLException {
+    if (maSp &lt;= 0) {
+        throw new IllegalArgumentException(&quot;Ma san pham khong hop le&quot;);
+    }
+    return sanPhamDAL.delete(maSp);</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-192">Sao chép</button><pre><code id="code-192" class="language-text">}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-193">Sao chép</button><pre><code id="code-193" class="language-text">public List&lt;SanPham&gt; searchByName(String keyword) throws SQLException {
+    return sanPhamDAL.searchByName(keyword);
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-194">Sao chép</button><pre><code id="code-194" class="language-text">    private void validate(SanPham sp) {
+        if (sp.getTenSp() == null || sp.getTenSp().trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;Ten san pham khong duoc rong&quot;);
+        }
+        if (sp.getDonGia() == null || sp.getDonGia().compareTo(BigDecimal.ZERO) &lt;= 0) {
+            throw new IllegalArgumentException(&quot;Don gia phai lon hon 0&quot;);
+        }
+        if (sp.getSoLuong() &lt; 0) {
+            throw new IllegalArgumentException(&quot;So luong khong duoc am&quot;);
+        }
+    }
+}</code></pre></div><h2 id="nguon-11">Bài 3. Quản lý khách hàng và validate số điện thoại</h2><p>Yêu cầu: xây dựng CRUD khách hàng. Số điện thoại chỉ gồm chữ số và tối đa 10 ký tự. Sinh viên có thể validate ở BUS và chặn nhập sai trên GUI bằng DocumentFilter. Gợi ý validate trong KhachHangBUS.java</p><div class="code-wrap"><button class="copy" type="button" data-target="code-195">Sao chép</button><pre><code id="code-195" class="language-text">private void validate(KhachHang kh) {
+    if (kh.getTenKh() == null || kh.getTenKh().trim().isEmpty()) {
+        throw new IllegalArgumentException(&quot;Ten khach hang khong duoc rong&quot;);
+    }</code></pre></div><p>if (kh.getSdt() == null || !kh.getSdt().matches(&quot;\\d{1,10}&quot;)) { throw new IllegalArgumentException(&quot;So dien thoai chi gom so va toi da 10 ky tu&quot;);</p><div class="code-wrap"><button class="copy" type="button" data-target="code-196">Sao chép</button><pre><code id="code-196" class="language-text">    }
+}</code></pre></div><p>Gợi ý PhoneDocumentFilter.java</p><div class="code-wrap"><button class="copy" type="button" data-target="code-197">Sao chép</button><pre><code id="code-197" class="language-text">import javax.swing.text.*;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-198">Sao chép</button><pre><code id="code-198" class="language-text">public class PhoneDocumentFilter extends DocumentFilter {
+    @Override
+    public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+            throws BadLocationException {
+        if (string == null) return;
+        String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+        String newText = currentText.substring(0, offset) + string + currentText.substring(offset);
+        if (newText.matches(&quot;\\d{0,10}&quot;)) {
+            super.insertString(fb, offset, string, attr);
+        }
+    }</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-199">Sao chép</button><pre><code id="code-199" class="language-text">    @Override
+    public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+            throws BadLocationException {
+        String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+        String newText = currentText.substring(0, offset) + text + currentText.substring(offset +
+length);
+        if (newText.matches(&quot;\\d{0,10}&quot;)) {
+            super.replace(fb, offset, length, text, attrs);
+        }
+    }
+}</code></pre></div><p>Áp dụng cho JTextField txtSdt ((AbstractDocument) txtSdt.getDocument()).setDocumentFilter(new PhoneDocumentFilter());</p><h2 id="nguon-12">Bài 4. Lập hóa đơn và chi tiết hóa đơn</h2><div class="table-scroll"><pre class="lab-table">Yêu cầu: tạo giao diện lập hóa đơn gồm chọn khách hàng, chọn sản phẩm, nhập số lượng, thêm dòng chi tiết,
+tính tổng tiền và lưu hóa đơn cùng chi tiết hóa đơn.
+              Thành phần                                               Mô tả
+    JComboBox&lt;KhachHang&gt;                Chọn khách hàng.
+    JComboBox&lt;SanPham&gt;                  Chọn sản phẩm.
+    JTextField txtSoLuong               Nhập số lượng bán.
+    JTable tblChiTiet                   Danh sách sản phẩm trong hóa đơn tạm.
+    Nút thêm dòng                       Thêm sản phẩm vào hóa đơn tạm.
+    Nút lưu hóa đơn                     Lưu hoa_don và chi_tiet_hoa_don.
+    Tổng tiền                           Tính tổng tiền hóa đơn.</pre></div><p>File model/ChiTietHoaDon.java</p><div class="code-wrap"><button class="copy" type="button" data-target="code-200">Sao chép</button><pre><code id="code-200" class="language-text">package io.github.hoangtnedu.java.lab5.model;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-201">Sao chép</button><pre><code id="code-201" class="language-text">import java.math.BigDecimal;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-202">Sao chép</button><pre><code id="code-202" class="language-text">public class ChiTietHoaDon {
+    private int maHd;
+    private int maSp;
+    private String tenSp;
+    private int soLuong;
+    private BigDecimal donGia;
+    private BigDecimal thanhTien;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-203">Sao chép</button><pre><code id="code-203" class="language-text">public ChiTietHoaDon() {}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-204">Sao chép</button><pre><code id="code-204" class="language-text">public ChiTietHoaDon(int maSp, String tenSp, int soLuong, BigDecimal donGia) {
+    this.maSp = maSp;
+    this.tenSp = tenSp;
+    this.soLuong = soLuong;
+    this.donGia = donGia;
+    this.thanhTien = donGia.multiply(BigDecimal.valueOf(soLuong));
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-205">Sao chép</button><pre><code id="code-205" class="language-text">public int getMaHd() { return maHd; }
+public void setMaHd(int maHd) { this.maHd = maHd; }</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-206">Sao chép</button><pre><code id="code-206" class="language-text">public int getMaSp() { return maSp; }
+public void setMaSp(int maSp) { this.maSp = maSp; }</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-207">Sao chép</button><pre><code id="code-207" class="language-text">public String getTenSp() { return tenSp; }
+public void setTenSp(String tenSp) { this.tenSp = tenSp; }</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-208">Sao chép</button><pre><code id="code-208" class="language-text">public int getSoLuong() { return soLuong; }
+public void setSoLuong(int soLuong) {
+    this.soLuong = soLuong;
+    this.thanhTien = this.donGia.multiply(BigDecimal.valueOf(soLuong));
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-209">Sao chép</button><pre><code id="code-209" class="language-text">public BigDecimal getDonGia() { return donGia; }
+public void setDonGia(BigDecimal donGia) { this.donGia = donGia; }</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-210">Sao chép</button><pre><code id="code-210" class="language-text">public BigDecimal getThanhTien() { return thanhTien; }</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-211">Sao chép</button><pre><code id="code-211" class="language-text">    public void setThanhTien(BigDecimal thanhTien) { this.thanhTien = thanhTien; }
+}</code></pre></div><p>Gợi ý lưu hóa đơn có transaction trong HoaDonDAL.java</p><div class="code-wrap"><button class="copy" type="button" data-target="code-212">Sao chép</button><pre><code id="code-212" class="language-text">public int insertHoaDon(int maKh, List&lt;ChiTietHoaDon&gt; chiTietList) throws SQLException {
+    String sqlHoaDon = &quot;INSERT INTO hoa_don(ngay_lap, ma_kh, tong_tien) VALUES (?, ?, ?)&quot;;
+    String sqlChiTiet =
+        &quot;INSERT INTO chi_tiet_hoa_don(ma_hd, ma_sp, so_luong, don_gia, thanh_tien) &quot; +
+        &quot;VALUES (?, ?, ?, ?, ?)&quot;;</code></pre></div><p>Connection conn = null; try { conn = DBHelper.getConnection(); conn.setAutoCommit(false);</p><p>BigDecimal tongTien = tinhTongTien(chiTietList); int maHd;</p><p>try (PreparedStatement ps = conn.prepareStatement(sqlHoaDon, Statement.RETURN_GENERATED_KEYS))</p><div class="code-wrap"><button class="copy" type="button" data-target="code-213">Sao chép</button><pre><code id="code-213" class="language-text">{
+            ps.setDate(1, Date.valueOf(LocalDate.now()));
+            ps.setInt(2, maKh);
+            ps.setBigDecimal(3, tongTien);
+            ps.executeUpdate();</code></pre></div><p>try (ResultSet rs = ps.getGeneratedKeys()) { if (rs.next()) { maHd = rs.getInt(1);</p><div class="code-wrap"><button class="copy" type="button" data-target="code-214">Sao chép</button><pre><code id="code-214" class="language-text">        } else {
+            throw new SQLException(&quot;Khong lay duoc ma hoa don&quot;);
+        }
+    }
+}</code></pre></div><p>try (PreparedStatement ps = conn.prepareStatement(sqlChiTiet)) { for (ChiTietHoaDon ct : chiTietList) { ps.setInt(1, maHd); ps.setInt(2, ct.getMaSp()); ps.setInt(3, ct.getSoLuong()); ps.setBigDecimal(4, ct.getDonGia()); ps.setBigDecimal(5, ct.getThanhTien()); ps.addBatch();</p><div class="code-wrap"><button class="copy" type="button" data-target="code-215">Sao chép</button><pre><code id="code-215" class="language-text">    }
+    ps.executeBatch();
+}</code></pre></div><p>conn.commit(); return maHd;</p><div class="code-wrap"><button class="copy" type="button" data-target="code-216">Sao chép</button><pre><code id="code-216" class="language-text">    } catch (SQLException e) {
+        if (conn != null) conn.rollback();
+        throw e;
+    } finally {
+        if (conn != null) {
+            conn.setAutoCommit(true);
+            conn.close();
+        }
+    }
+}</code></pre></div><h2 id="nguon-13">Bài 5. Tìm kiếm và thống kê bằng SwingWorker</h2><p>Yêu cầu: tìm hóa đơn theo ngày, mã khách hàng; tính doanh thu theo khoảng ngày; liệt kê hóa đơn có giá trị cao nhất; liệt kê sản phẩm bán chạy nhất. Các truy vấn thống kê cần dùng SwingWorker để tránh treo giao diện. SQL thống kê gợi ý -- Doanh thu theo khoảng ngày</p><div class="code-wrap"><button class="copy" type="button" data-target="code-217">Sao chép</button><pre><code id="code-217" class="language-text">SELECT COALESCE(SUM(tong_tien), 0) AS doanh_thu
+FROM hoa_don
+WHERE ngay_lap BETWEEN ? AND ?;</code></pre></div><p>-- Hóa đơn có giá trị cao nhất</p><div class="code-wrap"><button class="copy" type="button" data-target="code-218">Sao chép</button><pre><code id="code-218" class="language-text">SELECT ma_hd, ngay_lap, ma_kh, tong_tien
+FROM hoa_don
+ORDER BY tong_tien DESC
+LIMIT 1;</code></pre></div><p>-- Sản phẩm bán chạy nhất</p><div class="code-wrap"><button class="copy" type="button" data-target="code-219">Sao chép</button><pre><code id="code-219" class="language-text">SELECT sp.ma_sp, sp.ten_sp, SUM(ct.so_luong) AS tong_so_luong
+FROM chi_tiet_hoa_don ct
+JOIN san_pham sp ON ct.ma_sp = sp.ma_sp
+GROUP BY sp.ma_sp, sp.ten_sp
+ORDER BY tong_so_luong DESC
+LIMIT 1;</code></pre></div><p>Gợi ý DoanhThuWorker.java</p><div class="code-wrap"><button class="copy" type="button" data-target="code-220">Sao chép</button><pre><code id="code-220" class="language-text">import javax.swing.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-221">Sao chép</button><pre><code id="code-221" class="language-text">public class DoanhThuWorker extends SwingWorker&lt;BigDecimal, Void&gt; {
+    private final LocalDate tuNgay;
+    private final LocalDate denNgay;
+    private final ThongKeBUS thongKeBUS;
+    private final JLabel lblKetQua;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-222">Sao chép</button><pre><code id="code-222" class="language-text">public DoanhThuWorker(LocalDate tuNgay, LocalDate denNgay,
+                      ThongKeBUS thongKeBUS, JLabel lblKetQua) {
+    this.tuNgay = tuNgay;
+    this.denNgay = denNgay;
+    this.thongKeBUS = thongKeBUS;
+    this.lblKetQua = lblKetQua;
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-223">Sao chép</button><pre><code id="code-223" class="language-text">@Override
+protected BigDecimal doInBackground() throws Exception {
+    return thongKeBUS.tinhDoanhThu(tuNgay, denNgay);
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-224">Sao chép</button><pre><code id="code-224" class="language-text">    @Override
+    protected void done() {
+        try {
+            BigDecimal doanhThu = get();
+            lblKetQua.setText(&quot;Doanh thu: &quot; + doanhThu + &quot; VND&quot;);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, &quot;Loi thong ke: &quot; + e.getMessage());
+        }
+    }
+}</code></pre></div><h2 id="nguon-14">9. PHẦN B - 5 bài tập/chức năng không có gợi ý code</h2><p>Các chức năng sau sinh viên tự thiết kế và triển khai. Không cung cấp code mẫu để đánh giá khả năng mở rộng project.</p><h2 id="nguon-15">Bài 6. Quản lý danh mục sản phẩm</h2><div class="table-scroll"><pre class="lab-table">Chức năng                                             Yêu cầu
+    Thêm danh mục                 Nhập tên danh mục và lưu vào bảng danh_muc.
+    Sửa danh mục                  Cập nhật tên danh mục.
+    Xóa danh mục                  Không cho xóa nếu có sản phẩm thuộc danh mục.
+    Gán danh mục                  Khi thêm/sửa sản phẩm, chọn danh mục bằng JComboBox.
+    Tìm kiếm                      Lọc sản phẩm theo danh mục.</pre></div><p>SQL mở rộng gợi ý cho bài 6</p><div class="code-wrap"><button class="copy" type="button" data-target="code-225">Sao chép</button><pre><code id="code-225" class="language-text">CREATE TABLE danh_muc (
+    ma_dm INT AUTO_INCREMENT PRIMARY KEY,
+    ten_dm VARCHAR(100) NOT NULL
+);</code></pre></div><p>ALTER TABLE san_pham ADD ma_dm INT NULL, ADD FOREIGN KEY (ma_dm) REFERENCES danh_muc(ma_dm);</p><h2 id="nguon-16">Bài 7. Quản lý tồn kho</h2><div class="table-scroll"><pre class="lab-table">Chức năng                                              Yêu cầu
+    Kiểm tra tồn kho              Khi lập hóa đơn, số lượng bán không được vượt quá tồn kho.
+    Trừ kho                       Sau khi lưu hóa đơn, tự động trừ số lượng sản phẩm.
+    Cảnh báo                      Sản phẩm có tồn kho dưới 5 phải hiển thị cảnh báo.
+    Không cho bán                 Không cho thêm sản phẩm hết hàng vào hóa đơn.
+    Đồng bộ dữ liệu               Sau khi bán hàng, bảng sản phẩm phải cập nhật lại số lượng.</pre></div><h2 id="nguon-17">Bài 8. Xuất hóa đơn ra file TXT hoặc CSV</h2><div class="table-scroll"><pre class="lab-table">Nội dung file                                          Yêu cầu
+    Mã hóa đơn                    Hiển thị mã hóa đơn vừa tạo.
+    Ngày lập                      Hiển thị ngày lập.
+    Khách hàng                    Hiển thị tên, số điện thoại.
+    Danh sách sản phẩm            Tên sản phẩm, số lượng, đơn giá, thành tiền.
+    Tổng tiền                     Hiển thị cuối file.
+    Tên file                      HoaDon_MaHD.txt hoặc HoaDon_MaHD.csv.</pre></div><h2 id="nguon-18">Bài 9. Tìm kiếm nâng cao và phân trang dữ liệu</h2><div class="table-scroll"><pre class="lab-table">Đối tượng                                        Điều kiện tìm kiếm
+    Sản phẩm                      Tên sản phẩm, khoảng đơn giá, khoảng số lượng.
+    Khách hàng                    Tên khách hàng, số điện thoại, địa chỉ.
+    Hóa đơn                       Khoảng ngày, khách hàng, khoảng tổng tiền.</pre></div><div class="table-scroll"><pre class="lab-table">        Chức năng mở rộng                                                  Mô tả
+    Phân trang                    Mỗi trang hiển thị 10 dòng.
+    Nút điều hướng                Trước, Sau, Đầu, Cuối.</pre></div><div class="table-scroll"><pre class="lab-table">        Chức năng mở rộng                                              Mô tả
+    Sắp xếp                          Cho phép sắp xếp theo mã, tên, đơn giá.
+    Không treo giao diện             Dữ liệu lớn phải load bằng SwingWorker.</pre></div><h2 id="nguon-19">Bài 10. Đăng nhập và phân quyền người dùng</h2><p>SQL mở rộng gợi ý cho bài 10</p><div class="code-wrap"><button class="copy" type="button" data-target="code-226">Sao chép</button><pre><code id="code-226" class="language-text">CREATE TABLE tai_khoan (
+    username VARCHAR(50) PRIMARY KEY,
+    password VARCHAR(100) NOT NULL,
+    ho_ten VARCHAR(100) NOT NULL,
+    vai_tro VARCHAR(20) NOT NULL
+);</code></pre></div><div class="table-scroll"><pre class="lab-table">         Vai trò                                                   Quyền
+         ADMIN                 Toàn quyền: sản phẩm, khách hàng, hóa đơn, thống kê, tài khoản.
+    NHANVIEN                   Quản lý sản phẩm, khách hàng, lập hóa đơn.
+    KETOAN                     Xem hóa đơn và thống kê, không được xóa dữ liệu.</pre></div><div class="table-scroll"><pre class="lab-table">          Màn hình                                                Yêu cầu
+    LoginFrame                 Nhập username, password.
+    MainFrame                  Hiển thị menu theo vai trò.
+    Đăng xuất                  Quay lại màn hình đăng nhập.
+    Kiểm tra quyền             Không cho truy cập chức năng ngoài quyền.</pre></div><h2 id="nguon-20">10. Giao diện yêu cầu</h2><p>Project tối thiểu có MainFrame sử dụng JTabbedPane với 4 tab chính. Cấu trúc giao diện tối thiểu MainFrame ├── Tab 1: Sản phẩm ├── Tab 2: Khách hàng ├── Tab 3: Hóa đơn └── Tab 4: Thống kê</p><div class="table-scroll"><pre class="lab-table">             Khu vực                                              Nội dung
+    Phía trên                     Form nhập liệu.
+              Giữa                Bảng dữ liệu JTable.
+    Phía dưới                     Các nút chức năng: Thêm, Sửa, Xóa, Làm mới, Tìm kiếm.</pre></div><h2 id="nguon-21">11. Sản phẩm cần nộp</h2><div class="table-scroll"><pre class="lab-table">STT              Sản phẩm                                              Yêu cầu
+      1      Maven project                    Đúng cấu trúc package io.github.hoangtnedu.java.lab5.
+      2      File SQL                         Có file database/minishop_db.sql.
+      3      Mã nguồn                         Có đủ model, DAL, BUS, GUI.
+      4      Ảnh kết nối CSDL                 Minh chứng kết nối thành công.
+      5      Ảnh giao diện                    Có ảnh các màn hình sản phẩm, khách hàng, hóa đơn, thống kê.
+      6      Ảnh kiểm thử chức năng           Minh chứng thêm/sửa/xóa/tìm kiếm/lập hóa đơn.
+      7      Báo cáo ngắn                     Mô tả kiến trúc 3 lớp và các chức năng đã làm.</pre></div><div class="table-scroll"><pre class="lab-table">     STT               Sản phẩm                                    Yêu cầu
+      8     File ZIP                       Đặt tên Lab05_MSSV_HoTen.zip.</pre></div><h2 id="nguon-22">12. Đánh giá</h2><div class="table-scroll"><pre class="lab-table">Tiêu chí                                          Mô tả                            Điểm
+    Cấu trúc project              Đúng Maven project, đúng package, có phân lớp rõ ràng.       1.0
+    CSDL và JDBC                  Tạo đúng bảng, kết nối thành công, dùng PreparedStatement.   1.5
+    Mô hình 3 lớp                 Tách rõ Model, DAL, BUS, GUI.                                1.5
+    Quản lý sản phẩm              CRUD, tìm kiếm, hiển thị JTable.                             1.0
+    Quản lý khách hàng            CRUD, validate số điện thoại.                                1.0
+    Lập hóa đơn                   Chọn khách hàng, chọn sản phẩm, lưu hóa đơn và chi tiết.     1.5
+    Thống kê                      Doanh thu, hóa đơn cao nhất, sản phẩm bán chạy.              1.0
+    SwingWorker                   Có xử lý bất đồng bộ cho thống kê hoặc load dữ liệu lớn.     0.8
+    Giao diện và trải nghiệm      Giao diện rõ ràng, dễ dùng, có thông báo lỗi.                0.7
+    Báo cáo và nộp bài            Có ảnh minh chứng, trình bày sạch, đúng tên file.            0.5
+                Tổng                                                                           10.0</pre></div><h2 id="nguon-23">13. Câu hỏi củng cố</h2><p>1. JDBC là gì? Vì sao cần JDBC driver khi kết nối MySQL? 2. Statement và PreparedStatement khác nhau như thế nào? 3. Vì sao không nên viết SQL trực tiếp trong lớp giao diện Swing? 4. Vai trò của DAL, BUS và GUI trong project là gì? 5. Vì sao khi lưu hóa đơn và chi tiết hóa đơn cần dùng transaction? 6. SwingWorker giải quyết vấn đề gì trong Java Swing? 7. EDT trong Swing là gì? Vì sao không nên truy vấn CSDL lâu trên EDT? 8. Vì sao cần validate dữ liệu ở BUS thay vì chỉ validate trên GUI? 9. Khi xóa sản phẩm đã có trong chi tiết hóa đơn, có thể gặp lỗi gì? 10. Làm thế nào để mở rộng project này thành ứng dụng bán hàng thực tế?</p><h2 id="nguon-24">14. Tài liệu tham khảo</h2><p>•   Kế hoạch giảng dạy học phần Công nghệ Java - Chương 2: Phát triển ứng dụng desktop trong Java SE. •   Lab 5 gốc: Tích hợp CSDL với Java Swing. •   Oracle Java Documentation - Java Swing, JDBC, SwingWorker. •   MySQL Documentation - SQL, constraint, transaction. •   Giáo trình Lập trình hướng đối tượng với Java - lớp, đối tượng, đóng gói, package.</p><p class="source">Biên tập từ Lab5_Cong_Nghe_Java_MiniShop_Swing_JDBC.pdf. Package, dữ liệu minh họa và nhận diện đã chuyển sang HoangTN.</p><nav class="lesson-nav" aria-label="Bài trước và bài sau"><a href="lab-04.html">← Lab 4</a><a href="lab-06.html">Lab 6 →</a></nav></main></div><footer>© 2026 Trần Nguyên Hoàng · HoangTN · Ghi chép nghiên cứu và học tập.</footer><button class="top-button" type="button" aria-label="Về đầu trang">↑</button></body></html>

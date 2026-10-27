@@ -1,0 +1,799 @@
+LAB 5
+         CHƯƠNG 2: PHÁT TRIỂN ỨNG DỤNG DESKTOP TRONG JAVA SE
+             Tích hợp cơ sở dữ liệu với Java Swing - Project MiniShop
+
+
+   Học phần                      Công nghệ Java
+   Tên bài lab                   Xây dựng ứng dụng quản lý bán hàng MiniShop bằng Java Swing và JDBC
+   Công nghệ Chương 2            Java Swing, JDBC, MySQL, mô hình 3 lớp DAL-BUS-GUI, JTable,
+                                 JComboBox, SwingWorker
+   Thời lượng gợi ý              01-02 buổi thực hành
+   Sản phẩm nộp                  Maven project + file SQL + ảnh chạy chương trình + báo cáo ngắn
+   Tên project gợi ý             lab05-minishop-swing-jdbc
+
+
+    Định hướng xây dựng Lab 5
+    Lab 5 được xây dựng theo hướng một project hoàn chỉnh thay vì các bài rời rạc. Sinh viên triển khai ứng dụng
+    MiniShop có CSDL, mô hình 3 lớp, giao diện Swing, CRUD, lập hóa đơn, thống kê và xử lý bất đồng bộ
+    bằng SwingWorker.
+
+
+1. Căn cứ nội dung Chương 2
+Lab này bám theo Chương 2 của học phần Công nghệ Java: lập trình ứng dụng GUI trong Java SE,
+Components, Containers, Layout Managers, Event Handling, EDT & Multi-threading, tích hợp với cơ sở dữ
+liệu và kiến trúc ứng dụng theo mô hình MVC/DAL-BUS-GUI.
+        Nội dung Chương 2                                      Thể hiện trong bài lab
+    Java Swing                      Xây dựng giao diện quản lý sản phẩm, khách hàng, hóa đơn và thống kê
+                                    bằng JFrame, JPanel, JTable, JButton, JTextField, JComboBox.
+    Event Handling                  Xử lý sự kiện nút Thêm, Sửa, Xóa, Tìm kiếm, Lưu hóa đơn, Thống kê.
+    EDT & Multi-threading           Không truy vấn dữ liệu lâu trực tiếp trên EDT; dùng SwingWorker cho thao
+                                    tác thống kê hoặc load dữ liệu lớn.
+               JDBC                 Kết nối MySQL, dùng PreparedStatement để truy vấn, thêm, sửa, xóa dữ
+                                    liệu.
+    Mô hình 3 lớp                   Tách rõ model, DAL, BUS và GUI để dễ bảo trì, mở rộng và kiểm thử.
+    Project hoàn chỉnh              Các chức năng liên kết với nhau theo bài toán quản lý bán hàng MiniShop.
+
+
+2. Mục tiêu
+     STT                                             Mục tiêu cần đạt
+      1       Thiết kế được project Java Swing theo mô hình 3 lớp DAL-BUS-GUI.
+      2       Tạo được CSDL MySQL và kết nối CSDL bằng JDBC.
+
+      STT                                             Mục tiêu cần đạt
+       3       Xây dựng được các lớp model: SanPham, KhachHang, HoaDon, ChiTietHoaDon.
+       4       Xây dựng được lớp DAL thao tác dữ liệu bằng PreparedStatement.
+       5       Xây dựng được lớp BUS để xử lý nghiệp vụ và validate dữ liệu.
+       6       Thiết kế được giao diện Java Swing sử dụng JFrame, JPanel, JTable, JButton, JTextField,
+               JComboBox.
+       7       Thực hiện được CRUD sản phẩm, khách hàng.
+       8       Lập được hóa đơn gồm thông tin hóa đơn và chi tiết hóa đơn.
+       9       Thực hiện được tìm kiếm, thống kê doanh thu.
+       10      Áp dụng được SwingWorker để xử lý truy vấn dữ liệu bất đồng bộ.
+
+
+3. Công cụ sử dụng
+                 Công cụ                                         Mục đích sử dụng
+    JDK 17 hoặc JDK 21                 Biên dịch và chạy ứng dụng Java.
+    IntelliJ IDEA / Eclipse /          Soạn thảo mã nguồn và thiết kế giao diện.
+    NetBeans
+    Apache Maven                       Quản lý project và thư viện.
+    MySQL Server                       Lưu trữ dữ liệu ứng dụng.
+    MySQL Workbench /                  Tạo CSDL, kiểm tra bảng và dữ liệu.
+    phpMyAdmin
+    MySQL Connector/J                  JDBC driver để Java kết nối MySQL.
+    Git hoặc file ZIP                  Nộp bài và quản lý mã nguồn nếu giảng viên yêu cầu.
+
+
+4. Cơ sở dữ liệu yêu cầu
+Tên cơ sở dữ liệu: minishop_db. Sinh viên tạo file database/minishop_db.sql và chạy trước khi lập trình.
+File database/minishop_db.sql
+    CREATE DATABASE minishop_db
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+
+    USE minishop_db;
+
+    CREATE TABLE san_pham (
+        ma_sp INT AUTO_INCREMENT PRIMARY KEY,
+        ten_sp VARCHAR(100) NOT NULL,
+        don_gia DECIMAL(12,2) NOT NULL,
+        so_luong INT NOT NULL DEFAULT 0
+    );
+
+    CREATE TABLE khach_hang (
+        ma_kh INT AUTO_INCREMENT PRIMARY KEY,
+        ten_kh VARCHAR(100) NOT NULL,
+        sdt VARCHAR(10) NOT NULL,
+        dia_chi VARCHAR(255)
+    );
+
+    CREATE TABLE hoa_don (
+        ma_hd INT AUTO_INCREMENT PRIMARY KEY,
+        ngay_lap DATE NOT NULL,
+        ma_kh INT NOT NULL,
+        tong_tien DECIMAL(12,2) DEFAULT 0,
+        FOREIGN KEY (ma_kh) REFERENCES khach_hang(ma_kh)
+    );
+
+
+    CREATE TABLE chi_tiet_hoa_don (
+        ma_hd INT NOT NULL,
+        ma_sp INT NOT NULL,
+        so_luong INT NOT NULL,
+        don_gia DECIMAL(12,2) NOT NULL,
+        thanh_tien DECIMAL(12,2) NOT NULL,
+        PRIMARY KEY (ma_hd, ma_sp),
+        FOREIGN KEY (ma_hd) REFERENCES hoa_don(ma_hd),
+        FOREIGN KEY (ma_sp) REFERENCES san_pham(ma_sp)
+    );
+
+    INSERT INTO san_pham(ten_sp, don_gia, so_luong) VALUES
+    ('Ban phim Logitech K120', 180000, 50),
+    ('Chuot khong day Rapoo', 220000, 40),
+    ('USB Kingston 32GB', 150000, 100),
+    ('Tai nghe Sony Basic', 350000, 30);
+
+    INSERT INTO khach_hang(ten_kh, sdt, dia_chi) VALUES
+    ('Nguyen Van An', '0912345678', 'Ha Noi'),
+    ('Tran Thi Binh', '0987654321', 'Bac Ninh'),
+    ('Le Van Cuong', '0901111222', 'Hai Duong');
+
+
+5. Cấu trúc project Maven yêu cầu
+Tên dự án Maven gợi ý: lab05-minishop-swing-jdbc. Sinh viên tổ chức mã nguồn theo package
+io.github.hoangtnedu.java.lab5.
+Cấu trúc thư mục chuẩn
+    lab05-minishop-swing-jdbc/
+    ├── pom.xml
+    ├── database/
+    │   └── minishop_db.sql
+    └── src/main/java/io/github/hoangtnedu/java/lab5/
+        ├── App.java
+        ├── config/DBHelper.java
+        ├── model/SanPham.java
+        ├── model/KhachHang.java
+        ├── model/HoaDon.java
+        ├── model/ChiTietHoaDon.java
+        ├── dal/SanPhamDAL.java
+        ├── dal/KhachHangDAL.java
+        ├── dal/HoaDonDAL.java
+        ├── dal/ThongKeDAL.java
+        ├── bus/SanPhamBUS.java
+        ├── bus/KhachHangBUS.java
+        ├── bus/HoaDonBUS.java
+        ├── bus/ThongKeBUS.java
+        ├── ui/MainFrame.java
+        ├── ui/SanPhamPanel.java
+        ├── ui/KhachHangPanel.java
+        ├── ui/HoaDonPanel.java
+        ├── ui/ThongKePanel.java
+        └── util/MessageUtil.java
+
+
+6. File cấu hình Maven
+File pom.xml
+    <project xmlns="http://maven.apache.org/POM/4.0.0"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                                 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+        <modelVersion>4.0.0</modelVersion>
+
+        <groupId>io.github.hoangtnedu.java</groupId>
+
+        <artifactId>lab05-minishop-swing-jdbc</artifactId>
+        <version>1.0-SNAPSHOT</version>
+
+        <properties>
+            <maven.compiler.source>17</maven.compiler.source>
+            <maven.compiler.target>17</maven.compiler.target>
+            <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        </properties>
+
+        <dependencies>
+            <dependency>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
+                <version>8.4.0</version>
+            </dependency>
+        </dependencies>
+    </project>
+
+
+7. Nội dung project MiniShop
+          Nhóm chức năng                                                Mô tả
+    Kết nối CSDL                       Kết nối MySQL bằng JDBC, kiểm tra kết nối thành công.
+    Quản lý sản phẩm                   Thêm, sửa, xóa, tìm kiếm sản phẩm.
+    Quản lý khách hàng                 Thêm, sửa, xóa, tìm kiếm khách hàng, kiểm tra số điện thoại.
+    Quản lý hóa đơn                    Lập hóa đơn, chọn khách hàng, chọn sản phẩm, nhập số lượng.
+    Thống kê                           Tìm hóa đơn theo ngày, tính doanh thu, xác định sản phẩm bán chạy.
+    Xử lý bất đồng bộ                  Dùng SwingWorker để tránh treo giao diện khi load dữ liệu.
+
+
+8. PHẦN A - 5 bài tập/chức năng có gợi ý code
+Bài 1. Tạo kết nối cơ sở dữ liệu bằng JDBC
+Yêu cầu: tạo lớp DBHelper để kết nối tới minishop_db, kiểm tra kết nối và tái sử dụng trong các lớp DAL.
+File src/main/java/io/github/hoangtnedu/java/lab5/config/DBHelper.java
+    package io.github.hoangtnedu.java.lab5.config;
+
+    import java.sql.Connection;
+    import java.sql.DriverManager;
+    import java.sql.SQLException;
+
+    public class DBHelper {
+        private static final String URL =
+            "jdbc:mysql://localhost:3306/minishop_db?useUnicode=true&characterEncoding=UTF-8";
+        private static final String USER = "root";
+        private static final String PASSWORD = "";
+
+        public static Connection getConnection() throws SQLException {
+            return DriverManager.getConnection(URL, USER, PASSWORD);
+        }
+
+        public static void testConnection() {
+            try (Connection conn = getConnection()) {
+                if (conn != null) {
+                    System.out.println("Ket noi CSDL thanh cong!");
+                }
+            } catch (SQLException e) {
+                System.out.println("Ket noi CSDL that bai!");
+                e.printStackTrace();
+            }
+
+
+        }
+    }
+
+
+File src/main/java/io/github/hoangtnedu/java/lab5/App.java
+    package io.github.hoangtnedu.java.lab5;
+
+    import io.github.hoangtnedu.java.lab5.config.DBHelper;
+    import io.github.hoangtnedu.java.lab5.ui.MainFrame;
+
+    import javax.swing.SwingUtilities;
+
+    public class App {
+        public static void main(String[] args) {
+            DBHelper.testConnection();
+
+            SwingUtilities.invokeLater(() -> {
+                MainFrame frame = new MainFrame();
+                frame.setVisible(true);
+            });
+        }
+    }
+
+
+Bài 2. Quản lý sản phẩm
+Yêu cầu: hiển thị danh sách sản phẩm lên JTable; thêm, sửa, xóa và tìm kiếm sản phẩm theo tên.
+          Chức năng                                                       Mô tả
+    Hiển thị                    Load danh sách sản phẩm lên JTable.
+             Thêm               Thêm sản phẩm mới.
+              Sửa               Cập nhật tên, đơn giá, số lượng.
+              Xóa               Xóa sản phẩm theo mã.
+    Tìm kiếm                    Tìm sản phẩm theo tên.
+
+File model/SanPham.java
+    package io.github.hoangtnedu.java.lab5.model;
+
+    import java.math.BigDecimal;
+
+    public class SanPham {
+        private int maSp;
+        private String tenSp;
+        private BigDecimal donGia;
+        private int soLuong;
+
+        public SanPham() {}
+
+        public SanPham(int maSp, String tenSp, BigDecimal donGia, int soLuong) {
+            this.maSp = maSp;
+            this.tenSp = tenSp;
+            this.donGia = donGia;
+            this.soLuong = soLuong;
+        }
+
+        public int getMaSp() { return maSp; }
+        public void setMaSp(int maSp) { this.maSp = maSp; }
+
+        public String getTenSp() { return tenSp; }
+        public void setTenSp(String tenSp) { this.tenSp = tenSp; }
+
+
+        public BigDecimal getDonGia() { return donGia; }
+        public void setDonGia(BigDecimal donGia) { this.donGia = donGia; }
+
+        public int getSoLuong() { return soLuong; }
+        public void setSoLuong(int soLuong) { this.soLuong = soLuong; }
+
+        @Override
+        public String toString() {
+            return tenSp;
+        }
+    }
+
+
+File dal/SanPhamDAL.java
+    package io.github.hoangtnedu.java.lab5.dal;
+
+    import io.github.hoangtnedu.java.lab5.config.DBHelper;
+    import io.github.hoangtnedu.java.lab5.model.SanPham;
+
+    import java.sql.*;
+    import java.util.ArrayList;
+    import java.util.List;
+
+    public class SanPhamDAL {
+
+        public List<SanPham> findAll() throws SQLException {
+            List<SanPham> list = new ArrayList<>();
+            String sql = "SELECT ma_sp, ten_sp, don_gia, so_luong FROM san_pham";
+
+            try (Connection conn = DBHelper.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql);
+                 ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+                    SanPham sp = new SanPham();
+                    sp.setMaSp(rs.getInt("ma_sp"));
+                    sp.setTenSp(rs.getString("ten_sp"));
+                    sp.setDonGia(rs.getBigDecimal("don_gia"));
+                    sp.setSoLuong(rs.getInt("so_luong"));
+                    list.add(sp);
+                }
+            }
+            return list;
+        }
+
+        public boolean insert(SanPham sp) throws SQLException {
+            String sql = "INSERT INTO san_pham(ten_sp, don_gia, so_luong) VALUES (?, ?, ?)";
+            try (Connection conn = DBHelper.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, sp.getTenSp());
+                ps.setBigDecimal(2, sp.getDonGia());
+                ps.setInt(3, sp.getSoLuong());
+                return ps.executeUpdate() > 0;
+            }
+        }
+
+        public boolean update(SanPham sp) throws SQLException {
+            String sql = "UPDATE san_pham SET ten_sp = ?, don_gia = ?, so_luong = ? WHERE ma_sp = ?";
+            try (Connection conn = DBHelper.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, sp.getTenSp());
+                ps.setBigDecimal(2, sp.getDonGia());
+                ps.setInt(3, sp.getSoLuong());
+
+
+                ps.setInt(4, sp.getMaSp());
+                return ps.executeUpdate() > 0;
+            }
+        }
+
+        public boolean delete(int maSp) throws SQLException {
+            String sql = "DELETE FROM san_pham WHERE ma_sp = ?";
+            try (Connection conn = DBHelper.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, maSp);
+                return ps.executeUpdate() > 0;
+            }
+        }
+
+        public List<SanPham> searchByName(String keyword) throws SQLException {
+            List<SanPham> list = new ArrayList<>();
+            String sql = "SELECT ma_sp, ten_sp, don_gia, so_luong FROM san_pham WHERE ten_sp LIKE ?";
+            try (Connection conn = DBHelper.getConnection();
+                  PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, "%" + keyword + "%");
+                try (ResultSet rs = ps.executeQuery()) {
+                     while (rs.next()) {
+                         SanPham sp = new SanPham();
+                         sp.setMaSp(rs.getInt("ma_sp"));
+                         sp.setTenSp(rs.getString("ten_sp"));
+                         sp.setDonGia(rs.getBigDecimal("don_gia"));
+                         sp.setSoLuong(rs.getInt("so_luong"));
+                         list.add(sp);
+                     }
+                }
+            }
+            return list;
+        }
+    }
+
+
+File bus/SanPhamBUS.java
+    package io.github.hoangtnedu.java.lab5.bus;
+
+    import io.github.hoangtnedu.java.lab5.dal.SanPhamDAL;
+    import io.github.hoangtnedu.java.lab5.model.SanPham;
+
+    import java.math.BigDecimal;
+    import java.sql.SQLException;
+    import java.util.List;
+
+    public class SanPhamBUS {
+        private final SanPhamDAL sanPhamDAL = new SanPhamDAL();
+
+        public List<SanPham> findAll() throws SQLException {
+            return sanPhamDAL.findAll();
+        }
+
+        public boolean save(SanPham sp) throws SQLException {
+            validate(sp);
+            if (sp.getMaSp() == 0) {
+                return sanPhamDAL.insert(sp);
+            }
+            return sanPhamDAL.update(sp);
+        }
+
+        public boolean delete(int maSp) throws SQLException {
+            if (maSp <= 0) {
+                throw new IllegalArgumentException("Ma san pham khong hop le");
+            }
+            return sanPhamDAL.delete(maSp);
+
+        }
+
+        public List<SanPham> searchByName(String keyword) throws SQLException {
+            return sanPhamDAL.searchByName(keyword);
+        }
+
+        private void validate(SanPham sp) {
+            if (sp.getTenSp() == null || sp.getTenSp().trim().isEmpty()) {
+                throw new IllegalArgumentException("Ten san pham khong duoc rong");
+            }
+            if (sp.getDonGia() == null || sp.getDonGia().compareTo(BigDecimal.ZERO) <= 0) {
+                throw new IllegalArgumentException("Don gia phai lon hon 0");
+            }
+            if (sp.getSoLuong() < 0) {
+                throw new IllegalArgumentException("So luong khong duoc am");
+            }
+        }
+    }
+
+
+Bài 3. Quản lý khách hàng và validate số điện thoại
+Yêu cầu: xây dựng CRUD khách hàng. Số điện thoại chỉ gồm chữ số và tối đa 10 ký tự. Sinh viên có thể
+validate ở BUS và chặn nhập sai trên GUI bằng DocumentFilter.
+Gợi ý validate trong KhachHangBUS.java
+    private void validate(KhachHang kh) {
+        if (kh.getTenKh() == null || kh.getTenKh().trim().isEmpty()) {
+            throw new IllegalArgumentException("Ten khach hang khong duoc rong");
+        }
+
+        if (kh.getSdt() == null || !kh.getSdt().matches("\\d{1,10}")) {
+            throw new IllegalArgumentException("So dien thoai chi gom so va toi da 10 ky tu");
+        }
+    }
+
+
+Gợi ý PhoneDocumentFilter.java
+    import javax.swing.text.*;
+
+    public class PhoneDocumentFilter extends DocumentFilter {
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+                throws BadLocationException {
+            if (string == null) return;
+            String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+            String newText = currentText.substring(0, offset) + string + currentText.substring(offset);
+            if (newText.matches("\\d{0,10}")) {
+                super.insertString(fb, offset, string, attr);
+            }
+        }
+
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+                throws BadLocationException {
+            String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+            String newText = currentText.substring(0, offset) + text + currentText.substring(offset +
+    length);
+            if (newText.matches("\\d{0,10}")) {
+                super.replace(fb, offset, length, text, attrs);
+            }
+        }
+    }
+
+
+Áp dụng cho JTextField txtSdt
+    ((AbstractDocument) txtSdt.getDocument()).setDocumentFilter(new PhoneDocumentFilter());
+
+
+Bài 4. Lập hóa đơn và chi tiết hóa đơn
+Yêu cầu: tạo giao diện lập hóa đơn gồm chọn khách hàng, chọn sản phẩm, nhập số lượng, thêm dòng chi tiết,
+tính tổng tiền và lưu hóa đơn cùng chi tiết hóa đơn.
+              Thành phần                                               Mô tả
+    JComboBox<KhachHang>                Chọn khách hàng.
+    JComboBox<SanPham>                  Chọn sản phẩm.
+    JTextField txtSoLuong               Nhập số lượng bán.
+    JTable tblChiTiet                   Danh sách sản phẩm trong hóa đơn tạm.
+    Nút thêm dòng                       Thêm sản phẩm vào hóa đơn tạm.
+    Nút lưu hóa đơn                     Lưu hoa_don và chi_tiet_hoa_don.
+    Tổng tiền                           Tính tổng tiền hóa đơn.
+
+File model/ChiTietHoaDon.java
+    package io.github.hoangtnedu.java.lab5.model;
+
+    import java.math.BigDecimal;
+
+    public class ChiTietHoaDon {
+        private int maHd;
+        private int maSp;
+        private String tenSp;
+        private int soLuong;
+        private BigDecimal donGia;
+        private BigDecimal thanhTien;
+
+        public ChiTietHoaDon() {}
+
+        public ChiTietHoaDon(int maSp, String tenSp, int soLuong, BigDecimal donGia) {
+            this.maSp = maSp;
+            this.tenSp = tenSp;
+            this.soLuong = soLuong;
+            this.donGia = donGia;
+            this.thanhTien = donGia.multiply(BigDecimal.valueOf(soLuong));
+        }
+
+        public int getMaHd() { return maHd; }
+        public void setMaHd(int maHd) { this.maHd = maHd; }
+
+        public int getMaSp() { return maSp; }
+        public void setMaSp(int maSp) { this.maSp = maSp; }
+
+        public String getTenSp() { return tenSp; }
+        public void setTenSp(String tenSp) { this.tenSp = tenSp; }
+
+        public int getSoLuong() { return soLuong; }
+        public void setSoLuong(int soLuong) {
+            this.soLuong = soLuong;
+            this.thanhTien = this.donGia.multiply(BigDecimal.valueOf(soLuong));
+        }
+
+        public BigDecimal getDonGia() { return donGia; }
+        public void setDonGia(BigDecimal donGia) { this.donGia = donGia; }
+
+        public BigDecimal getThanhTien() { return thanhTien; }
+
+        public void setThanhTien(BigDecimal thanhTien) { this.thanhTien = thanhTien; }
+    }
+
+
+Gợi ý lưu hóa đơn có transaction trong HoaDonDAL.java
+    public int insertHoaDon(int maKh, List<ChiTietHoaDon> chiTietList) throws SQLException {
+        String sqlHoaDon = "INSERT INTO hoa_don(ngay_lap, ma_kh, tong_tien) VALUES (?, ?, ?)";
+        String sqlChiTiet =
+            "INSERT INTO chi_tiet_hoa_don(ma_hd, ma_sp, so_luong, don_gia, thanh_tien) " +
+            "VALUES (?, ?, ?, ?, ?)";
+
+        Connection conn = null;
+        try {
+            conn = DBHelper.getConnection();
+            conn.setAutoCommit(false);
+
+            BigDecimal tongTien = tinhTongTien(chiTietList);
+            int maHd;
+
+            try (PreparedStatement ps = conn.prepareStatement(sqlHoaDon, Statement.RETURN_GENERATED_KEYS))
+    {
+                ps.setDate(1, Date.valueOf(LocalDate.now()));
+                ps.setInt(2, maKh);
+                ps.setBigDecimal(3, tongTien);
+                ps.executeUpdate();
+
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        maHd = rs.getInt(1);
+                    } else {
+                        throw new SQLException("Khong lay duoc ma hoa don");
+                    }
+                }
+            }
+
+            try (PreparedStatement ps = conn.prepareStatement(sqlChiTiet)) {
+                for (ChiTietHoaDon ct : chiTietList) {
+                    ps.setInt(1, maHd);
+                    ps.setInt(2, ct.getMaSp());
+                    ps.setInt(3, ct.getSoLuong());
+                    ps.setBigDecimal(4, ct.getDonGia());
+                    ps.setBigDecimal(5, ct.getThanhTien());
+                    ps.addBatch();
+                }
+                ps.executeBatch();
+            }
+
+            conn.commit();
+            return maHd;
+        } catch (SQLException e) {
+            if (conn != null) conn.rollback();
+            throw e;
+        } finally {
+            if (conn != null) {
+                conn.setAutoCommit(true);
+                conn.close();
+            }
+        }
+    }
+
+
+Bài 5. Tìm kiếm và thống kê bằng SwingWorker
+Yêu cầu: tìm hóa đơn theo ngày, mã khách hàng; tính doanh thu theo khoảng ngày; liệt kê hóa đơn có giá trị
+cao nhất; liệt kê sản phẩm bán chạy nhất. Các truy vấn thống kê cần dùng SwingWorker để tránh treo giao
+diện.
+SQL thống kê gợi ý
+    -- Doanh thu theo khoảng ngày
+    SELECT COALESCE(SUM(tong_tien), 0) AS doanh_thu
+    FROM hoa_don
+    WHERE ngay_lap BETWEEN ? AND ?;
+
+    -- Hóa đơn có giá trị cao nhất
+    SELECT ma_hd, ngay_lap, ma_kh, tong_tien
+    FROM hoa_don
+    ORDER BY tong_tien DESC
+    LIMIT 1;
+
+    -- Sản phẩm bán chạy nhất
+    SELECT sp.ma_sp, sp.ten_sp, SUM(ct.so_luong) AS tong_so_luong
+    FROM chi_tiet_hoa_don ct
+    JOIN san_pham sp ON ct.ma_sp = sp.ma_sp
+    GROUP BY sp.ma_sp, sp.ten_sp
+    ORDER BY tong_so_luong DESC
+    LIMIT 1;
+
+
+Gợi ý DoanhThuWorker.java
+    import javax.swing.*;
+    import java.math.BigDecimal;
+    import java.time.LocalDate;
+
+    public class DoanhThuWorker extends SwingWorker<BigDecimal, Void> {
+        private final LocalDate tuNgay;
+        private final LocalDate denNgay;
+        private final ThongKeBUS thongKeBUS;
+        private final JLabel lblKetQua;
+
+        public DoanhThuWorker(LocalDate tuNgay, LocalDate denNgay,
+                              ThongKeBUS thongKeBUS, JLabel lblKetQua) {
+            this.tuNgay = tuNgay;
+            this.denNgay = denNgay;
+            this.thongKeBUS = thongKeBUS;
+            this.lblKetQua = lblKetQua;
+        }
+
+        @Override
+        protected BigDecimal doInBackground() throws Exception {
+            return thongKeBUS.tinhDoanhThu(tuNgay, denNgay);
+        }
+
+        @Override
+        protected void done() {
+            try {
+                BigDecimal doanhThu = get();
+                lblKetQua.setText("Doanh thu: " + doanhThu + " VND");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Loi thong ke: " + e.getMessage());
+            }
+        }
+    }
+
+
+9. PHẦN B - 5 bài tập/chức năng không có gợi ý code
+Các chức năng sau sinh viên tự thiết kế và triển khai. Không cung cấp code mẫu để đánh giá khả năng mở
+rộng project.
+Bài 6. Quản lý danh mục sản phẩm
+            Chức năng                                             Yêu cầu
+    Thêm danh mục                 Nhập tên danh mục và lưu vào bảng danh_muc.
+    Sửa danh mục                  Cập nhật tên danh mục.
+    Xóa danh mục                  Không cho xóa nếu có sản phẩm thuộc danh mục.
+    Gán danh mục                  Khi thêm/sửa sản phẩm, chọn danh mục bằng JComboBox.
+    Tìm kiếm                      Lọc sản phẩm theo danh mục.
+
+SQL mở rộng gợi ý cho bài 6
+    CREATE TABLE danh_muc (
+        ma_dm INT AUTO_INCREMENT PRIMARY KEY,
+        ten_dm VARCHAR(100) NOT NULL
+    );
+
+    ALTER TABLE san_pham
+    ADD ma_dm INT NULL,
+    ADD FOREIGN KEY (ma_dm) REFERENCES danh_muc(ma_dm);
+
+
+Bài 7. Quản lý tồn kho
+             Chức năng                                              Yêu cầu
+    Kiểm tra tồn kho              Khi lập hóa đơn, số lượng bán không được vượt quá tồn kho.
+    Trừ kho                       Sau khi lưu hóa đơn, tự động trừ số lượng sản phẩm.
+    Cảnh báo                      Sản phẩm có tồn kho dưới 5 phải hiển thị cảnh báo.
+    Không cho bán                 Không cho thêm sản phẩm hết hàng vào hóa đơn.
+    Đồng bộ dữ liệu               Sau khi bán hàng, bảng sản phẩm phải cập nhật lại số lượng.
+
+
+Bài 8. Xuất hóa đơn ra file TXT hoặc CSV
+             Nội dung file                                          Yêu cầu
+    Mã hóa đơn                    Hiển thị mã hóa đơn vừa tạo.
+    Ngày lập                      Hiển thị ngày lập.
+    Khách hàng                    Hiển thị tên, số điện thoại.
+    Danh sách sản phẩm            Tên sản phẩm, số lượng, đơn giá, thành tiền.
+    Tổng tiền                     Hiển thị cuối file.
+    Tên file                      HoaDon_MaHD.txt hoặc HoaDon_MaHD.csv.
+
+
+Bài 9. Tìm kiếm nâng cao và phân trang dữ liệu
+            Đối tượng                                        Điều kiện tìm kiếm
+    Sản phẩm                      Tên sản phẩm, khoảng đơn giá, khoảng số lượng.
+    Khách hàng                    Tên khách hàng, số điện thoại, địa chỉ.
+    Hóa đơn                       Khoảng ngày, khách hàng, khoảng tổng tiền.
+
+        Chức năng mở rộng                                                  Mô tả
+    Phân trang                    Mỗi trang hiển thị 10 dòng.
+    Nút điều hướng                Trước, Sau, Đầu, Cuối.
+
+        Chức năng mở rộng                                              Mô tả
+    Sắp xếp                          Cho phép sắp xếp theo mã, tên, đơn giá.
+    Không treo giao diện             Dữ liệu lớn phải load bằng SwingWorker.
+
+
+Bài 10. Đăng nhập và phân quyền người dùng
+SQL mở rộng gợi ý cho bài 10
+    CREATE TABLE tai_khoan (
+        username VARCHAR(50) PRIMARY KEY,
+        password VARCHAR(100) NOT NULL,
+        ho_ten VARCHAR(100) NOT NULL,
+        vai_tro VARCHAR(20) NOT NULL
+    );
+
+
+         Vai trò                                                   Quyền
+         ADMIN                 Toàn quyền: sản phẩm, khách hàng, hóa đơn, thống kê, tài khoản.
+    NHANVIEN                   Quản lý sản phẩm, khách hàng, lập hóa đơn.
+    KETOAN                     Xem hóa đơn và thống kê, không được xóa dữ liệu.
+
+          Màn hình                                                Yêu cầu
+    LoginFrame                 Nhập username, password.
+    MainFrame                  Hiển thị menu theo vai trò.
+    Đăng xuất                  Quay lại màn hình đăng nhập.
+    Kiểm tra quyền             Không cho truy cập chức năng ngoài quyền.
+
+
+10. Giao diện yêu cầu
+Project tối thiểu có MainFrame sử dụng JTabbedPane với 4 tab chính.
+Cấu trúc giao diện tối thiểu
+    MainFrame
+    ├── Tab 1: Sản phẩm
+    ├── Tab 2: Khách hàng
+    ├── Tab 3: Hóa đơn
+    └── Tab 4: Thống kê
+
+
+             Khu vực                                              Nội dung
+    Phía trên                     Form nhập liệu.
+              Giữa                Bảng dữ liệu JTable.
+    Phía dưới                     Các nút chức năng: Thêm, Sửa, Xóa, Làm mới, Tìm kiếm.
+
+
+11. Sản phẩm cần nộp
+     STT              Sản phẩm                                              Yêu cầu
+      1      Maven project                    Đúng cấu trúc package io.github.hoangtnedu.java.lab5.
+      2      File SQL                         Có file database/minishop_db.sql.
+      3      Mã nguồn                         Có đủ model, DAL, BUS, GUI.
+      4      Ảnh kết nối CSDL                 Minh chứng kết nối thành công.
+      5      Ảnh giao diện                    Có ảnh các màn hình sản phẩm, khách hàng, hóa đơn, thống kê.
+      6      Ảnh kiểm thử chức năng           Minh chứng thêm/sửa/xóa/tìm kiếm/lập hóa đơn.
+      7      Báo cáo ngắn                     Mô tả kiến trúc 3 lớp và các chức năng đã làm.
+
+     STT               Sản phẩm                                    Yêu cầu
+      8     File ZIP                       Đặt tên Lab05_MSSV_HoTen.zip.
+
+
+12. Đánh giá
+              Tiêu chí                                          Mô tả                            Điểm
+    Cấu trúc project              Đúng Maven project, đúng package, có phân lớp rõ ràng.       1.0
+    CSDL và JDBC                  Tạo đúng bảng, kết nối thành công, dùng PreparedStatement.   1.5
+    Mô hình 3 lớp                 Tách rõ Model, DAL, BUS, GUI.                                1.5
+    Quản lý sản phẩm              CRUD, tìm kiếm, hiển thị JTable.                             1.0
+    Quản lý khách hàng            CRUD, validate số điện thoại.                                1.0
+    Lập hóa đơn                   Chọn khách hàng, chọn sản phẩm, lưu hóa đơn và chi tiết.     1.5
+    Thống kê                      Doanh thu, hóa đơn cao nhất, sản phẩm bán chạy.              1.0
+    SwingWorker                   Có xử lý bất đồng bộ cho thống kê hoặc load dữ liệu lớn.     0.8
+    Giao diện và trải nghiệm      Giao diện rõ ràng, dễ dùng, có thông báo lỗi.                0.7
+    Báo cáo và nộp bài            Có ảnh minh chứng, trình bày sạch, đúng tên file.            0.5
+                Tổng                                                                           10.0
+
+
+13. Câu hỏi củng cố
+1. JDBC là gì? Vì sao cần JDBC driver khi kết nối MySQL?
+2. Statement và PreparedStatement khác nhau như thế nào?
+3. Vì sao không nên viết SQL trực tiếp trong lớp giao diện Swing?
+4. Vai trò của DAL, BUS và GUI trong project là gì?
+5. Vì sao khi lưu hóa đơn và chi tiết hóa đơn cần dùng transaction?
+6. SwingWorker giải quyết vấn đề gì trong Java Swing?
+7. EDT trong Swing là gì? Vì sao không nên truy vấn CSDL lâu trên EDT?
+8. Vì sao cần validate dữ liệu ở BUS thay vì chỉ validate trên GUI?
+9. Khi xóa sản phẩm đã có trong chi tiết hóa đơn, có thể gặp lỗi gì?
+10. Làm thế nào để mở rộng project này thành ứng dụng bán hàng thực tế?
+
+14. Tài liệu tham khảo
+•   Kế hoạch giảng dạy học phần Công nghệ Java - Chương 2: Phát triển ứng dụng desktop trong Java SE.
+•   Lab 5 gốc: Tích hợp CSDL với Java Swing.
+•   Oracle Java Documentation - Java Swing, JDBC, SwingWorker.
+•   MySQL Documentation - SQL, constraint, transaction.
+•   Giáo trình Lập trình hướng đối tượng với Java - lớp, đối tượng, đóng gói, package.

@@ -1,0 +1,681 @@
+LAB 3
+               PHÁT TRIỂN ỨNG DỤNG DESKTOP TRONG JAVA SE
+          Lập trình Java Swing: JFrame, Components, Layout Managers, Event Handling và EDT
+
+ Học phần                                                      Công nghệ Java
+ Tên bài lab                                                   Xây dựng ứng dụng Java Swing cơ bản và xử lý sự kiện
+                                                               Java SE Desktop, Swing, JFrame, JPanel, JLabel,
+                                                               JTextField, JButton, JTextArea, JTable, Layout Manager,
+ Công nghệ Chương 2
+                                                               ActionListener, Event Dispatch Thread (EDT), MVC cơ
+                                                               bản
+ Thời lượng gợi ý                                              01 buổi thực hành
+                                                               Maven project + mã nguồn + ảnh chạy chương trình + báo
+ Sản phẩm nộp
+                                                               cáo ngắn + file ZIP
+ Định hướng Lab 3: Các bài toán trong file Lab3_JavaSwing.pdf được kế thừa và mở rộng theo đúng Chương 2: tạo
+ giao diện Java Swing, bố trí thành phần, xử lý sự kiện, kiểm tra dữ liệu nhập và tách dần logic xử lý khỏi giao diện. Lab
+ gồm 5 bài có gợi ý code và 3 bài tự làm không có gợi ý code.
+
+1. Căn cứ nội dung Chương 2
+Lab này bám theo Chương 2 của học phần Công nghệ Java: phát triển ứng dụng desktop trong Java SE, gồm
+lập trình GUI, components, containers, layout managers, event handling, EDT, multi-threading, tích hợp CSDL
+và kiến trúc MVC ở mức nhập môn.
+ Nội dung Chương 2                                             Thể hiện trong bài lab
+                                                               Xây dựng các ứng dụng desktop chạy bằng Swing, chưa
+ Java SE Desktop
+                                                               dùng Jakarta EE hoặc Spring.
+                                                               Sử dụng JLabel, JTextField, JButton, JTextArea,
+ Components
+                                                               JPasswordField, JComboBox, JTable.
+ Containers                                                    Tổ chức giao diện bằng JFrame, JPanel và JScrollPane.
+                                                               Sử dụng FlowLayout, GridLayout, BorderLayout; hạn chế
+ Layout Managers
+                                                               dùng null layout.
+                                                               Xử lý sự kiện nhấn nút bằng addActionListener và biểu
+ Event Handling
+                                                               thức lambda.
+                                                               Khởi động giao diện bằng SwingUtilities.invokeLater để
+ EDT
+                                                               chạy đúng luồng giao diện.
+                                                               Bài nâng cao yêu cầu tách lớp dữ liệu, lớp xử lý và lớp
+ MVC cơ bản
+                                                               giao diện.
+
+
+                                         Bài lab thực hành - Học phần Công nghệ Java
+
+2. Mục tiêu
+    STT                                                          Mục tiêu cần đạt
+                                                                 Tạo được ứng dụng Java Swing bằng JFrame và chạy
+                                                                 được trên Java SE.
+                                                                 Sử dụng được các thành phần giao diện cơ bản: JLabel,
+                                                                 JTextField, JButton, JTextArea, JPasswordField, JTable.
+                                                                 Biết lựa chọn Layout Manager phù hợp để bố trí giao diện
+                                                                 rõ ràng.
+                                                                 Xử lý được sự kiện người dùng bằng
+                                                                 ActionListener/lambda expression.
+                                                                 Kiểm tra và xử lý lỗi nhập liệu bằng
+    5                                                            NumberFormatException, JOptionPane và thông báo dễ
+                                                                 hiểu.
+                                                                 Sử dụng SwingUtilities.invokeLater để khởi động giao
+                                                                 diện trên EDT.
+                                                                 Tách được logic tính toán ra khỏi thao tác hiển thị ở mức
+                                                                 cơ bản.
+                                                                 Hoàn thiện được bài tập theo chuẩn mã nguồn sạch, có
+                                                                 ảnh minh chứng và báo cáo ngắn.
+
+3. Công cụ sử dụng
+    Công cụ                                                      Mục đích sử dụng
+    JDK 17 hoặc JDK 21                                           Biên dịch và chạy ứng dụng Java SE/Swing.
+                                                                 Quản lý cấu trúc dự án, biên dịch, chạy và đóng gói
+    Apache Maven 3.x
+                                                                 project.
+    IntelliJ IDEA / Eclipse / NetBeans / VS Code                 Soạn thảo mã nguồn, thiết kế và chạy thử chương trình.
+    Command Prompt / PowerShell / Terminal                       Kiểm tra môi trường, chạy lệnh Maven và Java.
+                                                                 Vẽ phác thảo giao diện hoặc sơ đồ MVC nếu giảng viên
+    Draw.io / Visio
+                                                                 yêu cầu.
+    Git hoặc ZIP                                                 Nộp bài và quản lý mã nguồn.
+
+4. Yêu cầu công nghệ trước khi lập trình
+Sinh viên cần chứng minh môi trường Java và Maven đã hoạt động trước khi bắt đầu viết code. Đây là phần bắt
+buộc để bài lab đúng trọng tâm Chương 2.
+Lệnh kiểm tra môi trường
+
+    java -version
+    javac -version
+    mvn -version
+    echo %JAVA_HOME%      // Windows
+    # echo $JAVA_HOME     // macOS/Linux
+
+•       Không sử dụng thư viện GUI ngoài Swing trong Lab 3.
+•       Mỗi bài tập nên có một lớp main riêng để dễ chạy và chấm bài.
+•       Mọi giao diện Swing phải được khởi động trong SwingUtilities.invokeLater(...).
+•       Không để chương trình dừng đột ngột khi người dùng nhập sai dữ liệu.
+
+
+                                           Bài lab thực hành - Học phần Công nghệ Java
+
+5. Cấu trúc dự án Maven yêu cầu
+Tên dự án Maven gợi ý: lab03-java-swing. Sinh viên tổ chức mã nguồn theo package io.github.hoangtnedu.java.lab3.
+Cấu trúc thư mục chuẩn
+
+ lab03-java-swing/
+ ├── pom.xml
+ └── src/
+     └── main/
+         └── java/
+             └── vn/
+                 └── edu/
+                     └── hoangtnedu/
+                          └── lab3/
+                              ├── Bai01HelloSwing.java
+                              ├── Bai02TongHaiSo.java
+                              ├── Bai03PhuongTrinhBacNhat.java
+                              ├── Bai04TamGiacSwing.java
+                              ├── Bai05FibonacciSwing.java
+                              ├── Bai06LoginForm.java
+                              ├── Bai07MayTinhMini.java
+                              └── Bai08QuanLySinhVien.java
+Lệnh tạo dự án Maven gợi ý trên Windows
+
+ mvn archetype:generate ^
+ -DgroupId=io.github.hoangtnedu.java ^
+ -DartifactId=lab03-java-swing ^
+ -DarchetypeArtifactId=maven-archetype-quickstart ^
+ -DinteractiveMode=false
+
+ // Sau khi tạo dự án, tạo package io.github.hoangtnedu.java.lab3
+ // và đặt các file bài tập trong package này.
+
+
+6. File cấu hình Maven
+File pom.xml dưới đây cấu hình Java 17 và plugin chạy từng lớp Swing bằng Maven Exec Plugin.
+File pom.xml
+
+ <project xmlns="http://maven.apache.org/POM/4.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
+     <modelVersion>4.0.0</modelVersion>
+
+     <groupId>io.github.hoangtnedu.java</groupId>
+     <artifactId>lab03-java-swing</artifactId>
+     <version>1.0-SNAPSHOT</version>
+     <packaging>jar</packaging>
+
+     <properties>
+         <maven.compiler.source>17</maven.compiler.source>
+         <maven.compiler.target>17</maven.compiler.target>
+         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+     </properties>
+
+     <build>
+         <plugins>
+             <plugin>
+                 <groupId>org.codehaus.mojo</groupId>
+                 <artifactId>exec-maven-plugin</artifactId>
+                 <version>3.5.0</version>
+             </plugin>
+                                     Bài lab thực hành - Học phần Công nghệ Java
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.4.2</version>
+                    <configuration>
+                         <archive>
+                             <manifest>
+                                 <mainClass>io.github.hoangtnedu.java.lab3.Bai01HelloSwing</mainClass>
+                             </manifest>
+                         </archive>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+    </project>
+
+
+7. Nội dung bài tập Java Swing
+    Yêu cầu thiết kế chung: Mỗi bài cần có tiêu đề cửa sổ, bố cục rõ ràng, xử lý sự kiện bằng nút bấm, thông báo lỗi nhập
+    liệu bằng JOptionPane, và có ảnh minh chứng kết quả chạy đúng.
+                           Bài                     Tên bài                   Yêu cầu chính
+                                                                             JTextField + JButton;
+                           Bài 1                   Chào người dùng           hiển thị Xin chào,
+                                                                             [Tên].
+                                                                             Nhập 2 số, tính tổng,
+                           Bài 2                   Tính tổng hai số          xử lý lỗi nhập không
+                                                                             phải số.
+                                                   Giải phương trình         Nhập a, b; giải ax + b
+                           Bài 3
+                                                   bậc nhất                  = 0; xét đủ trường hợp.
+                                                   Kiểm tra và phân          Nhập 3 cạnh; kiểm tra
+                           Bài 4
+                                                   loại tam giác             tam giác và phân loại.
+                                                                             Nhập n; hiển thị dãy
+                                                   Hiển thị n số
+                           Bài 5                                             trong
+                                                   Fibonacci
+                                                                             JTextArea/JScrollPane.
+                                                                             JTextField,
+                                                                             JPasswordField,
+                                                   Form đăng nhập cơ
+                           Bài 6                                             JComboBox,
+                                                   bản
+                                                                             JCheckBox; kiểm tra
+                                                                             tài khoản.
+                                                                             Tạo máy tính +, -, *, /,
+                           Bài 7                   Máy tính mini             Clear; xử lý chia cho 0;
+                                                                             có lịch sử.
+                                                                             Thêm, sửa, xóa sinh
+                                                   Quản lý sinh viên         viên bằng JTable; tách
+                           Bài 8
+                                                   bằng JTable               lớp dữ liệu và giao
+                                                                             diện.
+
+8. Năm bài tập có gợi ý code
+Bài 1. Tạo giao diện chào người dùng
+Yêu cầu:
+•     Tạo cửa sổ JFrame có 1 JLabel, 1 JTextField và 1 JButton.
+•     Khi nhấn nút, chương trình hiển thị hộp thoại: “Xin chào, [Tên]!”.
+•     Nếu người dùng chưa nhập tên, hiển thị thông báo yêu cầu nhập tên.
+                                           Bài lab thực hành - Học phần Công nghệ Java
+
+Ví dụ kiểm thử: nhập “An” -> hiển thị “Xin chào, An!”.
+Code gợi ý
+
+    package io.github.hoangtnedu.java.lab3;
+
+    import javax.swing.*;
+    import java.awt.*;
+
+    public class Bai01HelloSwing extends JFrame {
+        private final JTextField txtName = new JTextField(20);
+
+         public Bai01HelloSwing() {
+             setTitle("Bài 1 - Chào người dùng");
+             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+             setLayout(new FlowLayout(FlowLayout.CENTER, 10, 15));
+
+             add(new JLabel("Nhập tên:"));
+             add(txtName);
+
+             JButton btnHello = new JButton("Hiển thị lời chào");
+             add(btnHello);
+
+             btnHello.addActionListener(e -> hienThiLoiChao());
+
+             pack();
+             setLocationRelativeTo(null);
+         }
+
+         private void hienThiLoiChao() {
+             String name = txtName.getText().trim();
+             if (name.isEmpty()) {
+                 JOptionPane.showMessageDialog(this, "Vui lòng nhập tên!");
+                 txtName.requestFocus();
+                 return;
+             }
+             JOptionPane.showMessageDialog(this, "Xin chào, " + name + "!");
+         }
+
+         public static void main(String[] args) {
+             SwingUtilities.invokeLater(() -> new Bai01HelloSwing().setVisible(true));
+         }
+    }
+
+
+Bài 2. Thiết kế giao diện tính tổng hai số
+Yêu cầu:
+•       Tạo giao diện nhập số thứ nhất, số thứ hai.
+•       Khi nhấn nút “Tính tổng”, chương trình hiển thị kết quả trên JLabel.
+•       Có nút “Làm mới” để xóa dữ liệu và đưa con trỏ về ô nhập đầu tiên.
+Ví dụ kiểm thử: a = 7.5, b = 2.5 -> kết quả = 10.0.
+Code gợi ý
+
+    package io.github.hoangtnedu.java.lab3;
+
+    import javax.swing.*;
+    import java.awt.*;
+
+    public class Bai02TongHaiSo extends JFrame {
+        private final JTextField txtA = new JTextField();
+        private final JTextField txtB = new JTextField();
+        private final JLabel lblResult = new JLabel("Kết quả: ");
+                                            Bài lab thực hành - Học phần Công nghệ Java
+
+
+     public Bai02TongHaiSo() {
+         setTitle("Bài 2 - Tính tổng hai số");
+         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         setLayout(new GridLayout(4, 2, 8, 8));
+
+           add(new JLabel("Số thứ nhất:"));
+           add(txtA);
+           add(new JLabel("Số thứ hai:"));
+           add(txtB);
+
+           JButton btnSum = new JButton("Tính tổng");
+           JButton btnClear = new JButton("Làm mới");
+           add(btnSum);
+           add(btnClear);
+           add(new JLabel(""));
+           add(lblResult);
+
+           btnSum.addActionListener(e -> tinhTong());
+           btnClear.addActionListener(e -> lamMoi());
+
+           setSize(380, 190);
+           setLocationRelativeTo(null);
+     }
+
+     private void tinhTong() {
+         try {
+             double a = Double.parseDouble(txtA.getText().trim());
+             double b = Double.parseDouble(txtB.getText().trim());
+             lblResult.setText("Kết quả: " + (a + b));
+         } catch (NumberFormatException ex) {
+             JOptionPane.showMessageDialog(this, "Dữ liệu nhập phải là số hợp lệ!");
+         }
+     }
+
+     private void lamMoi() {
+         txtA.setText("");
+         txtB.setText("");
+         lblResult.setText("Kết quả: ");
+         txtA.requestFocus();
+     }
+
+     public static void main(String[] args) {
+         SwingUtilities.invokeLater(() -> new Bai02TongHaiSo().setVisible(true));
+     }
+ }
+
+
+Bài 3. Giải phương trình bậc nhất ax + b = 0
+Yêu cầu:
+• Tạo giao diện nhập hệ số a và b.
+• Xử lý đầy đủ ba trường hợp: vô số nghiệm, vô nghiệm, có nghiệm duy nhất.
+• Kết quả hiển thị trực tiếp trên giao diện.
+Ví dụ kiểm thử: a = 2, b = -6 -> x = 3.0000; a = 0, b = 0 -> vô số nghiệm.
+Code gợi ý
+
+ package io.github.hoangtnedu.java.lab3;
+
+ import javax.swing.*;
+ import java.awt.*;
+
+ public class Bai03PhuongTrinhBacNhat extends JFrame {
+
+                                          Bài lab thực hành - Học phần Công nghệ Java
+
+         private final JTextField txtA = new JTextField();
+         private final JTextField txtB = new JTextField();
+         private final JLabel lblResult = new JLabel("Nghiệm: ");
+
+         public Bai03PhuongTrinhBacNhat() {
+             setTitle("Bài 3 - Giải phương trình ax + b = 0");
+             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+             setLayout(new BorderLayout(10, 10));
+
+             JPanel inputPanel = new JPanel(new GridLayout(2, 2, 8, 8));
+             inputPanel.add(new JLabel("Hệ số a:"));
+             inputPanel.add(txtA);
+             inputPanel.add(new JLabel("Hệ số b:"));
+             inputPanel.add(txtB);
+
+             JButton btnSolve = new JButton("Giải phương trình");
+             btnSolve.addActionListener(e -> giaiPhuongTrinh());
+
+             add(inputPanel, BorderLayout.CENTER);
+             add(btnSolve, BorderLayout.SOUTH);
+             add(lblResult, BorderLayout.NORTH);
+
+             setSize(420, 190);
+             setLocationRelativeTo(null);
+         }
+
+         private void giaiPhuongTrinh() {
+             try {
+                 double a = Double.parseDouble(txtA.getText().trim());
+                 double b = Double.parseDouble(txtB.getText().trim());
+                 final double EPS = 1e-9;
+
+                 if (Math.abs(a) < EPS && Math.abs(b) < EPS) {
+                     lblResult.setText("Nghiệm: phương trình có vô số nghiệm");
+                 } else if (Math.abs(a) < EPS) {
+                     lblResult.setText("Nghiệm: phương trình vô nghiệm");
+                 } else {
+                     double x = -b / a;
+                     lblResult.setText(String.format("Nghiệm: x = %.4f", x));
+                 }
+             } catch (NumberFormatException ex) {
+                 JOptionPane.showMessageDialog(this, "Vui lòng nhập a, b là số hợp lệ!");
+             }
+         }
+
+         public static void main(String[] args) {
+             SwingUtilities.invokeLater(() -> new Bai03PhuongTrinhBacNhat().setVisible(true));
+         }
+    }
+
+
+Bài 4. Nhập 3 số, kiểm tra và phân loại tam giác
+Yêu cầu:
+•       Tạo giao diện nhập ba cạnh a, b, c.
+•       Kiểm tra điều kiện tạo thành tam giác.
+•       Nếu là tam giác, phân loại: đều, cân, vuông, vuông cân, thường.
+Ví dụ kiểm thử: 3, 4, 5 -> tam giác vuông; 3, 3, 3 -> tam giác đều; 1, 2, 3 -> không phải tam giác.
+Code gợi ý
+
+    package io.github.hoangtnedu.java.lab3;
+
+    import javax.swing.*;
+
+                                            Bài lab thực hành - Học phần Công nghệ Java
+
+import java.awt.*;
+import java.util.Arrays;
+
+public class Bai04TamGiacSwing extends JFrame {
+    private final JTextField txtA = new JTextField();
+    private final JTextField txtB = new JTextField();
+    private final JTextField txtC = new JTextField();
+    private final JLabel lblResult = new JLabel("Kết quả: ");
+
+   public Bai04TamGiacSwing() {
+       setTitle("Bài 4 - Kiểm tra tam giác");
+       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       setLayout(new BorderLayout(10, 10));
+
+       JPanel panel = new JPanel(new GridLayout(3, 2, 8, 8));
+       panel.add(new JLabel("Cạnh a:"));
+       panel.add(txtA);
+       panel.add(new JLabel("Cạnh b:"));
+       panel.add(txtB);
+       panel.add(new JLabel("Cạnh c:"));
+       panel.add(txtC);
+
+       JButton btnCheck = new JButton("Kiểm tra");
+       btnCheck.addActionListener(e -> kiemTraTamGiac());
+
+       add(panel, BorderLayout.CENTER);
+       add(btnCheck, BorderLayout.SOUTH);
+       add(lblResult, BorderLayout.NORTH);
+
+       setSize(420, 230);
+       setLocationRelativeTo(null);
+   }
+
+   private void kiemTraTamGiac() {
+       try {
+           double a = Double.parseDouble(txtA.getText().trim());
+           double b = Double.parseDouble(txtB.getText().trim());
+           double c = Double.parseDouble(txtC.getText().trim());
+           lblResult.setText("Kết quả: " + loaiTamGiac(a, b, c));
+       } catch (NumberFormatException ex) {
+           JOptionPane.showMessageDialog(this, "Ba cạnh phải là số hợp lệ!");
+       }
+   }
+
+   private String loaiTamGiac(double a, double b, double c) {
+       final double EPS = 1e-9;
+       if (a <= 0 || b <= 0 || c <= 0 || a + b <= c || a + c <= b || b + c <= a) {
+           return "Không phải tam giác";
+       }
+
+       boolean deu = Math.abs(a - b) < EPS && Math.abs(b - c) < EPS;
+       boolean can = Math.abs(a - b) < EPS || Math.abs(a - c) < EPS || Math.abs(b - c) < EPS;
+
+       double[] d = {a, b, c};
+       Arrays.sort(d);
+       boolean vuong = Math.abs(d[0] * d[0] + d[1] * d[1] - d[2] * d[2]) < EPS;
+
+       if (deu) return "Tam giác đều";
+       if (vuong && can) return "Tam giác vuông cân";
+       if (vuong) return "Tam giác vuông";
+       if (can) return "Tam giác cân";
+       return "Tam giác thường";
+   }
+
+   public static void main(String[] args) {
+       SwingUtilities.invokeLater(() -> new Bai04TamGiacSwing().setVisible(true));
+
+                                      Bài lab thực hành - Học phần Công nghệ Java
+
+         }
+    }
+
+Bài 5. Hiển thị n số Fibonacci đầu tiên trong JTextArea
+Yêu cầu:
+•       Tạo giao diện nhập n và nút “Hiển thị”.
+•       Kết quả hiển thị trong JTextArea, đặt trong JScrollPane.
+•       Kiểm tra n là số nguyên dương; giới hạn n <= 92 để tránh tràn kiểu long.
+Ví dụ kiểm thử: n = 7 -> 0 1 1 2 3 5 8.
+Code gợi ý
+
+    package io.github.hoangtnedu.java.lab3;
+
+    import javax.swing.*;
+    import java.awt.*;
+
+    public class Bai05FibonacciSwing extends JFrame {
+        private final JTextField txtN = new JTextField(10);
+        private final JTextArea txtArea = new JTextArea(8, 35);
+
+         public Bai05FibonacciSwing() {
+             setTitle("Bài 5 - Hiển thị dãy Fibonacci");
+             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+             setLayout(new BorderLayout(10, 10));
+
+             JPanel topPanel = new JPanel(new FlowLayout());
+             topPanel.add(new JLabel("Nhập n:"));
+             topPanel.add(txtN);
+
+             JButton btnShow = new JButton("Hiển thị");
+             topPanel.add(btnShow);
+
+             txtArea.setEditable(false);
+             txtArea.setLineWrap(true);
+             txtArea.setWrapStyleWord(true);
+
+             btnShow.addActionListener(e -> hienThiFibonacci());
+
+             add(topPanel, BorderLayout.NORTH);
+             add(new JScrollPane(txtArea), BorderLayout.CENTER);
+
+             pack();
+             setLocationRelativeTo(null);
+         }
+
+         private void hienThiFibonacci() {
+             try {
+                 int n = Integer.parseInt(txtN.getText().trim());
+                 if (n <= 0 || n > 92) {
+                     JOptionPane.showMessageDialog(this, "n phải từ 1 đến 92 để tránh tràn số long!");
+                     return;
+                 }
+                 txtArea.setText(taoDayFibonacci(n));
+             } catch (NumberFormatException ex) {
+                 JOptionPane.showMessageDialog(this, "n phải là số nguyên dương!");
+             }
+         }
+
+         private String taoDayFibonacci(int n) {
+             StringBuilder sb = new StringBuilder();
+             long a = 0;
+
+                                            Bài lab thực hành - Học phần Công nghệ Java
+
+             long b = 1;
+             for (int i = 1; i <= n; i++) {
+                 if (i > 1) sb.append(" ");
+                 sb.append(a);
+                 long next = a + b;
+                 a = b;
+                 b = next;
+             }
+             return sb.toString();
+         }
+
+         public static void main(String[] args) {
+             SwingUtilities.invokeLater(() -> new Bai05FibonacciSwing().setVisible(true));
+         }
+    }
+
+
+9. Ba bài tập không có gợi ý code
+Ba bài dưới đây yêu cầu sinh viên tự thiết kế giao diện và tự cài đặt xử lý. Sinh viên được phép tham khảo lại
+các bài 1-5, nhưng không sao chép nguyên code.
+
+Bài 6. Form đăng nhập cơ bản
+•       Thiết kế JFrame gồm: tài khoản, mật khẩu, vai trò người dùng và nút Đăng nhập.
+•       Dùng JTextField cho tài khoản, JPasswordField cho mật khẩu, JComboBox cho vai trò.
+•       Thêm JCheckBox “Hiển thị mật khẩu”.
+•       Quy ước tài khoản kiểm thử: admin/123456 với vai trò Admin; user/123456 với vai trò User.
+•       Nếu đăng nhập đúng thì hiển thị thông báo chào mừng; nếu sai thì báo lỗi rõ ràng.
+
+Bài 7. Máy tính mini
+•       Thiết kế giao diện nhập hai số và các nút: Cộng, Trừ, Nhân, Chia, Clear.
+•       Kết quả hiển thị trên JLabel hoặc JTextField không cho sửa.
+•       Xử lý lỗi nhập sai định dạng số và lỗi chia cho 0.
+•       Mở rộng: thêm JTextArea hiển thị lịch sử các phép tính đã thực hiện.
+
+Bài 8. Quản lý sinh viên bằng JTable
+•       Thiết kế form gồm: mã sinh viên, họ tên, điểm trung bình, nút Thêm, Sửa, Xóa, Làm mới.
+•       Hiển thị danh sách sinh viên bằng JTable.
+•       Tự động xếp loại: >= 8.5 Giỏi, >= 7 Khá, >= 5 Trung bình, còn lại Yếu.
+•       Tách tối thiểu 2 lớp: Student và Bai08QuanLySinhVien.
+•       Mở rộng khuyến khích: tách StudentTableModel hoặc StudentService để làm quen MVC cơ bản.
+
+10. Biên dịch, chạy và đóng gói ứng dụng
+Sau khi viết code, sinh viên cần chạy thử từng bài. Có thể chạy trực tiếp trong IDE hoặc chạy bằng Maven từ
+Terminal.
+Lệnh build và chạy
+
+    // Đứng tại thư mục gốc của dự án lab03-java-swing
+    mvn clean compile
+
+    // Chạy từng bài bằng Maven Exec Plugin
+    mvn exec:java -Dexec.mainClass="io.github.hoangtnedu.java.lab3.Bai01HelloSwing"
+    mvn exec:java -Dexec.mainClass="io.github.hoangtnedu.java.lab3.Bai02TongHaiSo"
+
+                                         Bài lab thực hành - Học phần Công nghệ Java
+
+    mvn exec:java -Dexec.mainClass="io.github.hoangtnedu.java.lab3.Bai03PhuongTrinhBacNhat"
+    mvn exec:java -Dexec.mainClass="io.github.hoangtnedu.java.lab3.Bai04TamGiacSwing"
+    mvn exec:java -Dexec.mainClass="io.github.hoangtnedu.java.lab3.Bai05FibonacciSwing"
+
+    // Đóng gói project
+    mvn clean package
+
+    // Chạy class main mặc định trong JAR
+    java -jar target/lab03-java-swing-1.0-SNAPSHOT.jar
+    Ghi chú: Với bài lab Swing, có thể chạy từng file main trong IDE để kiểm tra nhanh. Tuy nhiên, sinh viên vẫn cần bảo
+    đảm project Maven biên dịch thành công bằng mvn clean compile.
+
+11. Sản phẩm cần nộp
+    STT                                    Sản phẩm                                      Yêu cầu
+                                                                                         Có đủ pom.xml và các lớp bài tập
+    1                                      Maven project lab03-java-swing
+                                                                                         trong package io.github.hoangtnedu.java.lab3.
+                                                                                         Bài 1-5 có thể dựa trên gợi ý code;
+    2                                      Mã nguồn 8 bài tập
+                                                                                         bài 6-8 sinh viên tự viết.
+                                                                                         Có java -version, javac -version, mvn
+    3                                      Ảnh kiểm tra môi trường
+                                                                                         -version.
+                                                                                         Có ảnh minh chứng ít nhất 8 bài, ưu
+    4                                      Ảnh chạy chương trình                         tiên ảnh thể hiện cả trường hợp đúng
+                                                                                         và lỗi nhập liệu.
+                                                                                         Mô tả cách chạy, thành phần Swing
+    5                                      Báo cáo ngắn
+                                                                                         đã dùng, lỗi gặp phải và cách xử lý.
+    6                                      File ZIP nộp bài                              Đặt tên: Lab03_MSSV_HoTen.zip.
+
+12. Đánh giá
+    Tiêu chí                              Mô tả                                           Điểm
+                                          Project Maven đúng package, biên dịch
+    Cấu trúc project và môi trường                                                        1.0
+                                          được, có minh chứng JDK/Maven.
+                                          Hoàn thành đủ chức năng, chạy đúng,
+    Bài 1-5 có gợi ý code                                                                 4.0
+                                          xử lý lỗi nhập liệu.
+                                          Tự thiết kế giao diện và cài đặt đúng
+    Bài 6-8 không có gợi ý code                                                           2.0
+                                          yêu cầu, không sao chép máy móc.
+                                          Dùng đúng
+    Kỹ thuật Swing Chương 2               JFrame/JPanel/component/layout/event;           1.0
+                                          khởi động bằng EDT.
+                                          Tên lớp rõ ràng, code dễ đọc, tách hàm
+    Trình bày và chuẩn code                                                               1.0
+                                          hợp lý, không để code thừa.
+                                          Có ảnh chạy chương trình, mô tả ngắn
+    Báo cáo và minh chứng                                                                 1.0
+                                          gọn, nộp đúng tên file.
+    Tổng                                                                                  10.0
+
+13. Câu hỏi củng cố đúng trọng tâm Chương 2
+•       JFrame và JPanel khác nhau như thế nào? Khi nào nên dùng JPanel?
+•       Layout Manager có vai trò gì trong thiết kế giao diện Swing?
+•       Vì sao không nên bố trí giao diện bằng null layout trong các bài lab cơ bản?
+•       ActionListener dùng để làm gì? Hãy nêu một ví dụ trong Lab 3.
+•       EDT là gì? Vì sao cần dùng SwingUtilities.invokeLater khi khởi động giao diện?
+                                           Bài lab thực hành - Học phần Công nghệ Java
+
+•   JTextField, JTextArea và JPasswordField khác nhau như thế nào?
+•   Khi người dùng nhập sai kiểu số, chương trình nên xử lý như thế nào để không bị dừng đột ngột?
+•   Trong bài quản lý sinh viên, có thể tách lớp theo mô hình MVC đơn giản như thế nào?
+
+14. Tài liệu tham khảo
+•   Kế hoạch giảng dạy học phần Công nghệ Java: Chương 2 - Phát triển ứng dụng desktop trong Java SE.
+•   Lab3_JavaSwing.pdf: Lab 3 - Làm quen với Java Swing.
+•   Oracle Java Tutorials: Creating a GUI With Swing, Event Dispatch Thread, Layout Managers, How to
+    Write an Action Listener.
+•   Giáo trình Lập trình hướng đối tượng với Java: phần ngôn ngữ Java, lớp/đối tượng, thư viện Java API và xử
+    lý ngoại lệ.
+•   Apache Maven Documentation: Maven project structure, build lifecycle và exec-maven-plugin.
+
+
+                                     Bài lab thực hành - Học phần Công nghệ Java

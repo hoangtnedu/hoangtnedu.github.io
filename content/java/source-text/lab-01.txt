@@ -1,0 +1,469 @@
+LAB 1
+  CHƯƠNG 1: TỔNG QUAN CÔNG NGHỆ VÀ PHÁT TRIỂN ỨNG DỤNG TRONG
+                                JAVA
+              Ứng dụng Java SE Console, JDK/JVM và Maven
+ Học phần                                                      Công nghệ Java
+                                                               Xây dựng ứng dụng Java SE Console bằng Maven và đóng gói
+ Tên bài lab
+                                                               JAR
+                                                               Java Platform, Java SE, JDK, JRE, JVM, JIT, Maven, đóng gói
+ Công nghệ Chương 1
+                                                               ứng dụng
+ Thời lượng gợi ý                                              01 buổi thực hành
+                                                               Mã nguồn Maven project + file JAR + ảnh chạy chương trình +
+ Sản phẩm nộp
+                                                               báo cáo ngắn
+
+
+ Định hướng chỉnh sửa theo đúng Chương 1
+ Các bài toán Console vẫn được giữ lại, nhưng được đặt trong quy trình công nghệ của Chương 1: cài JDK, kiểm tra JRE/JVM,
+ tạo Java SE Maven project, tổ chức mã nguồn theo package, biên dịch, chạy bằng JVM và đóng gói thành file JAR.
+
+1. Căn cứ nội dung Chương 1
+Lab này bám theo Chương 1 của học phần Công nghệ Java: tổng quan Java Platform, Java SE, Java/Jakarta EE, Java ME;
+JVM, JIT, JDK, JRE; phát triển ứng dụng Java; cài đặt môi trường; quản lý dự án bằng Maven; và đóng gói ứng dụng
+Java.
+ Nội dung Chương 1                                             Thể hiện trong bài lab
+                                                               Xây dựng ứng dụng Console chạy trên Java SE, chưa dùng GUI,
+ Java SE
+                                                               Jakarta EE hoặc Spring.
+                                                               Dùng javac và java để hiểu quy trình biên dịch và chạy chương
+ JDK
+                                                               trình.
+ JRE/JVM                                                       Chạy bytecode .class và file .jar trên JVM.
+                                                               Nhận biết vai trò tối ưu thực thi của JVM ở thời gian chạy, không
+ JIT
+                                                               cần cấu hình sâu.
+                                                               Tạo cấu trúc dự án chuẩn, biên dịch và đóng gói bằng mvn clean
+ Maven
+                                                               package.
+                                                               Đóng gói ứng dụng Console thành file .jar có thể chạy bằng java -
+ JAR
+                                                               jar.
+
+2. Mục tiêu
+ STT                                                           Mục tiêu cần đạt
+                                                               Trình bày ngắn gọn được vai trò của JDK, JRE, JVM và JIT trong
+                                                               quá trình phát triển/chạy ứng dụng Java.
+                                                               Cài đặt, kiểm tra và sử dụng được môi trường phát triển Java bằng
+                                                               các lệnh java, javac và mvn.
+                              3                                Tạo được dự án Java SE Console theo cấu trúc Maven chuẩn.
+                                                               Viết được lớp So chứa các phương thức xử lý 5 bài toán số học cơ
+                                                               bản.
+
+
+ STT                                                                        Mục tiêu cần đạt
+                                                                            Viết được lớp App để nhập dữ liệu từ bàn phím, gọi lớp So và
+                                                                            hiển thị kết quả.
+                                                                            Biên dịch, chạy, đóng gói JAR và chạy ứng dụng bằng lệnh java -
+                                                                            jar.
+
+3. Công cụ sử dụng
+ Công cụ                                                                    Mục đích sử dụng
+                                                                            Biên dịch mã nguồn .java thành bytecode .class và chạy ứng dụng
+ JDK 17 hoặc JDK 21
+                                                                            Java.
+ Apache Maven 3.x                                                           Quản lý cấu trúc dự án, biên dịch và đóng gói ứng dụng.
+ IntelliJ IDEA / Eclipse / NetBeans / VS Code                               Soạn thảo mã nguồn và chạy thử chương trình.
+ Command Prompt / PowerShell / Terminal                                     Kiểm tra môi trường, build và chạy JAR.
+ Git hoặc ZIP                                                               Nộp bài và quản lý mã nguồn, nếu giảng viên yêu cầu.
+
+4. Yêu cầu công nghệ trước khi lập trình
+Sinh viên cần chứng minh môi trường Java và Maven đã hoạt động trước khi bắt đầu viết code. Đây là phần bắt buộc để
+bài lab đúng trọng tâm Chương 1.
+Lệnh kiểm tra môi trường
+ java -version
+ javac -version
+ mvn -version
+ echo %JAVA_HOME% // Windows
+ # echo $JAVA_HOME // macOS/Linux
+
+
+5. Cấu trúc dự án Maven yêu cầu
+Tên dự án Maven gợi ý: lab01-java-console. Sinh viên tổ chức mã nguồn theo package io.github.hoangtnedu.java.lab1.
+Cấu trúc thư mục chuẩn
+ lab01-java-console/
+ ├── pom.xml
+ └── src/
+    └── main/
+     └── java/
+        └── vn/
+          └── edu/
+             └── hoangtnedu/
+               └── lab1/
+                 ├── App.java
+                 └── So.java
+Có thể tạo bằng Maven archetype hoặc tạo thủ công theo đúng cấu trúc trên.
+Lệnh tạo dự án Maven gợi ý trên Windows
+ mvn archetype:generate ^
+ -DgroupId=io.github.hoangtnedu.java ^
+ -DartifactId=lab01-java-console ^
+ -DarchetypeArtifactId=maven-archetype-quickstart ^
+ -DinteractiveMode=false
+
+ // Sau khi tạo dự án, tạo thêm package io.github.hoangtnedu.java.lab1
+ // và đặt hai file App.java, So.java trong package này.
+
+
+6. File cấu hình Maven
+File pom.xml
+ <project xmlns="http://maven.apache.org/POM/4.0.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+
+   <groupId>io.github.hoangtnedu.java</groupId>
+
+
+   <artifactId>lab01-java-console</artifactId>
+   <version>1.0-SNAPSHOT</version>
+   <packaging>jar</packaging>
+
+
+   <properties>
+     <maven.compiler.source>17</maven.compiler.source>
+     <maven.compiler.target>17</maven.compiler.target>
+     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+   </properties>
+
+
+   <build>
+      <plugins>
+        <plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-jar-plugin</artifactId>
+           <version>3.4.2</version>
+           <configuration>
+             <archive>
+                <manifest>
+                   <mainClass>io.github.hoangtnedu.java.lab1.App</mainClass>
+                </manifest>
+             </archive>
+           </configuration>
+        </plugin>
+      </plugins>
+   </build>
+ </project>
+
+
+7. Nội dung bài tập lập trình Console
+ Yêu cầu thiết kế lớp
+ Viết lớp So để xử lý logic tính toán. Lớp So không nhập dữ liệu từ bàn phím. Lớp App chịu trách nhiệm hiển thị menu, nhập dữ
+ liệu bằng Scanner và gọi các phương thức của lớp So.
+ Bài                                         Tên bài                          Yêu cầu                               Ví dụ kiểm thử
+                                                                              Nhập n nguyên dương từ bàn
+                                                                              phím. Tính s = 2 + 4 + ... + n.
+                     Bài 1                   Tính tổng số chẵn                                                      n = 10 -> s = 30; n = 9 -> s = 20
+                                                                              Nếu n là số lẻ, tính đến số chẵn
+                                                                              lớn nhất nhỏ hơn n.
+                                                                              Nhập n nguyên dương từ bàn
+                     Bài 2                   Tính tổng nghịch đảo                                                   n = 4 -> s = 2.0833
+                                                                              phím. Tính s = 1 + 1/2 + ... + 1/n.
+                                                                              Nhập một số nguyên n. Kiểm tra
+                                                                                                                    n = 17 -> nguyên tố; n = 21 ->
+                     Bài 3                   Kiểm tra số nguyên tố            n có phải là số nguyên tố hay
+                                                                                                                    không nguyên tố
+                                                                              không.
+                                                                              Nhập 3 số a, b, c. Kiểm tra có
+                                                                                                                    3,4,5 -> vuông; 3,3,3 -> đều;
+                     Bài 4                   Kiểm tra và phân loại tam giác   phải 3 cạnh tam giác không. Nếu
+                                                                                                                    1,2,3 -> không phải tam giác
+                                                                              có, xác định loại tam giác.
+                                                                              Nhập n nguyên dương. Hiển thị n
+                     Bài 5                   Hiển thị dãy Fibonacci           số Fibonacci đầu tiên theo dạng 0     n = 7 -> 0 1 1 2 3 5 8
+                                                                              1 1 2 3 5 8 ...
+
+8. Code gợi ý
+Code dưới đây là bản gợi ý đầy đủ theo đúng cấu trúc Java SE Console trong Maven project. Mỗi khối code được đặt trong
+bảng 1 dòng 1 cột để dễ sao chép và chỉnh sửa.
+File src/main/java/io/github/hoangtnedu/java/lab1/So.java
+ package io.github.hoangtnedu.java.lab1;
+
+
+ public class So {
+
+
+   public static int tongChanDenN(int n) {
+     kiemTraNguyenDuong(n);
+     int s = 0;
+     for (int i = 2; i <= n; i += 2) {
+        s += i;
+     }
+     return s;
+   }
+
+
+public static double tongNghichDao(int n) {
+  kiemTraNguyenDuong(n);
+  double s = 0;
+  for (int i = 1; i <= n; i++) {
+     s += 1.0 / i;
+  }
+  return s;
+}
+
+
+public static boolean laSoNguyenTo(int n) {
+  if (n < 2) {
+     return false;
+  }
+  if (n == 2) {
+     return true;
+  }
+  if (n % 2 == 0) {
+     return false;
+  }
+  for (int i = 3; i <= Math.sqrt(n); i += 2) {
+      if (n % i == 0) {
+         return false;
+     }
+  }
+  return true;
+}
+
+
+public static String loaiTamGiac(double a, double b, double c) {
+  final double EPS = 1e-9;
+
+
+    if (a <= 0 || b <= 0 || c <= 0) {
+       return "Khong phai tam giac";
+    }
+    if (a + b <= c || a + c <= b || b + c <= a) {
+       return "Khong phai tam giac";
+    }
+
+
+    boolean deu = Math.abs(a - b) < EPS && Math.abs(b - c) < EPS;
+    boolean can = Math.abs(a - b) < EPS || Math.abs(a - c) < EPS || Math.abs(b - c) < EPS;
+
+
+    double x = a, y = b, z = c;
+    if (x > y) { double temp = x; x = y; y = temp; }
+    if (y > z) { double temp = y; y = z; z = temp; }
+    if (x > y) { double temp = x; x = y; y = temp; }
+
+
+    boolean vuong = Math.abs(x * x + y * y - z * z) < EPS;
+
+
+    if (deu) {
+       return "Tam giac deu";
+    }
+    if (vuong && can) {
+       return "Tam giac vuong can";
+    }
+    if (vuong) {
+       return "Tam giac vuong";
+    }
+    if (can) {
+       return "Tam giac can";
+    }
+    return "Tam giac thuong";
+}
+
+
+public static String dayFibonacci(int n) {
+  kiemTraNguyenDuong(n);
+  StringBuilder ketQua = new StringBuilder();
+  long a = 0;
+  long b = 1;
+
+
+    for (int i = 1; i <= n; i++) {
+       if (i > 1) {
+          ketQua.append(" ");
+       }
+       ketQua.append(a);
+       long next = a + b;
+       a = b;
+       b = next;
+    }
+    return ketQua.toString();
+
+
+     }
+
+
+     private static void kiemTraNguyenDuong(int n) {
+        if (n <= 0) {
+            throw new IllegalArgumentException("n phai la so nguyen duong");
+        }
+     }
+ }
+
+File src/main/java/io/github/hoangtnedu/java/lab1/App.java
+ package io.github.hoangtnedu.java.lab1;
+
+
+ import java.util.Scanner;
+
+
+ public class App {
+
+
+     public static void main(String[] args) {
+       Scanner scanner = new Scanner(System.in);
+       int choice;
+
+
+         do {
+           hienThiMenu();
+           System.out.print("Chon bai tap: ");
+           choice = scanner.nextInt();
+
+
+           try {
+              switch (choice) {
+                 case 1 -> bai1(scanner);
+                 case 2 -> bai2(scanner);
+                 case 3 -> bai3(scanner);
+                 case 4 -> bai4(scanner);
+                 case 5 -> bai5(scanner);
+                 case 0 -> System.out.println("Ket thuc chuong trinh.");
+                 default -> System.out.println("Lua chon khong hop le!");
+              }
+           } catch (IllegalArgumentException ex) {
+              System.out.println("Loi: " + ex.getMessage());
+           }
+           System.out.println();
+         } while (choice != 0);
+
+
+         scanner.close();
+     }
+
+
+     private static void hienThiMenu() {
+        System.out.println("========== LAB 1 - JAVA SE CONSOLE ==========");
+        System.out.println("1. Tinh S = 2 + 4 + ... + n");
+        System.out.println("2. Tinh S = 1 + 1/2 + ... + 1/n");
+        System.out.println("3. Kiem tra so nguyen to");
+        System.out.println("4. Kiem tra va phan loai tam giac");
+        System.out.println("5. Hien thi n so Fibonacci dau tien");
+        System.out.println("0. Thoat");
+     }
+
+
+     private static void bai1(Scanner scanner) {
+        System.out.print("Nhap n: ");
+        int n = scanner.nextInt();
+        System.out.println("S = " + So.tongChanDenN(n));
+     }
+
+
+     private static void bai2(Scanner scanner) {
+        System.out.print("Nhap n: ");
+        int n = scanner.nextInt();
+        System.out.printf("S = %.4f%n", So.tongNghichDao(n));
+     }
+
+
+     private static void bai3(Scanner scanner) {
+        System.out.print("Nhap n: ");
+        int n = scanner.nextInt();
+        if (So.laSoNguyenTo(n)) {
+            System.out.println(n + " la so nguyen to.");
+        } else {
+            System.out.println(n + " khong phai la so nguyen to.");
+        }
+     }
+
+
+     private static void bai4(Scanner scanner) {
+
+
+         System.out.print("Nhap a: ");
+         double a = scanner.nextDouble();
+         System.out.print("Nhap b: ");
+         double b = scanner.nextDouble();
+         System.out.print("Nhap c: ");
+         double c = scanner.nextDouble();
+         System.out.println("Ket qua: " + So.loaiTamGiac(a, b, c));
+     }
+
+
+     private static void bai5(Scanner scanner) {
+        System.out.print("Nhap n: ");
+        int n = scanner.nextInt();
+        System.out.println("Day Fibonacci: " + So.dayFibonacci(n));
+     }
+ }
+
+
+9. Biên dịch, chạy và đóng gói ứng dụng
+Sau khi viết code, sinh viên phải chạy được ứng dụng theo cả hai mức: chạy qua Maven và chạy file JAR bằng JVM.
+Lệnh build và chạy
+ // Đứng tại thư mục gốc của dự án lab01-java-console
+ mvn clean compile
+ mvn exec:java -Dexec.mainClass="io.github.hoangtnedu.java.lab1.App"
+
+ // Đóng gói ứng dụng
+ mvn clean package
+
+ // Chạy file JAR bằng JVM
+ java -jar target/lab01-java-console-1.0-SNAPSHOT.jar
+ Ghi chú
+ Nếu chưa cấu hình exec-maven-plugin, sinh viên có thể chạy trực tiếp App.java trong IDE. Tuy nhiên, phần đóng gói JAR và
+ chạy bằng java -jar vẫn là yêu cầu bắt buộc của Lab 1.
+
+10. Sản phẩm cần nộp
+ STT                                                              Sản phẩm                                     Yêu cầu
+                                                                                                               Có đủ pom.xml, So.java, App.java và đúng
+                                1                                 Maven project lab01-java-console
+                                                                                                               package io.github.hoangtnedu.java.lab1.
+                                                                                                               Tạo bằng lệnh mvn clean package và chạy
+                                2                                 File JAR trong thư mục target
+                                                                                                               được bằng java -jar.
+                                                                                                               Có java -version, javac -version, mvn -
+                                3                                 Ảnh kiểm tra môi trường
+                                                                                                               version.
+                                4                                 Ảnh chạy chương trình                        Có minh chứng chạy đủ 5 bài tập Console.
+                                                                                                               Trình bày quy trình .java -> .class -> JVM
+                                5                                 Báo cáo ngắn
+                                                                                                               -> JAR và nhận xét kết quả.
+                                6                                 File ZIP nộp bài                             Đặt tên: Lab01_MSSV_HoTen.zip.
+
+11. Đánh giá
+ Tiêu chí                                                         Mô tả                                        Điểm
+                                                                  Có minh chứng JDK/JRE/JVM hoạt động
+ Kiểm tra môi trường Chương 1                                     qua java, javac; Maven hoạt động qua mvn                        1.5
+                                                                  -version.
+                                                                  Đúng cấu trúc src/main/java, đúng
+ Cấu trúc Maven project                                                                                                           1.5
+                                                                  package, có pom.xml hợp lệ.
+                                                                  Tách đúng logic xử lý; có đủ 5 phương
+ Lớp So                                                                                                                           2.0
+                                                                  thức; xử lý được n không hợp lệ.
+                                                                  Tính đúng kết quả các bài tổng, nguyên tố,
+ Năm bài tập Console                                                                                                              2.5
+                                                                  tam giác, Fibonacci với dữ liệu kiểm thử.
+                                                                  Có menu rõ ràng, nhập dữ liệu, gọi lớp So,
+ Lớp App và giao diện Console                                                                                                     1.0
+                                                                  hiển thị kết quả dễ đọc.
+                                                                  Build thành công bằng mvn clean package;
+ Đóng gói và chạy JAR                                                                                                             1.0
+                                                                  chạy được bằng java -jar.
+
+
+    Tiêu chí                                Mô tả                                        Điểm
+                                            Có ảnh minh chứng, trình bày rõ, đúng tên
+    Báo cáo và tác phong nộp bài                                                                           0.5
+                                            file, mã nguồn sạch.
+
+12. Câu hỏi củng cố đúng trọng tâm Chương 1
+1.    JDK khác JRE ở điểm nào? Vì sao máy lập trình cần JDK?
+2.    JVM có vai trò gì khi chạy file .class hoặc file .jar?
+3.    JIT giúp gì cho quá trình thực thi chương trình Java?
+4.    Maven giải quyết vấn đề gì trong quản lý dự án Java?
+5.    Trong bài lab này, ứng dụng thuộc Java SE, Jakarta EE hay Spring? Giải thích lý do.
+6.    Giải thích quy trình từ file So.java/App.java đến file JAR chạy được bằng java -jar.
+
+13. Tài liệu tham khảo
+•    Kế hoạch giảng dạy học phần Công nghệ Java: Chương 1 - Tổng quan về công nghệ và phát triển ứng dụng trong Java.
+•    Giáo trình Lập trình hướng đối tượng với Java: phần môi trường lập trình, chương trình Java đầu tiên, biến, phép toán và
+     cấu trúc điều khiển.
+•    Apache Maven Documentation: Maven project structure, build lifecycle và JAR packaging.
+•    Oracle Java Documentation: Java SE, javac, java command và java.util.Scanner.

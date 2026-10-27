@@ -1,0 +1,268 @@
+LAB 14
+     CHƯƠNG 4: PHÁT TRIỂN ỨNG DỤNG VỚI SPRING FRAMEWORK
+                            Bảo mật ứng dụng với Spring Security
+
+
+ Học phần                                              Công nghệ Java
+ Tên bài lab                                           Bảo mật ứng dụng với Spring Security
+                                                       Spring Security, Login, Logout, Role, phân quyền
+ Công nghệ Chương 4
+                                                       URL, Thymeleaf Security
+ Thời lượng gợi ý                                      01 buổi thực hành, 3 tiết
+ Project gợi ý                                         lab14-spring-security
+                                                       Mã nguồn có login/phân quyền + ảnh minh chứng +
+ Sản phẩm nộp
+                                                       báo cáo ngắn
+
+
+1. Căn cứ nội dung Chương 4
+Lab này bám theo Chương 4 của học phần Công nghệ Java: giới thiệu Spring Framework và Spring
+Boot, công cụ phát triển ứng dụng Spring, Thymeleaf, Spring MVC, Spring Data JPA, Spring
+Security và bài tập xây dựng ứng dụng hoàn chỉnh với Spring Framework.
+ Nội dung Chương 4                                     Thể hiện trong bài lab
+ 4.4 Bảo mật ứng dụng với Spring Security              Tạo login, logout, phân quyền theo vai trò.
+ Authentication                                        Kiểm tra danh tính người dùng khi đăng nhập.
+                                                       Giới hạn quyền truy cập theo vai trò
+ Authorization
+                                                       ADMIN/USER.
+                                                       Ẩn/hiện menu và chức năng theo quyền của người
+ Tích hợp Thymeleaf
+                                                       dùng.
+
+
+2. Mục tiêu
+ STT                                                   Mục tiêu cần đạt
+                                                       Tích hợp được Spring Security vào project Spring
+                                                       Boot.
+ 2                                                     Xây dựng được form đăng nhập tùy chỉnh.
+ 3                                                     Cấu hình được user trong bộ nhớ.
+ 4                                                     Phân quyền URL theo role ADMIN và USER.
+ 5                                                     Bảo vệ chức năng thêm, sửa, xóa dữ liệu.
+
+
+ STT                                                   Mục tiêu cần đạt
+ 6                                                     Hiển thị thông tin người dùng đang đăng nhập.
+
+
+3. Công cụ sử dụng
+ Công cụ                                               Mục đích sử dụng
+ JDK 17 hoặc JDK 21                                    Biên dịch và chạy ứng dụng Spring Boot.
+ Apache Maven 3.x                                      Quản lý dependency, build và chạy project.
+ IntelliJ IDEA / Eclipse / VS Code                     Soạn thảo mã nguồn, chạy và debug ứng dụng.
+ Spring Initializr                                     Khởi tạo project Spring Boot đúng cấu trúc.
+ Trình duyệt web                                       Kiểm thử giao diện web.
+ Git hoặc file ZIP                                     Quản lý mã nguồn và nộp bài.
+ Các dependency Spring tương ứng                       Sử dụng đúng dependency theo từng bài lab.
+
+
+4. Yêu cầu công nghệ trước khi lập trình
+Sinh viên cần kiểm tra môi trường Java và Maven đã hoạt động trước khi bắt đầu viết code. Project
+phải chạy được bằng IDE và bằng lệnh Maven.
+Lệnh kiểm tra môi trường và chạy project
+ java -version
+ javac -version
+ mvn -version
+ mvn spring-boot:run
+
+
+5. Cấu trúc dự án yêu cầu
+Tên dự án gợi ý: lab14-spring-security. Sinh viên tổ chức mã nguồn theo package io.github.hoangtnedu.java.lab14.
+Cấu trúc thư mục chuẩn
+ lab14-spring-security/
+ ├── pom.xml
+ └── src/main/
+     ├── java/io/github/hoangtnedu/java/lab14/
+     │   ├── Lab14Application.java
+     │   ├── config/SecurityConfig.java
+     │   ├── controller/AuthController.java
+     │   └── controller/StudentController.java
+     └── resources/templates/
+         ├── auth/login.html
+         ├── error/403.html
+         └── students/list.html
+
+
+6. Nội dung bài tập có code gợi ý
+Sinh viên thực hiện lần lượt 5 bài tập dưới đây. Code gợi ý chỉ là khung tham khảo, sinh viên cần
+đọc hiểu, chỉnh sửa package và hoàn thiện getter/setter, view hoặc cấu hình còn thiếu.
+
+
+Bài 1. Thêm dependency Spring Security
+Thêm dependency Spring Security và Thymeleaf Security vào project.
+pom.xml
+ <dependency>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-starter-security</artifactId>
+ </dependency>
+
+ <dependency>
+     <groupId>org.thymeleaf.extras</groupId>
+     <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+ </dependency>
+
+
+Bài 2. Cấu hình Security cơ bản
+Cấu hình URL công khai, URL cần đăng nhập và URL chỉ dành cho ADMIN.
+SecurityConfig.java
+ package io.github.hoangtnedu.java.lab14.config;
+
+ import org.springframework.context.annotation.Bean;
+ import org.springframework.context.annotation.Configuration;
+ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+ import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+ import org.springframework.security.web.SecurityFilterChain;
+
+ @Configuration
+ @EnableWebSecurity
+ public class SecurityConfig {
+     @Bean
+     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+         http.authorizeHttpRequests(auth -> auth
+                 .requestMatchers("/", "/about", "/css/**").permitAll()
+                 .requestMatchers("/students/create", "/students/delete/**").hasRole("ADMIN")
+                 .requestMatchers("/students/**").hasAnyRole("ADMIN", "USER")
+                 .anyRequest().authenticated()
+             )
+             .formLogin(form -> form
+                 .loginPage("/login")
+                 .defaultSuccessUrl("/students", true)
+                 .permitAll()
+             )
+             .logout(logout -> logout
+                 .logoutSuccessUrl("/")
+                 .permitAll()
+             );
+         return http.build();
+     }
+ }
+
+
+Bài 3. Tạo user trong bộ nhớ
+Tạo hai tài khoản admin và user để kiểm thử phân quyền.
+Bổ sung trong SecurityConfig.java
+ @Bean
+ public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+     UserDetails admin = User.builder()
+         .username("admin")
+
+
+         .password(passwordEncoder.encode("123456"))
+         .roles("ADMIN")
+         .build();
+
+     UserDetails user = User.builder()
+         .username("user")
+         .password(passwordEncoder.encode("123456"))
+         .roles("USER")
+         .build();
+
+     return new InMemoryUserDetailsManager(admin, user);
+ }
+
+ @Bean
+ public PasswordEncoder passwordEncoder() {
+     return new BCryptPasswordEncoder();
+ }
+
+
+Bài 4. Tạo trang đăng nhập
+Tạo Controller và giao diện login tùy chỉnh.
+AuthController.java
+ package io.github.hoangtnedu.java.lab14.controller;
+
+ import org.springframework.stereotype.Controller;
+ import org.springframework.web.bind.annotation.GetMapping;
+
+ @Controller
+ public class AuthController {
+     @GetMapping("/login")
+     public String login() {
+         return "auth/login";
+     }
+ }
+
+
+templates/auth/login.html
+ <form th:action="@{/login}" method="post">
+     <label>Tên đăng nhập</label>
+     <input type="text" name="username">
+
+     <label>Mật khẩu</label>
+     <input type="password" name="password">
+
+     <button type="submit">Đăng nhập</button>
+ </form>
+
+
+Bài 5. Ẩn/hiện chức năng theo quyền
+Dùng Thymeleaf Security để chỉ ADMIN thấy nút thêm/xóa.
+Đoạn HTML gợi ý
+ <div sec:authorize="hasRole('ADMIN')">
+     <a th:href="@{/students/create}">Thêm sinh viên</a>
+ </div>
+
+ <div sec:authorize="isAuthenticated()">
+     Xin chào: <span sec:authentication="name"></span>
+
+
+     <form th:action="@{/logout}" method="post">
+         <button type="submit">Đăng xuất</button>
+     </form>
+ </div>
+
+
+7. Bài tập không có code gợi ý
+ Bài                                                   Yêu cầu
+                                                       Cấu hình URL /courses/** chỉ cho ADMIN truy
+ Bài 6
+                                                       cập.
+                                                       Tạo trang báo lỗi 403 khi người dùng không có
+ Bài 7
+                                                       quyền.
+                                                       Thêm menu hiển thị khác nhau cho ADMIN và
+ Bài 8
+                                                       USER.
+                                                       Bảo vệ chức năng xóa sinh viên, chỉ ADMIN được
+ Bài 9
+                                                       xóa.
+ Bài 10                                                Thay user trong bộ nhớ bằng user lưu trong CSDL.
+
+
+8. Biên dịch, chạy và kiểm thử
+Sau khi hoàn thành, sinh viên cần chạy ứng dụng, kiểm thử các URL/chức năng chính, chụp ảnh
+minh chứng và ghi lại lỗi nếu có.
+Lệnh build và chạy
+ mvn clean package
+ mvn spring-boot:run
+ # Truy cập ứng dụng tại:
+ # http://localhost:8080
+
+
+9. Sản phẩm cần nộp
+ STT                                                   Sản phẩm
+ 1                                                     Project lab14-spring-security.
+ 2                                                     Ảnh login bằng tài khoản admin.
+ 3                                                     Ảnh login bằng tài khoản user.
+                                                       Ảnh minh chứng user thường bị chặn khi vào chức
+                                                       năng admin.
+ 5                                                     Báo cáo mô tả authentication và authorization.
+
+
+10. Tiêu chí đánh giá
+ Tiêu chí                                              Điểm
+ Tích hợp Spring Security đúng                         2.0
+ Login/logout hoạt động                                1.5
+ Phân quyền URL đúng                                   2.0
+
+
+ Tiêu chí                                            Điểm
+ Ẩn/hiện chức năng theo role                         1.5
+ Bài tự làm                                          2.0
+ Báo cáo và ảnh minh chứng                           1.0
+
+
+11. Tài liệu tham khảo
+[1] Kế hoạch giảng dạy học phần Công nghệ Java: Chương 4 - Phát triển ứng dụng với Spring
+Framework.
+[2] Spring Framework Documentation, Spring Website, 2024.
+[3] Spring Persistence with Hibernate, Paul Tepper Fisher & Brian D. Murphy, Apress.

@@ -1,0 +1,263 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lab 4. EDT, tác vụ nền và SwingWorker | HoangTN</title><meta name="author" content="Trần Nguyên Hoàng"><meta name="description" content="EDT, tác vụ nền và SwingWorker"><meta property="og:title" content="Lab 4. EDT, tác vụ nền và SwingWorker | HoangTN"><meta property="og:description" content="EDT, tác vụ nền và SwingWorker"><meta property="og:type" content="article"><meta property="og:url" content="https://hoangtnedu.github.io/java/lab-04.html"><link rel="canonical" href="https://hoangtnedu.github.io/java/lab-04.html"><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/css/site.css"><link rel="stylesheet" href="../assets/css/java.css"><script defer src="../assets/js/site.js"></script><script defer src="../assets/js/java.js"></script></head><body class="java"><a class="skip" href="#noi-dung">Đến nội dung</a><header class="top"><a class="brand" href="../index.html">HoangTN<span>Nghiên cứu và lập trình</span></a><nav aria-label="Điều hướng chính"><a href="../index.html">Trang chủ</a><a href="../dotnet/">Lập trình .NET</a><a href="index.html" aria-current="page">Công nghệ Java</a><button class="mobile-nav" type="button" aria-controls="navigation" aria-expanded="false">Mục lục</button></nav></header><div class="progress" aria-hidden="true"></div><div class="layout"><aside class="sidebar" id="navigation" aria-label="Lộ trình Java"><div class="profile"><strong>Trần Nguyên Hoàng</strong><p>Ghi chép lập trình · HoangTN</p><a href="../index.html">← Trang chủ</a></div><h2>Công nghệ Java</h2><label class="tiny" for="toc-search">Tìm chương hoặc buổi</label><input type="search" id="toc-search" placeholder="Swing, JDBC, buổi 12…"><ul class="toc-list"><li data-search="tong quan va lich trinh 20 buoi"><a href="index.html">Tổng quan và lịch trình 20 buổi</a></li><li data-search="chuong 1. tong quan va phat trien ung dung java"><a href="chuong-1.html">Chương 1. Tổng quan và phát triển ứng dụng Java</a></li><li data-search="chuong 2. ung dung desktop voi java se"><a href="chuong-2.html">Chương 2. Ứng dụng desktop với Java SE</a></li><li data-search="chuong 3. ung dung da lop voi jakarta ee"><a href="chuong-3.html">Chương 3. Ứng dụng đa lớp với Jakarta EE</a></li><li data-search="chuong 4. phat trien ung dung voi spring framework"><a href="chuong-4.html">Chương 4. Phát triển ứng dụng với Spring Framework</a></li><li data-search="bo 16 bai lab va lich trinh"><a href="bai-tap.html">Bộ 16 bài lab và lịch trình</a></li><li data-search="huong dan review project"><a href="project.html">Hướng dẫn review project</a></li><li data-search="tai lieu tham khao"><a href="tai-lieu.html">Tài liệu tham khảo</a></li><li data-search="lab 1. java se console, jdk/jvm va maven"><a href="lab-01.html">Lab 1. Java SE Console, JDK/JVM và Maven</a></li><li data-search="lab 2. moi truong java, maven va dong goi jar"><a href="lab-02.html">Lab 2. Môi trường Java, Maven và đóng gói JAR</a></li><li data-search="lab 3. java swing: giao dien va xu ly su kien"><a href="lab-03.html">Lab 3. Java Swing: giao diện và xử lý sự kiện</a></li><li data-search="lab 4. edt, tac vu nen va swingworker"><a href="lab-04.html" class="active" aria-current="page">Lab 4. EDT, tác vụ nền và SwingWorker</a></li><li data-search="lab 5. minishop: java swing va jdbc"><a href="lab-05.html">Lab 5. MiniShop: Java Swing và JDBC</a></li><li data-search="lab 6. servlet, jsp, jstl, filter va listener"><a href="lab-06.html">Lab 6. Servlet, JSP, JSTL, Filter và Listener</a></li><li data-search="lab 7. crud theo mvc voi servlet va jsp"><a href="lab-07.html">Lab 7. CRUD theo MVC với Servlet và JSP</a></li><li data-search="lab 8. jakarta faces: validation va message"><a href="lab-08.html">Lab 8. Jakarta Faces: validation và message</a></li><li data-search="lab 9. jpa: entity, repository va transaction"><a href="lab-09.html">Lab 9. JPA: Entity, Repository và Transaction</a></li><li data-search="lab 10. dang nhap, role va bao ve url"><a href="lab-10.html">Lab 10. Đăng nhập, role và bảo vệ URL</a></li><li data-search="lab 11. spring boot va thymeleaf"><a href="lab-11.html">Lab 11. Spring Boot và Thymeleaf</a></li><li data-search="lab 12. spring mvc: form, validation va crud"><a href="lab-12.html">Lab 12. Spring MVC: form, validation và CRUD</a></li><li data-search="lab 13. spring data jpa va co so du lieu"><a href="lab-13.html">Lab 13. Spring Data JPA và cơ sở dữ liệu</a></li><li data-search="lab 14. spring security: dang nhap va phan quyen"><a href="lab-14.html">Lab 14. Spring Security: đăng nhập và phân quyền</a></li><li data-search="lab 15. project spring: dang ky hoc phan"><a href="lab-15.html">Lab 15. Project Spring: đăng ký học phần</a></li><li data-search="lab 16. he thong don hang da nen tang"><a href="lab-16.html">Lab 16. Hệ thống đơn hàng đa nền tảng</a></li><li data-search="buoi 1. nen tang java va moi truong thuc thi"><a href="buoi-01.html">Buổi 1. Nền tảng Java và môi trường thực thi</a></li><li data-search="buoi 2. maven va dong goi ung dung"><a href="buoi-02.html">Buổi 2. Maven và đóng gói ứng dụng</a></li><li data-search="buoi 3. swing: component, container va layout"><a href="buoi-03.html">Buổi 3. Swing: component, container và layout</a></li><li data-search="buoi 4. su kien, edt va tac vu nen"><a href="buoi-04.html">Buổi 4. Sự kiện, EDT và tác vụ nền</a></li><li data-search="buoi 5. jdbc va mvc cho ung dung desktop"><a href="buoi-05.html">Buổi 5. JDBC và MVC cho ứng dụng desktop</a></li><li data-search="buoi 6. mini app swing hoan chinh"><a href="buoi-06.html">Buổi 6. Mini app Swing hoàn chỉnh</a></li><li data-search="buoi 7. jakarta ee va cdi"><a href="buoi-07.html">Buổi 7. Jakarta EE và CDI</a></li><li data-search="buoi 8. servlet, jsp va bieu mau"><a href="buoi-08.html">Buổi 8. Servlet, JSP và biểu mẫu</a></li><li data-search="buoi 9. web mvc, session va filter"><a href="buoi-09.html">Buổi 9. Web MVC, session và filter</a></li><li data-search="buoi 10. jakarta faces co ban"><a href="buoi-10.html">Buổi 10. Jakarta Faces cơ bản</a></li><li data-search="buoi 11. faces: validation, template va dieu huong"><a href="buoi-11.html">Buổi 11. Faces: validation, template và điều hướng</a></li><li data-search="buoi 12. jpa, servlet security va chot de tai"><a href="buoi-12.html">Buổi 12. JPA, Servlet Security và chốt đề tài</a></li><li data-search="buoi 13. spring boot va thymeleaf"><a href="buoi-13.html">Buổi 13. Spring Boot và Thymeleaf</a></li><li data-search="buoi 14. spring mvc, form va validation"><a href="buoi-14.html">Buổi 14. Spring MVC, form và validation</a></li><li data-search="buoi 15. spring data jpa va du lieu ben vung"><a href="buoi-15.html">Buổi 15. Spring Data JPA và dữ liệu bền vững</a></li><li data-search="buoi 16. spring security va mini app tong hop"><a href="buoi-16.html">Buổi 16. Spring Security và mini app tổng hợp</a></li><li data-search="buoi 17. review 1: phan tich va thiet ke"><a href="buoi-17.html">Buổi 17. Review 1: phân tích và thiết kế</a></li><li data-search="buoi 18. review 2: kien truc va chuc nang loi"><a href="buoi-18.html">Buổi 18. Review 2: kiến trúc và chức năng lõi</a></li><li data-search="buoi 19. review 3: chat luong va ban giao thu"><a href="buoi-19.html">Buổi 19. Review 3: chất lượng và bàn giao thử</a></li><li data-search="buoi 20. review 4: demo cuoi va danh gia"><a href="buoi-20.html">Buổi 20. Review 4: demo cuối và đánh giá</a></li></ul><p class="empty-result" hidden>Không có mục phù hợp.</p></aside><main class="article" id="noi-dung"><p class="eyebrow">HoangTN · Công nghệ Java</p><h1>Lab 4. EDT, tác vụ nền và SwingWorker</h1><div class="meta"><span>Trần Nguyên Hoàng</span><span>Cập nhật 27/10/2026</span></div><details class="page-toc"><summary>Trong bài này</summary><ol><li><a href="#nguon-1">Giới thiệu</a></li><li><a href="#nguon-2">1. Căn cứ nội dung Chương 2</a></li><li><a href="#nguon-3">2. Mục tiêu</a></li><li><a href="#nguon-4">3. Công cụ sử dụng</a></li><li><a href="#nguon-5">4. Cấu trúc project yêu cầu</a></li><li><a href="#nguon-6">Bài 1. Tạo đồng hồ đếm ngược bằng SwingWorker</a></li><li><a href="#nguon-7">Bài 2. Mô phỏng tiến trình tải dữ liệu</a></li><li><a href="#nguon-8">Bài 3. Tính tổng các số nguyên tố nhỏ hơn N</a></li><li><a href="#nguon-9">Bài 4. Tìm số Fibonacci thứ N bằng memoization</a></li><li><a href="#nguon-10">Bài 5. Đọc file lớn và đếm số dòng</a></li><li><a href="#nguon-11">Bài 6. Bổ sung chức năng hủy tác vụ</a></li><li><a href="#nguon-12">Bài 7. Tìm kiếm từ khóa trong file văn bản lớn</a></li><li><a href="#nguon-13">Bài 8. Đọc file CSV điểm sinh viên và thống kê</a></li><li><a href="#nguon-14">Bài 9. Mô phỏng tải danh sách sản phẩm</a></li><li><a href="#nguon-15">Bài 10. Mini project: Quản lý sản phẩm bằng file CSV</a></li><li><a href="#nguon-16">7. Sản phẩm cần nộp</a></li><li><a href="#nguon-17">8. Đánh giá</a></li><li><a href="#nguon-18">9. Câu hỏi củng cố</a></li><li><a href="#nguon-19">10. Tài liệu tham khảo</a></li></ol></details><p class="lede">Chương 2 · Nội dung, bài có hướng dẫn và bài tự thực hiện theo tài liệu được cung cấp.</p><div class="downloads"><a class="download" href="https://github.com/hoangtnedu/hoangtnedu.github.io/tree/main/java/examples/lab04">Mở project Maven và kiểm thử →</a><a class="download" href="../content/java/source-text/lab-04.txt">Bản văn bản đã biên tập</a></div><p>Mã mẫu thực thi trong repository được biên tập thành project có thể build. Các khối code gợi ý bên dưới giữ vai trò hướng dẫn trong bài, có thể cần hoàn thiện hoặc ghép vào project. Xem README của từng lab để biết phạm vi đã triển khai và cách chạy.</p><h2 id="nguon-1">Giới thiệu</h2><div class="table-scroll"><pre class="lab-table">LAB 4
+     CHƯƠNG 2: PHÁT TRIỂN ỨNG DỤNG DESKTOP TRONG JAVA SE
+                    Xử lý sự kiện, EDT và SwingWorker trong Java Swing
+Học phần                      Công nghệ Java
+Tên bài lab                   Xây dựng ứng dụng Java Swing có xử lý tác vụ nền bằng SwingWorker
+                              Java Swing, Event Handling, EDT, Multi-threading, SwingWorker, JProgressBar,
+Công nghệ Chương 2
+                              JFileChooser, JTable
+Thời lượng gợi ý              01 buổi thực hành 3 tiết
+Liên kết hệ thống             Lab 3 + Lab 4: từ thiết kế giao diện Swing sang xử lý sự kiện và tác vụ nền
+Sản phẩm nộp                  Maven project + mã nguồn + ảnh chạy chương trình + báo cáo ngắn</pre></div><p>Định hướng liên kết Lab 3 + Lab 4 Lab 3 tập trung vào Components, Containers, Layout Managers. Lab 4 tiếp tục bằng Event Handling, EDT và SwingWorker để sinh viên biết xử lý tác vụ lâu mà không làm treo giao diện. Đây là bước đệm trước Lab 5, khi sinh viên tích hợp CSDL, JDBC và CRUD trong ứng dụng Java Swing.</p><h2 id="nguon-2">1. Căn cứ nội dung Chương 2</h2><p>Lab này bám theo Chương 2 của học phần Công nghệ Java: phát triển ứng dụng desktop trong Java SE, lập trình giao diện GUI bằng Swing, xử lý sự kiện, EDT, multi-threading và chuẩn bị cho tích hợp cơ sở dữ liệu trong các buổi tiếp theo.</p><div class="table-scroll"><pre class="lab-table">Nội dung Chương 2                Thể hiện trong bài lab
+                                 Thiết kế giao diện bằng JFrame, JPanel, JLabel, JTextField, JButton, JTable và
+Lập trình GUI trong Java SE
+                                 JProgressBar.
+Components, Containers, Layout
+                               Kế thừa kết quả Lab 3 để bố trí form nhập liệu, vùng kết quả và bảng dữ liệu.
+Managers
+                                 Gắn sự kiện cho JButton, xử lý nhập liệu, thông báo lỗi và phản hồi thao tác
+Event Handling
+                                 người dùng.
+                                 Giải thích vai trò của EDT và yêu cầu không chạy tác vụ lâu trực tiếp trong
+EDT &amp; Multi-threading
+                                 ActionListener.
+SwingWorker                      Chạy tác vụ nền, cập nhật tiến trình và trả kết quả về giao diện an toàn.
+Chuẩn bị Lab 5                   Tạo nền tảng để tải dữ liệu, thống kê và truy vấn CSDL bất đồng bộ.</pre></div><h2 id="nguon-3">2. Mục tiêu</h2><div class="table-scroll"><pre class="lab-table">STT          Mục tiêu cần đạt
+1            Trình bày được vai trò của EDT trong Java Swing.
+2            Giải thích được vì sao không nên xử lý tác vụ lâu trực tiếp trong ActionListener.
+3            Sử dụng được SwingWorker để chạy tác vụ nền.
+4            Cập nhật được giao diện thông qua publish/process, setProgress và done.
+5            Thiết kế được giao diện có JProgressBar, JTextArea, JFileChooser và JTable.
+6            Biết kiểm soát trạng thái nút bấm: bắt đầu, đang chạy, hoàn thành và hủy tác vụ.
+7            Chuẩn bị nền tảng để chuyển sang Lab 5: tích hợp JDBC, CRUD và tải dữ liệu bất đồng bộ.</pre></div><h2 id="nguon-4">3. Công cụ sử dụng</h2><div class="table-scroll"><pre class="lab-table">Công cụ                                  Mục đích sử dụng
+JDK 17 hoặc JDK 21                       Biên dịch và chạy ứng dụng Java SE.
+Apache Maven 3.x                         Quản lý cấu trúc project, build và đóng gói.
+IntelliJ IDEA / Eclipse / NetBeans       Soạn thảo mã nguồn và chạy thử chương trình.
+Java Swing                               Xây dựng giao diện desktop.
+SwingWorker                              Xử lý tác vụ nền, tránh làm treo giao diện.
+Command Prompt / PowerShell /
+                                         Kiểm tra môi trường và build project.
+Terminal
+Git hoặc ZIP                             Nộp bài và quản lý mã nguồn nếu giảng viên yêu cầu.</pre></div><p>Lệnh kiểm tra môi trường</p><p>java -version javac -version</p><div class="code-wrap"><button class="copy" type="button" data-target="code-87">Sao chép</button><pre><code id="code-87" class="language-text">mvn -version</code></pre></div><h2 id="nguon-5">4. Cấu trúc project yêu cầu</h2><p>Tên project Maven gợi ý: lab04-swingworker. Sinh viên tổ chức mã nguồn theo package io.github.hoangtnedu.java.lab4. Cấu trúc thư mục chuẩn</p><p>lab04-swingworker/ ├── pom.xml └── src/ └── main/ └── java/ └── vn/ └── edu/ └── hoangtnedu/ └── lab4/</p><p>├── App.java ├── CountdownFrame.java ├── ProgressDemoFrame.java ├── PrimeSumFrame.java ├── FibonacciFrame.java └── FileLineCounterFrame.java</p><p>File cấu hình Maven pom.xml</p><div class="code-wrap"><button class="copy" type="button" data-target="code-88">Sao chép</button><pre><code id="code-88" class="language-text">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-89">Sao chép</button><pre><code id="code-89" class="language-text">&lt;groupId&gt;io.github.hoangtnedu.java&lt;/groupId&gt;
+&lt;artifactId&gt;lab04-swingworker&lt;/artifactId&gt;
+&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-90">Sao chép</button><pre><code id="code-90" class="language-text">    &lt;properties&gt;
+        &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+&lt;/project&gt;</code></pre></div><p>File chạy chính App.java</p><div class="code-wrap"><button class="copy" type="button" data-target="code-91">Sao chép</button><pre><code id="code-91" class="language-text">package io.github.hoangtnedu.java.lab4;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-92">Sao chép</button><pre><code id="code-92" class="language-text">import javax.swing.SwingUtilities;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-93">Sao chép</button><pre><code id="code-93" class="language-text">public class App {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -&gt; {
+            new CountdownFrame().setVisible(true);
+        });
+    }
+}</code></pre></div><h2 id="nguon-6">Bài 1. Tạo đồng hồ đếm ngược bằng SwingWorker</h2><p>Thiết kế giao diện gồm JTextField nhập số giây, JButton “Bắt đầu” và JLabel hiển thị thời gian còn lại. Khi nhấn nút, chương trình dùng SwingWorker để đếm ngược trong nền, giao diện không bị treo.</p><div class="table-scroll"><pre class="lab-table">Thành phần                    Yêu cầu
+JTextField                    Nhập số giây.
+JButton                       Nút “Bắt đầu”.
+JLabel                        Hiển thị thời gian còn lại.
+SwingWorker                   Thực hiện đếm ngược trong nền.</pre></div><p>Gợi ý code</p><div class="code-wrap"><button class="copy" type="button" data-target="code-94">Sao chép</button><pre><code id="code-94" class="language-text">package io.github.hoangtnedu.java.lab4;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-95">Sao chép</button><pre><code id="code-95" class="language-text">import javax.swing.*;
+import java.awt.*;
+import java.util.List;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-96">Sao chép</button><pre><code id="code-96" class="language-text">public class CountdownFrame extends JFrame {
+    private JTextField txtSeconds;
+    private JButton btnStart;
+    private JLabel lblTime;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-97">Sao chép</button><pre><code id="code-97" class="language-text">public CountdownFrame() {
+    setTitle(&quot;Bài 1 - Đồng hồ đếm ngược&quot;);
+    setSize(400, 180);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setLocationRelativeTo(null);</code></pre></div><p>txtSeconds = new JTextField(10); btnStart = new JButton(&quot;Bắt đầu&quot;); lblTime = new JLabel(&quot;Thời gian còn lại: &quot;); lblTime.setFont(new Font(&quot;Arial&quot;, Font.BOLD, 20));</p><p>JPanel panel = new JPanel(new GridLayout(3, 1, 10, 10)); panel.add(txtSeconds); panel.add(btnStart); panel.add(lblTime); add(panel);</p><p>btnStart.addActionListener(e -&gt; startCountdown());</p><div class="code-wrap"><button class="copy" type="button" data-target="code-98">Sao chép</button><pre><code id="code-98" class="language-text">}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-99">Sao chép</button><pre><code id="code-99" class="language-text">private void startCountdown() {
+    int seconds;
+    try {
+        seconds = Integer.parseInt(txtSeconds.getText().trim());
+        if (seconds &lt;= 0) {
+            JOptionPane.showMessageDialog(this, &quot;Số giây phải lớn hơn 0&quot;);
+            return;
+        }
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, &quot;Vui lòng nhập số nguyên hợp lệ&quot;);
+        return;
+    }</code></pre></div><p>btnStart.setEnabled(false);</p><p>SwingWorker&lt;Void, Integer&gt; worker = new SwingWorker&lt;&gt;() {</p><div class="code-wrap"><button class="copy" type="button" data-target="code-100">Sao chép</button><pre><code id="code-100" class="language-text">@Override
+protected Void doInBackground() throws Exception {
+    for (int i = seconds; i &gt;= 0; i--) {
+        publish(i);
+        Thread.sleep(1000);
+    }
+    return null;
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-101">Sao chép</button><pre><code id="code-101" class="language-text">@Override
+protected void process(List&lt;Integer&gt; chunks) {
+    int value = chunks.get(chunks.size() - 1);
+    lblTime.setText(&quot;Thời gian còn lại: &quot; + value + &quot; giây&quot;);
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-102">Sao chép</button><pre><code id="code-102" class="language-text">     @Override
+     protected void done() {
+         btnStart.setEnabled(true);
+         JOptionPane.showMessageDialog(CountdownFrame.this, &quot;Hoàn thành!&quot;);
+     }
+};</code></pre></div><p>worker.execute();</p><div class="code-wrap"><button class="copy" type="button" data-target="code-103">Sao chép</button><pre><code id="code-103" class="language-text">    }
+}</code></pre></div><h2 id="nguon-7">Bài 2. Mô phỏng tiến trình tải dữ liệu</h2><p>Thiết kế giao diện có JButton “Tải dữ liệu”, JProgressBar và JLabel trạng thái. Khi nhấn nút, dùng SwingWorker để mô phỏng tải dữ liệu trong 10 giây và cập nhật tiến độ từ 0 đến 100%.</p><div class="table-scroll"><pre class="lab-table">Thành phần                    Yêu cầu
+JButton                       Nút “Tải dữ liệu”.
+JProgressBar                  Hiển thị tiến độ từ 0 đến 100%.
+JLabel                        Hiển thị trạng thái xử lý.
+SwingWorker                   Mô phỏng tải dữ liệu trong nền.</pre></div><p>Gợi ý code</p><div class="code-wrap"><button class="copy" type="button" data-target="code-104">Sao chép</button><pre><code id="code-104" class="language-text">package io.github.hoangtnedu.java.lab4;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-105">Sao chép</button><pre><code id="code-105" class="language-text">import javax.swing.*;
+import java.awt.*;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-106">Sao chép</button><pre><code id="code-106" class="language-text">public class ProgressDemoFrame extends JFrame {
+    private JButton btnLoad;
+    private JProgressBar progressBar;
+    private JLabel lblStatus;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-107">Sao chép</button><pre><code id="code-107" class="language-text">public ProgressDemoFrame() {
+    setTitle(&quot;Bài 2 - Mô phỏng tải dữ liệu&quot;);
+    setSize(450, 180);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setLocationRelativeTo(null);</code></pre></div><p>btnLoad = new JButton(&quot;Tải dữ liệu&quot;); progressBar = new JProgressBar(0, 100); progressBar.setStringPainted(true); lblStatus = new JLabel(&quot;Chưa tải dữ liệu&quot;);</p><p>JPanel panel = new JPanel(new GridLayout(3, 1, 10, 10)); panel.add(btnLoad); panel.add(progressBar); panel.add(lblStatus); add(panel);</p><p>btnLoad.addActionListener(e -&gt; loadData());</p><div class="code-wrap"><button class="copy" type="button" data-target="code-108">Sao chép</button><pre><code id="code-108" class="language-text">}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-109">Sao chép</button><pre><code id="code-109" class="language-text">private void loadData() {
+    btnLoad.setEnabled(false);
+    progressBar.setValue(0);
+    lblStatus.setText(&quot;Đang tải dữ liệu...&quot;);</code></pre></div><p>SwingWorker&lt;Void, Integer&gt; worker = new SwingWorker&lt;&gt;() {</p><div class="code-wrap"><button class="copy" type="button" data-target="code-110">Sao chép</button><pre><code id="code-110" class="language-text">@Override
+protected Void doInBackground() throws Exception {
+    for (int i = 0; i &lt;= 100; i += 10) {
+        setProgress(i);
+        Thread.sleep(1000);</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-111">Sao chép</button><pre><code id="code-111" class="language-text">    }
+    return null;
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-112">Sao chép</button><pre><code id="code-112" class="language-text">     @Override
+     protected void done() {
+         progressBar.setValue(100);
+         lblStatus.setText(&quot;Tải dữ liệu hoàn tất&quot;);
+         btnLoad.setEnabled(true);
+     }
+};</code></pre></div><p>worker.addPropertyChangeListener(evt -&gt; { if (&quot;progress&quot;.equals(evt.getPropertyName())) { progressBar.setValue((int) evt.getNewValue());</p><div class="code-wrap"><button class="copy" type="button" data-target="code-113">Sao chép</button><pre><code id="code-113" class="language-text">    }
+});</code></pre></div><p>worker.execute();</p><div class="code-wrap"><button class="copy" type="button" data-target="code-114">Sao chép</button><pre><code id="code-114" class="language-text">    }
+}</code></pre></div><h2 id="nguon-8">Bài 3. Tính tổng các số nguyên tố nhỏ hơn N</h2><p>Giao diện gồm JTextField nhập N, JButton “Tính”, JLabel kết quả và JProgressBar. Khi nhấn nút, dùng SwingWorker để tính tổng các số nguyên tố nhỏ hơn N mà không làm treo giao diện. Ví dụ: N = 10, các số nguyên tố nhỏ hơn 10 là 2, 3, 5, 7 nên tổng bằng 17. Gợi ý hàm kiểm tra số nguyên tố</p><div class="code-wrap"><button class="copy" type="button" data-target="code-115">Sao chép</button><pre><code id="code-115" class="language-text">private boolean isPrime(int n) {
+    if (n &lt; 2) return false;
+    if (n == 2) return true;
+    if (n % 2 == 0) return false;</code></pre></div><p>for (int i = 3; i &lt;= Math.sqrt(n); i += 2) { if (n % i == 0) return false;</p><div class="code-wrap"><button class="copy" type="button" data-target="code-116">Sao chép</button><pre><code id="code-116" class="language-text">    }
+    return true;
+}</code></pre></div><p>Gợi ý xử lý bằng SwingWorker</p><div class="code-wrap"><button class="copy" type="button" data-target="code-117">Sao chép</button><pre><code id="code-117" class="language-text">private void calculatePrimeSum() {
+    int n;
+    try {
+        n = Integer.parseInt(txtN.getText().trim());
+        if (n &lt;= 2) {
+            JOptionPane.showMessageDialog(this, &quot;N phải lớn hơn 2&quot;);
+            return;
+        }
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, &quot;Vui lòng nhập số nguyên hợp lệ&quot;);
+        return;
+    }</code></pre></div><p>btnCalculate.setEnabled(false); progressBar.setValue(0); lblResult.setText(&quot;Đang tính...&quot;);</p><p>SwingWorker&lt;Long, Void&gt; worker = new SwingWorker&lt;&gt;() {</p><div class="code-wrap"><button class="copy" type="button" data-target="code-118">Sao chép</button><pre><code id="code-118" class="language-text">@Override
+protected Long doInBackground() {</code></pre></div><p>long sum = 0; for (int i = 2; i &lt; n; i++) { if (isPrime(i)) sum += i; int progress = (int) ((i * 100.0) / n); setProgress(progress);</p><div class="code-wrap"><button class="copy" type="button" data-target="code-119">Sao chép</button><pre><code id="code-119" class="language-text">    }
+    return sum;
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-120">Sao chép</button><pre><code id="code-120" class="language-text">     @Override
+     protected void done() {
+         try {
+             long result = get();
+             lblResult.setText(&quot;Tổng các số nguyên tố nhỏ hơn &quot; + n + &quot; = &quot; + result);
+         } catch (Exception ex) {
+             lblResult.setText(&quot;Có lỗi khi tính toán&quot;);
+         }
+         btnCalculate.setEnabled(true);
+         progressBar.setValue(100);
+     }
+};</code></pre></div><p>worker.addPropertyChangeListener(evt -&gt; { if (&quot;progress&quot;.equals(evt.getPropertyName())) { progressBar.setValue((int) evt.getNewValue());</p><div class="code-wrap"><button class="copy" type="button" data-target="code-121">Sao chép</button><pre><code id="code-121" class="language-text">    }
+});</code></pre></div><p>worker.execute();</p><div class="code-wrap"><button class="copy" type="button" data-target="code-122">Sao chép</button><pre><code id="code-122" class="language-text">}</code></pre></div><h2 id="nguon-9">Bài 4. Tìm số Fibonacci thứ N bằng memoization</h2><p>Giao diện gồm JTextField nhập N, JButton “Tìm”, JLabel kết quả và JProgressBar. Dùng SwingWorker để tính Fibonacci trong nền. Sử dụng BigInteger để tránh tràn số và Map&lt;Integer, BigInteger&gt; để ghi nhớ kết quả đã tính. Import cần có</p><div class="code-wrap"><button class="copy" type="button" data-target="code-123">Sao chép</button><pre><code id="code-123" class="language-text">import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;</code></pre></div><p>Gợi ý hàm Fibonacci có memoization</p><div class="code-wrap"><button class="copy" type="button" data-target="code-124">Sao chép</button><pre><code id="code-124" class="language-text">private BigInteger fibonacci(int n, Map&lt;Integer, BigInteger&gt; memo) {
+    if (n &lt;= 1) {
+        return BigInteger.valueOf(n);
+    }</code></pre></div><p>if (memo.containsKey(n)) { return memo.get(n);</p><div class="code-wrap"><button class="copy" type="button" data-target="code-125">Sao chép</button><pre><code id="code-125" class="language-text">}</code></pre></div><p>BigInteger value = fibonacci(n - 1, memo).add(fibonacci(n - 2, memo)); memo.put(n, value); return value;</p><div class="code-wrap"><button class="copy" type="button" data-target="code-126">Sao chép</button><pre><code id="code-126" class="language-text">}</code></pre></div><p>Gợi ý xử lý bằng SwingWorker</p><div class="code-wrap"><button class="copy" type="button" data-target="code-127">Sao chép</button><pre><code id="code-127" class="language-text">private void findFibonacci() {
+    int n;
+    try {
+        n = Integer.parseInt(txtN.getText().trim());
+        if (n &lt; 0) {
+            JOptionPane.showMessageDialog(this, &quot;N phải &gt;= 0&quot;);
+            return;
+        }
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, &quot;Vui lòng nhập số nguyên hợp lệ&quot;);
+        return;
+    }</code></pre></div><p>btnFind.setEnabled(false); progressBar.setIndeterminate(true); lblResult.setText(&quot;Đang tính Fibonacci...&quot;);</p><p>SwingWorker&lt;BigInteger, Void&gt; worker = new SwingWorker&lt;&gt;() {</p><div class="code-wrap"><button class="copy" type="button" data-target="code-128">Sao chép</button><pre><code id="code-128" class="language-text">@Override
+protected BigInteger doInBackground() {
+    Map&lt;Integer, BigInteger&gt; memo = new HashMap&lt;&gt;();
+    return fibonacci(n, memo);
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-129">Sao chép</button><pre><code id="code-129" class="language-text">     @Override
+     protected void done() {
+         try {
+             BigInteger result = get();
+             lblResult.setText(&quot;Fibonacci(&quot; + n + &quot;) = &quot; + result);
+         } catch (Exception ex) {
+             lblResult.setText(&quot;Có lỗi khi tính Fibonacci&quot;);
+         }
+         progressBar.setIndeterminate(false);
+         progressBar.setValue(100);
+         btnFind.setEnabled(true);
+     }
+};</code></pre></div><p>worker.execute();</p><div class="code-wrap"><button class="copy" type="button" data-target="code-130">Sao chép</button><pre><code id="code-130" class="language-text">}</code></pre></div><h2 id="nguon-10">Bài 5. Đọc file lớn và đếm số dòng</h2><p>Thiết kế giao diện cho phép chọn file bằng JFileChooser, sau đó nhấn nút “Đếm dòng”. Chương trình dùng SwingWorker để đọc file theo từng dòng, đếm số dòng và cập nhật JProgressBar nếu có thể.</p><div class="table-scroll"><pre class="lab-table">Thành phần                    Yêu cầu
+JButton                       Nút “Chọn file” và nút “Đếm dòng”.
+JFileChooser                  Cho phép chọn file văn bản.
+JLabel                        Hiển thị đường dẫn file và số dòng.
+JProgressBar                  Hiển thị tiến trình đọc file.
+SwingWorker                   Đọc file trong nền, không làm treo giao diện.</pre></div><p>Import cần có</p><div class="code-wrap"><button class="copy" type="button" data-target="code-131">Sao chép</button><pre><code id="code-131" class="language-text">import java.io.BufferedReader;
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;</code></pre></div><p>Gợi ý chọn file</p><div class="code-wrap"><button class="copy" type="button" data-target="code-132">Sao chép</button><pre><code id="code-132" class="language-text">private File selectedFile;</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-133">Sao chép</button><pre><code id="code-133" class="language-text">private void chooseFile() {
+    JFileChooser chooser = new JFileChooser();
+    int result = chooser.showOpenDialog(this);</code></pre></div><p>if (result == JFileChooser.APPROVE_OPTION) { selectedFile = chooser.getSelectedFile(); lblFile.setText(&quot;File: &quot; + selectedFile.getAbsolutePath());</p><div class="code-wrap"><button class="copy" type="button" data-target="code-134">Sao chép</button><pre><code id="code-134" class="language-text">    }
+}</code></pre></div><p>Gợi ý đếm dòng bằng SwingWorker</p><div class="code-wrap"><button class="copy" type="button" data-target="code-135">Sao chép</button><pre><code id="code-135" class="language-text">private void countLines() {
+    if (selectedFile == null) {
+        JOptionPane.showMessageDialog(this, &quot;Vui lòng chọn file trước&quot;);
+        return;
+    }</code></pre></div><p>btnCount.setEnabled(false); progressBar.setValue(0); lblResult.setText(&quot;Đang đọc file...&quot;);</p><p>SwingWorker&lt;Long, Void&gt; worker = new SwingWorker&lt;&gt;() {</p><div class="code-wrap"><button class="copy" type="button" data-target="code-136">Sao chép</button><pre><code id="code-136" class="language-text">@Override
+protected Long doInBackground() throws Exception {
+    long totalBytes = Files.size(selectedFile.toPath());
+    long readBytes = 0;
+    long lines = 0;</code></pre></div><p>try (BufferedReader reader = Files.newBufferedReader( selectedFile.toPath(), StandardCharsets.UTF_8)) { String line; while ((line = reader.readLine()) != null) { lines++; readBytes += line.getBytes(StandardCharsets.UTF_8).length + 1; int progress = totalBytes == 0 ? 100 : (int) Math.min(100, (readBytes * 100 / totalBytes)); setProgress(progress);</p><div class="code-wrap"><button class="copy" type="button" data-target="code-137">Sao chép</button><pre><code id="code-137" class="language-text">        }
+    }
+    return lines;
+}</code></pre></div><div class="code-wrap"><button class="copy" type="button" data-target="code-138">Sao chép</button><pre><code id="code-138" class="language-text">     @Override
+     protected void done() {
+         try {
+             long lineCount = get();
+             lblResult.setText(&quot;Số dòng: &quot; + lineCount);
+         } catch (Exception ex) {
+             lblResult.setText(&quot;Lỗi khi đọc file&quot;);
+         }
+         progressBar.setValue(100);
+         btnCount.setEnabled(true);
+     }
+};</code></pre></div><p>worker.addPropertyChangeListener(evt -&gt; { if (&quot;progress&quot;.equals(evt.getPropertyName())) { progressBar.setValue((int) evt.getNewValue());</p><div class="code-wrap"><button class="copy" type="button" data-target="code-139">Sao chép</button><pre><code id="code-139" class="language-text">      }
+});</code></pre></div><p>worker.execute();</p><div class="code-wrap"><button class="copy" type="button" data-target="code-140">Sao chép</button><pre><code id="code-140" class="language-text">}</code></pre></div><h2 id="nguon-11">Bài 6. Bổ sung chức năng hủy tác vụ</h2><p>• Nâng cấp Bài 2 hoặc Bài 3, thêm nút “Hủy”. • Khi tác vụ đang chạy, nút bắt đầu/tính bị khóa. • Khi nhấn “Hủy”, SwingWorker dừng xử lý và giao diện hiển thị “Đã hủy tác vụ”. • Sinh viên tự tìm hiểu worker.cancel(true) và isCancelled().</p><h2 id="nguon-12">Bài 7. Tìm kiếm từ khóa trong file văn bản lớn</h2><p>• Cho phép chọn file .txt bằng JFileChooser. • Cho phép nhập từ khóa cần tìm. • Dùng SwingWorker để đọc file trong nền. • Hiển thị các dòng có chứa từ khóa vào JTextArea. • Hiển thị số dòng tìm thấy, không phân biệt hoa/thường.</p><h2 id="nguon-13">Bài 8. Đọc file CSV điểm sinh viên và thống kê</h2><p>File CSV có dạng:</p><p>MaSV,HoTen,Diem SV01,Nguyen Van A,8.5 SV02,Tran Thi B,7.0 SV03,Le Van C,9.0</p><div class="table-scroll"><pre class="lab-table">•       Đọc dữ liệu bằng SwingWorker.
+•       Hiển thị danh sách sinh viên trong JTable.
+•       Tính điểm trung bình và tìm sinh viên có điểm cao nhất.
+•       Không làm treo giao diện khi đọc file.</pre></div><h2 id="nguon-14">Bài 9. Mô phỏng tải danh sách sản phẩm</h2><div class="table-scroll"><pre class="lab-table">• Thiết kế nút “Tải sản phẩm”, JTable, JProgressBar và JLabel trạng thái.
+• Dữ liệu sản phẩm có thể tạo giả lập trong code.
+• Khi tải dữ liệu, giao diện không bị treo.
+• Bài này chuẩn bị cho Lab 5, khi dữ liệu sản phẩm sẽ được lấy từ CSDL.
+    Mã SP                    Tên SP                                             Đơn giá
+    SP01                     Bàn phím                                           250000
+    SP02                     Chuột                                              150000
+    SP03                     Màn hình                                           2500000</pre></div><h2 id="nguon-15">Bài 10. Mini project: Quản lý sản phẩm bằng file CSV</h2><div class="table-scroll"><pre class="lab-table">Chức năng                            Yêu cầu
+Thêm sản phẩm                        Nhập mã, tên, đơn giá.
+Sửa sản phẩm                         Chọn dòng trong JTable và cập nhật thông tin.
+Xóa sản phẩm                         Xóa sản phẩm đang chọn.
+Lưu file CSV                         Lưu danh sách sản phẩm ra file.
+Đọc file CSV                         Đọc danh sách sản phẩm từ file.
+SwingWorker                          Dùng cho chức năng đọc và lưu file.</pre></div><p>Ý nghĩa: đây là bài tổng hợp cuối Lab 4 và là bước đệm sang Lab 5. Sang Lab 5, sinh viên thay phần đọc/ghi CSV bằng JDBC và tổ chức lại theo mô hình 3 lớp: Model - DAL - BUS - GUI.</p><h2 id="nguon-16">7. Sản phẩm cần nộp</h2><div class="table-scroll"><pre class="lab-table">STT        Sản phẩm                            Yêu cầu
+           Maven project lab04-
+1                                              Đúng cấu trúc src/main/java, đúng package io.github.hoangtnedu.java.lab4.
+           swingworker
+2          Mã nguồn 5 bài có gợi ý code        Có thể chạy được từng bài.
+3          Mã nguồn 5 bài tự làm               Có giao diện, xử lý đúng yêu cầu.
+4          Ảnh chạy chương trình               Mỗi bài tối thiểu 1 ảnh minh chứng.
+5          Báo cáo ngắn                        Trình bày EDT, SwingWorker và kết quả thực hiện.
+6          File ZIP nộp bài                    Đặt tên: Lab04_MSSV_HoTen.zip.</pre></div><h2 id="nguon-17">8. Đánh giá</h2><div class="table-scroll"><pre class="lab-table">Tiêu chí                           Mô tả                                                                Điểm
+5 bài có gợi ý code                Hoàn thành Bài 1 đến Bài 5, chạy đúng, giao diện không treo.         4.0
+5 bài tự làm                       Hoàn thành Bài 6 đến Bài 10, có mở rộng hợp lý.                      3.0
+                                   Không xử lý tác vụ lâu trực tiếp trong ActionListener; dùng
+Áp dụng đúng SwingWorker                                                                                1.0
+                                   doInBackground, done, setProgress đúng cách.
+Giao diện Swing                    Bố cục rõ ràng, dễ dùng, có thông báo lỗi nhập liệu.                 0.75
+Cấu trúc project                   Đúng package, tên lớp rõ ràng, mã nguồn sạch.                        0.75
+Báo cáo và minh chứng              Có ảnh chạy, giải thích ngắn EDT/SwingWorker, nộp đúng tên file.     0.5</pre></div><div class="table-scroll"><pre class="lab-table">Tổng                                                                                                    10.0</pre></div><h2 id="nguon-18">9. Câu hỏi củng cố</h2><p>1. EDT trong Java Swing là gì?</p><p>2.   Vì sao không nên đọc file lớn hoặc truy vấn dữ liệu trực tiếp trong ActionListener? 3.   Phương thức doInBackground() của SwingWorker dùng để làm gì? 4.   Phương thức done() được gọi khi nào? 5.   Sự khác nhau giữa publish/process và setProgress là gì? 6.   Vì sao Lab 4 là bước chuẩn bị cần thiết trước khi làm Lab 5 tích hợp CSDL?</p><h2 id="nguon-19">10. Tài liệu tham khảo</h2><div class="table-scroll"><pre class="lab-table">•    Kế hoạch giảng dạy học phần Công nghệ Java: Chương 2 - Phát triển ứng dụng desktop trong
+     Java SE.
+•    Lab 4 mẫu: Làm quen với SwingWorker trong Java Swing.
+•    Lab 5 mẫu: Tích hợp CSDL với Java Swing.
+•    Oracle Java Documentation: SwingWorker, JFrame, JPanel, JButton, JLabel, JTextField,
+     JProgressBar, JFileChooser, JTable.
+•    Java Tutorials: Concurrency in Swing, Event Dispatch Thread và background tasks.</pre></div><p class="source">Biên tập từ Lab4_Cong_Nghe_Java_SwingWorker.pdf. Package, dữ liệu minh họa và nhận diện đã chuyển sang HoangTN.</p><nav class="lesson-nav" aria-label="Bài trước và bài sau"><a href="lab-03.html">← Lab 3</a><a href="lab-05.html">Lab 5 →</a></nav></main></div><footer>© 2026 Trần Nguyên Hoàng · HoangTN · Ghi chép nghiên cứu và học tập.</footer><button class="top-button" type="button" aria-label="Về đầu trang">↑</button></body></html>

@@ -1,0 +1,275 @@
+LAB 11
+    CHƯƠNG 4: PHÁT TRIỂN ỨNG DỤNG VỚI SPRING FRAMEWORK
+                    Khởi tạo ứng dụng Spring Boot và giao diện Thymeleaf
+ Học phần                                               Công nghệ Java
+                                                        Khởi tạo ứng dụng Spring Boot và giao diện
+ Tên bài lab
+                                                        Thymeleaf
+                                                        Spring Boot, Spring MVC cơ bản, Thymeleaf,
+ Công nghệ Chương 4
+                                                        Maven
+ Thời lượng gợi ý                                       01 buổi thực hành, 3 tiết
+ Project gợi ý                                          lab11-springboot-thymeleaf
+                                                        Mã nguồn Spring Boot project + ảnh chạy ứng dụng
+ Sản phẩm nộp
+                                                        + báo cáo ngắn
+
+
+1. Căn cứ nội dung Chương 4
+Lab này bám theo Chương 4 của học phần Công nghệ Java: giới thiệu Spring Framework và Spring
+Boot, công cụ phát triển ứng dụng Spring, Thymeleaf, Spring MVC, Spring Data JPA, Spring
+Security và bài tập xây dựng ứng dụng hoàn chỉnh với Spring Framework.
+ Nội dung Chương 4                                      Thể hiện trong bài lab
+                                                        Tạo project Spring Boot đầu tiên, nhận biết
+ 4.1 Giới thiệu Spring Framework và Spring Boot
+                                                        dependency và cấu trúc thư mục.
+                                                        Sử dụng Spring Initializr, Maven và IDE để
+ Công cụ phát triển ứng dụng Spring
+                                                        tạo/chạy project.
+                                                        Tạo các trang HTML động, sử dụng th:text, th:href,
+ Giới thiệu Thymeleaf
+                                                        th:each.
+                                                        Bắt đầu project quản lý sinh viên làm nền cho các
+ Định hướng bài tập tổng hợp
+                                                        lab sau.
+
+
+2. Mục tiêu
+ STT             Mục tiêu cần đạt
+ 1               Tạo được project Spring Boot bằng Spring Initializr hoặc IDE.
+ 2               Nhận biết cấu trúc project Spring Boot theo Maven.
+ 3               Viết được Controller trả về giao diện Thymeleaf.
+ 4               Truyền dữ liệu từ Controller sang View bằng Model.
+ 5               Xây dựng được trang Home, About và Student List đơn giản.
+
+
+ STT             Mục tiêu cần đạt
+ 6               Chạy ứng dụng bằng IDE và lệnh Maven.
+
+
+3. Công cụ sử dụng
+ Công cụ                                               Mục đích sử dụng
+ JDK 17 hoặc JDK 21                                    Biên dịch và chạy ứng dụng Spring Boot.
+ Apache Maven 3.x                                      Quản lý dependency, build và chạy project.
+ IntelliJ IDEA / Eclipse / VS Code                     Soạn thảo mã nguồn, chạy và debug ứng dụng.
+ Spring Initializr                                     Khởi tạo project Spring Boot đúng cấu trúc.
+ Trình duyệt web                                       Kiểm thử giao diện web.
+ Git hoặc file ZIP                                     Quản lý mã nguồn và nộp bài.
+ Các dependency Spring tương ứng                       Sử dụng đúng dependency theo từng bài lab.
+
+
+4. Yêu cầu công nghệ trước khi lập trình
+Sinh viên cần kiểm tra môi trường Java và Maven đã hoạt động trước khi bắt đầu viết code. Project
+phải chạy được bằng IDE và bằng lệnh Maven.
+Lệnh kiểm tra môi trường và chạy project
+ java -version
+ javac -version
+ mvn -version
+ mvn spring-boot:run
+
+
+5. Cấu trúc dự án yêu cầu
+Tên dự án gợi ý: lab11-springboot-thymeleaf. Sinh viên tổ chức mã nguồn theo package
+io.github.hoangtnedu.java.lab11.
+Cấu trúc thư mục chuẩn
+ lab11-springboot-thymeleaf/
+ ├── pom.xml
+ └── src/main/
+     ├── java/io/github/hoangtnedu/java/lab11/
+     │   ├── Lab11Application.java
+     │   ├── controller/
+     │   │   ├── HomeController.java
+     │   │   └── StudentController.java
+     │   └── model/
+     │       └── Student.java
+     └── resources/
+         ├── templates/
+         │   ├── index.html
+         │   ├── about.html
+         │   └── students.html
+         └── application.properties
+
+
+6. Nội dung bài tập có code gợi ý
+Sinh viên thực hiện lần lượt 5 bài tập dưới đây. Code gợi ý chỉ là khung tham khảo, sinh viên cần
+đọc hiểu, chỉnh sửa package và hoàn thiện getter/setter, view hoặc cấu hình còn thiếu.
+
+Bài 1. Tạo project Spring Boot
+Tạo project Spring Boot có Spring Web, Thymeleaf và DevTools. Kiểm tra ứng dụng chạy được
+trên cổng 8080.
+Dependency gợi ý trong pom.xml
+ <dependencies>
+     <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-web</artifactId>
+     </dependency>
+     <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-thymeleaf</artifactId>
+     </dependency>
+     <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-devtools</artifactId>
+         <scope>runtime</scope>
+         <optional>true</optional>
+     </dependency>
+ </dependencies>
+
+
+Bài 2. Tạo trang chủ
+Khi truy cập /, ứng dụng hiển thị trang chủ và nhận dữ liệu từ Controller.
+HomeController.java
+ package io.github.hoangtnedu.java.lab11.controller;
+ import org.springframework.stereotype.Controller;
+ import org.springframework.ui.Model;
+ import org.springframework.web.bind.annotation.GetMapping;
+ @Controller
+ public class HomeController {
+     @GetMapping("/")
+     public String index(Model model) {
+         model.addAttribute("title", "Hệ thống quản lý sinh viên");
+         model.addAttribute("message", "Chào mừng đến với Spring Boot");
+         return "index";
+     }
+ }
+
+
+templates/index.html
+ <!DOCTYPE html>
+ <html xmlns:th="http://www.thymeleaf.org">
+ <head>
+     <meta charset="UTF-8">
+     <title th:text="${title}">Trang chủ</title>
+ </head>
+ <body>
+     <h1 th:text="${message}"></h1>
+     <a th:href="@{/students}">Danh sách sinh viên</a>
+ </body>
+ </html>
+
+
+Bài 3. Tạo lớp Student
+Tạo model sinh viên gồm mã sinh viên, họ tên, email và lớp.
+Student.java
+ package io.github.hoangtnedu.java.lab11.model;
+ public class Student {
+     private String studentCode;
+     private String fullName;
+     private String email;
+     private String className;
+     public Student() {
+     }
+     public Student(String studentCode, String fullName, String email, String className) {
+         this.studentCode = studentCode;
+         this.fullName = fullName;
+         this.email = email;
+         this.className = className;
+     }
+     // Sinh viên tự sinh getter và setter
+ }
+
+
+Bài 4. Hiển thị danh sách sinh viên
+Tạo URL /students để hiển thị danh sách sinh viên mẫu bằng Thymeleaf.
+StudentController.java
+ package io.github.hoangtnedu.java.lab11.controller;
+ import org.springframework.stereotype.Controller;
+ import org.springframework.ui.Model;
+ import org.springframework.web.bind.annotation.GetMapping;
+ import io.github.hoangtnedu.java.lab11.model.Student;
+ import java.util.List;
+ @Controller
+ public class StudentController {
+     @GetMapping("/students")
+     public String listStudents(Model model) {
+         List<Student> students = List.of(
+             new Student("SV001", "Nguyễn Văn An", "an@example.com", "JAVA01"),
+             new Student("SV002", "Trần Thị Bình", "binh@example.com", "JAVA01"),
+             new Student("SV003", "Lê Văn Cường", "cuong@example.com", "JAVA01")
+         );
+         model.addAttribute("students", students);
+         return "students";
+     }
+ }
+
+
+templates/students.html
+ <table border="1">
+     <tr>
+         <th>Mã SV</th>
+         <th>Họ tên</th>
+         <th>Email</th>
+         <th>Lớp</th>
+     </tr>
+     <tr th:each="s : ${students}">
+         <td th:text="${s.studentCode}"></td>
+         <td th:text="${s.fullName}"></td>
+         <td th:text="${s.email}"></td>
+         <td th:text="${s.className}"></td>
+     </tr>
+ </table>
+
+
+Bài 5. Tạo trang giới thiệu
+Tạo trang /about giới thiệu ứng dụng và nội dung Chương 4.
+Bổ sung trong HomeController.java
+ @GetMapping("/about")
+ public String about(Model model) {
+     model.addAttribute("course", "Công nghệ Java");
+     model.addAttribute("chapter", "Chương 4 - Spring Framework");
+     return "about";
+ }
+
+
+7. Bài tập không có code gợi ý
+ Bài                                                   Yêu cầu
+                                                       Tạo trang /contact hiển thị thông tin liên hệ khoa/bộ
+ Bài 6
+                                                       môn.
+                                                       Thêm menu điều hướng giữa Home, About,
+ Bài 7
+                                                       Students và Contact.
+                                                       Tạo danh sách 5 khóa học mẫu gồm mã môn, tên
+ Bài 8
+                                                       môn, số tín chỉ.
+                                                       Tạo trang /courses hiển thị danh sách khóa học bằng
+ Bài 9
+                                                       Thymeleaf.
+                                                       Định dạng giao diện bằng CSS riêng trong thư mục
+ Bài 10
+                                                       static/css.
+
+
+8. Biên dịch, chạy và kiểm thử
+Sau khi hoàn thành, sinh viên cần chạy ứng dụng, kiểm thử các URL/chức năng chính, chụp ảnh
+minh chứng và ghi lại lỗi nếu có.
+Lệnh build và chạy
+ mvn clean package
+ mvn spring-boot:run
+ # Truy cập ứng dụng tại:
+ # http://localhost:8080
+
+
+9. Sản phẩm cần nộp
+ STT                                                   Sản phẩm
+ 1                                                     Project lab11-springboot-thymeleaf.
+ 2                                                     Ảnh chạy các URL /, /about, /students, /courses.
+ 3                                                     Báo cáo ngắn mô tả Controller, Model, View.
+ 4                                                     File ZIP đặt tên Lab11_MSSV_HoTen.zip.
+
+
+10. Tiêu chí đánh giá
+ Tiêu chí                                             Điểm
+ Tạo đúng project Spring Boot                         1.5
+ Controller và URL hoạt động đúng                     2.0
+ Truyền dữ liệu sang Thymeleaf đúng                   2.0
+ Hoàn thành 5 bài có code gợi ý                       2.0
+ Hoàn thành bài tự làm                                1.5
+ Báo cáo, ảnh minh chứng, nộp đúng quy định           1.0
+
+
+11. Tài liệu tham khảo
+[1] Kế hoạch giảng dạy học phần Công nghệ Java: Chương 4 - Phát triển ứng dụng với Spring
+Framework.
+[2] Spring Framework Documentation, Spring Website, 2024.
+[3] Spring Persistence with Hibernate, Paul Tepper Fisher & Brian D. Murphy, Apress.

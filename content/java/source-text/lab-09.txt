@@ -1,0 +1,480 @@
+LAB 9
+          CHƯƠNG 3: PHÁT TRIỂN ỨNG DỤNG ĐA LỚP TRONG JAKARTA EE
+
+                                   Tích hợp JPA: Entity, Repository, Transaction
+
+Học phần                                                            Công nghệ Java
+
+Tên bài lab                                                         Lab 9 - Tích hợp JPA: Entity, Repository, Transaction
+
+                                                                    Jakarta Persistence/JPA, Entity, Repository/DAO, JPQL,
+Công nghệ Chương 3
+                                                                    Transaction, Servlet/JSP hoặc JSF
+
+Thời lượng                                                          01 buổi thực hành
+
+                                                                    Mã nguồn Maven Web Project + file SQL/database script +
+Sản phẩm nộp
+                                                                    ảnh chạy chương trình + báo cáo ngắn
+
+ Vị trí của Lab 9
+ Lab 7 đã xây dựng CRUD bằng Servlet + JSP theo MVC. Lab 8 đã chuyển form sang JSF và bổ sung
+ validation/message. Lab 9 thay dữ liệu trong bộ nhớ bằng tầng lưu trữ JPA, tạo Entity, Repository và quản lý
+ transaction. Đây là bước chuẩn bị trực tiếp cho Lab 10 - hoàn thiện ứng dụng với login, role và bảo vệ URL.
+
+1. Mục tiêu
+STT       Mục tiêu cần đạt
+
+1         Cấu hình được Jakarta Persistence trong Maven Web Project.
+
+2         Tạo được Entity ánh xạ với bảng trong CSDL bằng annotation JPA.
+
+3         Xây dựng được Repository/DAO để thao tác CRUD với EntityManager.
+
+4         Thực hiện được transaction với EntityTransaction theo mô hình RESOURCE_LOCAL.
+
+5         Viết được JPQL để tìm kiếm, lọc và lấy dữ liệu theo điều kiện.
+
+6         Kết nối được Controller/JSF Bean với Repository để hiển thị dữ liệu thật từ CSDL.
+
+7         Biết rollback khi thao tác dữ liệu gặp lỗi.
+
+8         Chuẩn bị được dữ liệu người dùng và vai trò cho Lab 10.
+
+
+2. Công cụ sử dụng
+Công cụ                                                             Mục đích sử dụng
+
+JDK 17 hoặc JDK 21                                                  Biên dịch và chạy mã nguồn Java.
+
+Apache Tomcat 10.x                                                  Chạy ứng dụng web Jakarta Servlet/JSP/JSF.
+
+Apache Maven                                                        Quản lý dependencies: JPA API, Hibernate ORM, JDBC Driver.
+
+MySQL hoặc SQL Server                                               Lưu trữ dữ liệu thật thay cho List trong bộ nhớ.
+
+
+MySQL Workbench / SSMS                                             Tạo CSDL, bảng, kiểm tra dữ liệu.
+
+IntelliJ IDEA / Eclipse / NetBeans                                 Soạn thảo, cấu hình server và deploy project.
+
+
+3. Cấu trúc project yêu cầu
+Cấu trúc thư mục gợi ý
+lab09-jpa-repository/
+├── pom.xml
+└── src/main/
+    ├── java/io/github/hoangtnedu/java/lab9/
+    │   ├── config/JPAUtil.java
+    │   ├── controller/SinhVienController.java
+    │   ├── model/SinhVien.java
+    │   ├── repository/SinhVienRepository.java
+    │   └── service/SinhVienService.java
+    ├── resources/META-INF/persistence.xml
+    └── webapp/
+        ├── index.jsp
+        ├── views/sinhvien/list.jsp
+        ├── views/sinhvien/form.jsp
+        └── WEB-INF/web.xml
+
+
+4. Cấu hình Maven và CSDL
+Sinh viên có thể sử dụng MySQL hoặc SQL Server. Ví dụ dưới đây minh họa với MySQL. Nếu dùng SQL
+Server, sinh viên thay JDBC driver, URL và dialect tương ứng.
+pom.xml - dependencies chính
+<dependencies>
+    <dependency>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>6.0.0</version>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>jakarta.persistence</groupId>
+        <artifactId>jakarta.persistence-api</artifactId>
+        <version>3.1.0</version>
+    </dependency>
+    <dependency>
+        <groupId>org.hibernate.orm</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>6.4.4.Final</version>
+    </dependency>
+    <dependency>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
+        <version>8.0.33</version>
+    </dependency>
+</dependencies>
+
+Câu lệnh tạo CSDL gợi ý
+CREATE DATABASE lab09_jpa CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE lab09_jpa;
+
+CREATE TABLE sinh_vien (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ma_sinh_vien VARCHAR(20) NOT NULL UNIQUE,
+    ho_ten VARCHAR(100) NOT NULL,
+    email VARCHAR(100),
+    lop VARCHAR(50),
+    ngay_sinh DATE
+);
+
+
+5. Bài tập có code gợi ý
+Bài 1. Cấu hình JPA và tạo lớp JPAUtil
+Mục tiêu: cấu hình persistence unit và tạo lớp dùng chung để lấy EntityManagerFactory.
+src/main/resources/META-INF/persistence.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence" version="3.0">
+    <persistence-unit name="lab09PU" transaction-type="RESOURCE_LOCAL">
+
+
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>io.github.hoangtnedu.java.lab9.model.SinhVien</class>
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="jakarta.persistence.jdbc.url"
+value="jdbc:mysql://localhost:3306/lab09_jpa?useUnicode=true&amp;characterEncoding=UTF-8"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value=""/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>
+
+JPAUtil.java
+package io.github.hoangtnedu.java.lab9.config;
+
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+
+public class JPAUtil {
+    private static final EntityManagerFactory emf =
+            Persistence.createEntityManagerFactory("lab09PU");
+
+    public static EntityManagerFactory getEntityManagerFactory() {
+        return emf;
+    }
+
+    public static void close() {
+        if (emf != null && emf.isOpen()) {
+            emf.close();
+        }
+    }
+}
+
+
+Bài 2. Tạo Entity SinhVien
+Mục tiêu: ánh xạ lớp Java với bảng `sinh_vien` trong CSDL.
+SinhVien.java
+package io.github.hoangtnedu.java.lab9.model;
+
+import jakarta.persistence.*;
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "sinh_vien")
+public class SinhVien {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "ma_sinh_vien", nullable = false, unique = true, length = 20)
+    private String maSinhVien;
+
+    @Column(name = "ho_ten", nullable = false, length = 100)
+    private String hoTen;
+
+    private String email;
+    private String lop;
+
+    @Column(name = "ngay_sinh")
+    private LocalDate ngaySinh;
+
+    public SinhVien() {}
+
+    public SinhVien(String maSinhVien, String hoTen, String email, String lop) {
+        this.maSinhVien = maSinhVien;
+        this.hoTen = hoTen;
+        this.email = email;
+        this.lop = lop;
+    }
+
+    // Tạo getter và setter cho tất cả thuộc tính
+}
+
+
+Bài 3. Xây dựng Repository CRUD bằng EntityManager
+Mục tiêu: tách thao tác dữ liệu ra khỏi Controller/Bean. Repository chịu trách nhiệm làm việc với
+EntityManager.
+
+
+SinhVienRepository.java
+package io.github.hoangtnedu.java.lab9.repository;
+
+import jakarta.persistence.*;
+import io.github.hoangtnedu.java.lab9.config.JPAUtil;
+import io.github.hoangtnedu.java.lab9.model.SinhVien;
+import java.util.List;
+
+public class SinhVienRepository {
+
+    public List<SinhVien> findAll() {
+        EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+        try {
+            return em.createQuery("SELECT s FROM SinhVien s ORDER BY s.id DESC", SinhVien.class)
+                     .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public SinhVien findById(Integer id) {
+        EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+        try {
+            return em.find(SinhVien.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
+    public void save(SinhVien sinhVien) {
+        EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.persist(sinhVien);
+            tx.commit();
+        } catch (RuntimeException ex) {
+            if (tx.isActive()) tx.rollback();
+            throw ex;
+        } finally {
+            em.close();
+        }
+    }
+}
+
+
+Bài 4. Bổ sung update, delete và tìm kiếm bằng JPQL
+Các phương thức mở rộng trong Repository
+public void update(SinhVien sinhVien) {
+    EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+    EntityTransaction tx = em.getTransaction();
+    try {
+        tx.begin();
+        em.merge(sinhVien);
+        tx.commit();
+    } catch (RuntimeException ex) {
+        if (tx.isActive()) tx.rollback();
+        throw ex;
+    } finally {
+        em.close();
+    }
+}
+
+public void delete(Integer id) {
+    EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+    EntityTransaction tx = em.getTransaction();
+    try {
+        tx.begin();
+        SinhVien sv = em.find(SinhVien.class, id);
+        if (sv != null) em.remove(sv);
+        tx.commit();
+    } catch (RuntimeException ex) {
+        if (tx.isActive()) tx.rollback();
+        throw ex;
+    } finally {
+        em.close();
+    }
+}
+
+public List<SinhVien> search(String keyword) {
+    EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+    try {
+        String jpql = "SELECT s FROM SinhVien s WHERE LOWER(s.hoTen) LIKE :kw OR LOWER(s.lop) LIKE :kw";
+        return em.createQuery(jpql, SinhVien.class)
+
+
+                  .setParameter("kw", "%" + keyword.toLowerCase() + "%")
+                  .getResultList();
+     } finally {
+         em.close();
+     }
+ }
+
+
+Bài 5. Kết nối Controller với Repository và hiển thị lên JSP/JSF
+Mục tiêu: thay dữ liệu List trong bộ nhớ bằng dữ liệu thật từ CSDL. Sinh viên có thể triển khai bằng Servlet/JSP
+hoặc JSF Managed Bean. Dưới đây là ví dụ Servlet.
+SinhVienController.java - rút gọn
+ @WebServlet("/sinh-vien")
+ public class SinhVienController extends HttpServlet {
+     private final SinhVienRepository repository = new SinhVienRepository();
+
+     @Override
+     protected void doGet(HttpServletRequest request, HttpServletResponse response)
+             throws ServletException, IOException {
+         String action = request.getParameter("action");
+
+         if ("delete".equals(action)) {
+             repository.delete(Integer.parseInt(request.getParameter("id")));
+             response.sendRedirect(request.getContextPath() + "/sinh-vien");
+             return;
+         }
+
+         String keyword = request.getParameter("keyword");
+         if (keyword == null || keyword.isBlank()) {
+             request.setAttribute("dsSinhVien", repository.findAll());
+         } else {
+             request.setAttribute("dsSinhVien", repository.search(keyword));
+         }
+         request.getRequestDispatcher("/views/sinhvien/list.jsp").forward(request, response);
+     }
+
+     @Override
+     protected void doPost(HttpServletRequest request, HttpServletResponse response)
+             throws IOException {
+         request.setCharacterEncoding("UTF-8");
+         SinhVien sv = new SinhVien(
+             request.getParameter("maSinhVien"),
+             request.getParameter("hoTen"),
+             request.getParameter("email"),
+             request.getParameter("lop")
+         );
+         repository.save(sv);
+         response.sendRedirect(request.getContextPath() + "/sinh-vien");
+     }
+ }
+
+
+6. Bài tập không có code gợi ý
+Bài 6. Entity Lớp học và quan hệ 1-nhiều
+Tạo Entity `LopHoc` và liên kết với `SinhVien`. Một lớp có nhiều sinh viên. Hiển thị danh sách sinh viên theo
+lớp.
+Bài 7. Entity Môn học và Điểm
+Tạo Entity `MonHoc`, `Diem`. Mỗi điểm gắn với một sinh viên và một môn học. Tính điểm tổng kết và xếp loại.
+Bài 8. Repository dùng chung
+Thiết kế `BaseRepository<T, ID>` hoặc lớp cha dùng chung cho các thao tác findAll, findById, save, update,
+delete.
+Bài 9. Tìm kiếm và phân trang bằng JPQL
+Bài 10. Ràng buộc dữ liệu và xử lý lỗi trùng mã
+Xử lý lỗi mã sinh viên trùng, email sai định dạng, trường bắt buộc bị bỏ trống. Hiển thị thông báo rõ ràng.
+
+
+Bài 11. Transaction nhiều thao tác
+Viết chức năng thêm sinh viên và tạo điểm mặc định trong cùng một transaction. Nếu một thao tác lỗi thì
+rollback toàn bộ.
+Bài 12. Seed dữ liệu mẫu
+Tạo Listener hoặc lớp khởi tạo dữ liệu mẫu khi CSDL rỗng: lớp học, sinh viên, môn học, người dùng.
+Bài 13. Chuyển ít nhất 2 module từ List sang JPA
+Chọn thêm Sách, Sản phẩm, Nhân sự hoặc Hóa đơn và chuyển Repository bộ nhớ sang Repository dùng JPA.
+
+7. Bài tập tổng hợp cuối Lab 9
+Hoàn thiện tối thiểu 3 module dữ liệu thật bằng JPA. Mỗi module cần có Entity, Repository, form thêm/sửa,
+danh sách, xóa, tìm kiếm và thông báo lỗi/thành công.
+
+Thành phần                                                 Yêu cầu
+
+                                                           Có annotation `@Entity`, `@Table`, `@Id`, `@GeneratedValue`,
+Entity
+                                                           `@Column` phù hợp.
+
+Repository                                                 Không viết câu lệnh thao tác dữ liệu trực tiếp trong Servlet/JSP.
+
+Transaction                                                Các thao tác thêm, sửa, xóa phải có begin/commit/rollback.
+
+JPQL                                                       Có ít nhất một chức năng tìm kiếm hoặc lọc dữ liệu bằng JPQL.
+
+                                                           Dữ liệu hiển thị từ CSDL, không còn dùng List tĩnh cho module đã
+Giao diện
+                                                           chuyển.
+
+
+8. Định hướng sang Lab 10
+Nội dung Lab 9                                             Chuyển tiếp ở Lab 10
+
+Entity User, Role                                          Dùng để đăng nhập và phân quyền.
+
+Repository thao tác CSDL                                   Dùng trong AuthService, UserService, module quản trị.
+
+Transaction                                                Áp dụng cho tạo tài khoản, đổi mật khẩu, cập nhật trạng thái.
+
+Dữ liệu thật                                               Ứng dụng hoàn thiện với login, role, bảo vệ URL.
+
+
+9. Sản phẩm cần nộp
+STT                                  Sản phẩm                                     Yêu cầu
+
+                                                                                  Đúng cấu trúc Maven Web Project, chạy
+1                                    Source code project
+                                                                                  được trên Tomcat.
+
+2                                    File nén ZIP                                 Đặt tên Lab09_MSSV_HoTen.zip.
+
+                                                                                  Có ảnh trang chủ, form, danh sách, chức
+3                                    Ảnh chạy chương trình
+                                                                                  năng chính và lỗi/thành công.
+
+                                                                                  Mô tả mục tiêu, cấu trúc project, luồng xử
+4                                    Báo cáo ngắn
+                                                                                  lý JPA/Repository/Transaction và kết quả.
+
+                                                                                  Nêu phần chưa hoàn thành, lỗi gặp phải và
+5                                    Ghi chú lỗi nếu có
+                                                                                  hướng khắc phục.
+
+
+10. Thang điểm đánh giá
+Tiêu chí                             Mô tả                                        Điểm
+
+                                     Tổ chức đúng package, file cấu hình,
+Cấu trúc project                                                                  1.0
+                                     view/controller/repository/service
+
+
+                                       Chạy được các chức năng bắt buộc của
+ Chức năng chính                                                                      3.0
+                                       bài lab
+
+                                       Entity/Repository/Service/Filter xử lý đúng,
+ Xử lý dữ liệu                                                                        1.5
+                                       ít trùng lặp
+
+                                       Form rõ ràng, bảng dễ đọc, thông báo dễ
+ Giao diện                                                                            1.0
+                                       hiểu
+
+                                       Có kiểm tra dữ liệu và hiển thị lỗi/thành
+ Validate/thông báo                                                                   1.0
+                                       công phù hợp
+
+                                       Hoàn thành các bài không có code gợi ý
+ Bài tự làm                                                                           1.5
+                                       theo yêu cầu
+
+                                       Nộp đúng định dạng, có ảnh chạy và giải
+ Báo cáo và minh chứng                                                                1.0
+                                       thích luồng xử lý
+
+ Tổng                                                                                 10.0
+
+
+11. Câu hỏi củng cố
+1.   Entity khác gì so với JavaBean thông thường?
+2.   EntityManager có vai trò gì trong JPA?
+3.   Vì sao thao tác thêm, sửa, xóa cần transaction?
+4.   Sự khác nhau giữa persist và merge là gì?
+5.   JPQL khác SQL ở điểm nào?
+6.   Khi nào cần rollback transaction?
+7.   Vì sao không nên thao tác EntityManager trực tiếp trong JSP?
+8.   Lab 9 cần chuẩn bị gì để Lab 10 làm login và phân quyền?
+
+12. Tài liệu tham khảo
+•    Kế hoạch giảng dạy học phần Công nghệ Java - Chương 3: Phát triển ứng dụng đa lớp trong Jakarta EE.
+•    Lab 7 - Xây dựng CRUD bằng Servlet + JSP, dùng MVC đơn giản.
+•    Lab 8 - Chuyển một form sang JSF, thêm validation và message.
+•    Programming Jakarta Struts - nội dung về JSP Model 2, MVC, Controller và View.
+•    Spring Persistence with Hibernate - nội dung tham khảo về Entity, Repository/DAO và Transaction.
+•    Jakarta Servlet, Jakarta Server Faces, Jakarta Persistence documentation.

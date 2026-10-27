@@ -49,9 +49,9 @@ Tài liệu GitHub Pages: https://docs.github.com/en/pages/getting-started-with-
 
 - Trang học liệu: `java/index.html`, gồm 4 chương và 20 trang theo buổi, với 4 buổi review project cuối.
 - Nguồn nội dung: `content/java/*.md`, lịch trình và nhiệm vụ bổ sung: `content/java/lich-trinh.json`.
-- Lab 1 giữ 5 bài toán của lab được cung cấp; các bài thực hành còn lại được ghi rõ là bổ sung theo lịch trình.
+- Đủ Lab 1–16 từ bộ PDF đã cung cấp, có trang nội dung và mã mẫu Maven theo từng lab.
 - Mã mẫu Maven có thể tải từng tệp tại `java/examples/lab01/`.
-- Tái tạo 29 trang và cập nhật riêng URL Java trong sitemap: `python3 tools/build_java.py` (Python 3, thư viện chuẩn).
+- Tái tạo 44 trang và cập nhật riêng URL Java trong sitemap: `python3 tools/build_java.py` (Python 3, thư viện chuẩn).
 - Phần Java SE dùng JDK 17/21; Jakarta EE dùng runtime Web Profile phù hợp; ví dụ Spring chọn Boot 3.5.x/JDK 21 và project riêng.
 - Đã viết lại nội dung và đổi package sang nhận diện cá nhân. Không phát hành tài liệu gốc có nhận diện tổ chức, mẫu slide, biểu mẫu hay PDF thương mại.
 - Trang nguồn tham khảo giải thích rõ phạm vi sử dụng sách Struts 1.x và Spring/Hibernate 2010, kèm liên kết tài liệu chính thức hiện hành.
@@ -59,7 +59,7 @@ Tài liệu GitHub Pages: https://docs.github.com/en/pages/getting-started-with-
 ## Kiểm tra mã Java bằng GitHub Actions
 
 - Workflow `Java examples CI`: `.github/workflows/java-examples.yml`.
-- JDK 17 và 21: chạy Maven verify, JUnit cho 5 bài toán và 12 kịch bản chạy JAR.
+- JDK 17 và 21: build toàn bộ 16 lab, chạy JUnit/Failsafe, MySQL, Swing/Xvfb, WAR/Tomcat và Spring context/JAR.
 - Tự chạy khi thay đổi `java/examples/**`, script smoke hoặc workflow; hỗ trợ Run workflow thủ công.
 - Lưu JAR và báo cáo cho mỗi JDK trong artifact 7 ngày. Workflow chỉ đọc repository.
-- Hiện phạm vi kiểm tra là project Maven Lab 1; các đoạn minh họa Swing/Jakarta EE/Spring trong bài giảng chưa phải project chạy độc lập.
+- Các project thực thi được kiểm tra riêng với các đoạn code hướng dẫn trong nội dung PDF; bài tự làm vẫn dành cho người học.

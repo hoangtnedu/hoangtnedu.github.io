@@ -1,0 +1,438 @@
+LAB 10
+          CHƯƠNG 3: PHÁT TRIỂN ỨNG DỤNG ĐA LỚP TRONG JAKARTA EE
+
+                        Thêm login, role, bảo vệ URL và hoàn thiện ứng dụng
+
+Học phần                                                 Công nghệ Java
+
+                                                         Lab 10 - Thêm login, role, bảo vệ URL và hoàn thiện ứng
+Tên bài lab
+                                                         dụng
+
+                                                         Servlet/JSP hoặc JSF, Session, Filter, Listener, JPA, Role-
+Công nghệ Chương 3
+                                                         based Access Control
+
+Thời lượng gợi ý                                         01 buổi thực hành
+
+                                                         Ứng dụng web hoàn thiện + database script + ảnh chạy +
+Sản phẩm nộp
+                                                         báo cáo tổng hợp
+
+ Vị trí của Lab 10
+ Lab 10 là bài hoàn thiện chuỗi Lab 6-10. Sinh viên ghép các phần đã làm: Maven Web project, CRUD MVC, JSF
+ validation/message, JPA Repository/Transaction, sau đó bổ sung đăng nhập, vai trò, bảo vệ URL và chuẩn hóa
+ ứng dụng.
+
+1. Mục tiêu
+STT                                                      Mục tiêu cần đạt
+
+                                                         Tạo được cơ chế đăng nhập/đăng xuất sử dụng dữ liệu người
+                                                         dùng trong CSDL.
+
+2                                                        Lưu thông tin người dùng đăng nhập vào HttpSession.
+
+                                                         Phân quyền theo vai trò ADMIN, STAFF, USER hoặc vai trò
+                                                         tương đương.
+
+4                                                        Tạo Filter bảo vệ các URL quản trị và URL yêu cầu đăng nhập.
+
+5                                                        Hiển thị menu/giao diện khác nhau theo vai trò người dùng.
+
+6                                                        Bổ sung trang lỗi 403, 404, 500 và thông báo thân thiện.
+
+                                                         Hoàn thiện ứng dụng nhiều module có CSDL, validate, message
+                                                         và transaction.
+
+8                                                        Đóng gói, nộp source code và báo cáo tổng hợp cuối chuỗi lab.
+
+
+2. Công cụ sử dụng
+Công cụ                                                  Mục đích sử dụng
+
+JDK 17 hoặc JDK 21                                       Biên dịch và chạy mã nguồn Java.
+
+
+Apache Tomcat 10.x                                         Chạy ứng dụng web Jakarta Servlet/JSP/JSF.
+
+Apache Maven                                               Quản lý dependencies.
+
+MySQL hoặc SQL Server                                      Lưu bảng Users, Roles, dữ liệu nghiệp vụ và log.
+
+IntelliJ IDEA / Eclipse / NetBeans                         Hoàn thiện project và deploy lên server.
+
+Trình duyệt web                                            Kiểm thử login, phân quyền và các chức năng quản trị.
+
+
+3. Cấu trúc project yêu cầu
+Cấu trúc thư mục gợi ý
+lab10-secured-app/
+├── pom.xml
+└── src/main/
+    ├── java/io/github/hoangtnedu/java/lab10/
+    │   ├── config/JPAUtil.java
+    │   ├── controller/AuthController.java
+    │   ├── filter/AuthenticationFilter.java
+    │   ├── filter/AuthorizationFilter.java
+    │   ├── listener/AppListener.java
+    │   ├── model/User.java
+    │   ├── model/Role.java
+    │   ├── repository/UserRepository.java
+    │   └── service/AuthService.java
+    ├── resources/META-INF/persistence.xml
+    └── webapp/
+        ├── login.jsp
+        ├── dashboard.jsp
+        ├── admin/
+        ├── user/
+        ├── views/
+        └── WEB-INF/web.xml
+
+
+4. Thiết kế vai trò và quy tắc truy cập
+Vai trò                                                    Quyền truy cập gợi ý
+
+                                                           Quản lý toàn bộ: người dùng, sinh viên, sách, sản phẩm, hóa đơn,
+ADMIN
+                                                           báo cáo.
+
+                                                           Thực hiện nghiệp vụ: thêm/sửa dữ liệu nghiệp vụ nhưng không
+STAFF
+                                                           quản lý tài khoản admin.
+
+                                                           Xem dữ liệu cá nhân, cập nhật hồ sơ, xem lịch sử hoặc thông tin
+USER
+                                                           được phép.
+
+GUEST                                                      Chưa đăng nhập, chỉ được xem trang login, trang chủ công khai.
+
+URL                                                        Yêu cầu bảo vệ
+
+/admin/*                                                   Chỉ ADMIN được truy cập.
+
+/staff/*                                                   ADMIN hoặc STAFF được truy cập.
+
+/user/*                                                    Người dùng đã đăng nhập được truy cập.
+
+/login.jsp, /auth                                          Cho phép truy cập công khai.
+
+/assets/*                                                  Cho phép truy cập công khai để tải CSS, JS, ảnh.
+
+
+5. Bài tập có code gợi ý
+Bài 1. Tạo Entity User và Role
+Mục tiêu: lưu thông tin tài khoản và vai trò trong CSDL. Mật khẩu trong bài lab có thể lưu dạng đơn giản để
+phục vụ học tập; khi triển khai thật cần băm mật khẩu.
+User.java
+package io.github.hoangtnedu.java.lab10.model;
+
+import jakarta.persistence.*;
+
+
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false, unique = true, length = 100)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(name = "full_name", nullable = false, length = 100)
+    private String fullName;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private Role role;
+
+    private boolean active = true;
+
+    public User() {}
+    // Tạo getter và setter
+}
+
+Role.java
+package io.github.hoangtnedu.java.lab10.model;
+
+public enum Role {
+    ADMIN,
+    STAFF,
+    USER
+}
+
+
+Bài 2. Tạo UserRepository và AuthService
+UserRepository.java và AuthService.java - rút gọn
+public class UserRepository {
+    public User findByEmail(String email) {
+        EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+        try {
+            return em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
+                     .setParameter("email", email)
+                     .getResultStream()
+                     .findFirst()
+                     .orElse(null);
+        } finally {
+            em.close();
+        }
+    }
+}
+
+public class AuthService {
+    private final UserRepository userRepository = new UserRepository();
+
+    public User login(String email, String password) {
+        User user = userRepository.findByEmail(email);
+        if (user == null || !user.isActive()) return null;
+        if (!user.getPassword().equals(password)) return null;
+        return user;
+    }
+}
+
+
+Bài 3. Xây dựng AuthController đăng nhập/đăng xuất
+AuthController.java
+@WebServlet("/auth")
+public class AuthController extends HttpServlet {
+    private final AuthService authService = new AuthService();
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        User user = authService.login(email, password);
+        if (user == null) {
+            request.setAttribute("error", "Email hoặc mật khẩu không đúng");
+
+
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            return;
+        }
+
+        request.getSession().setAttribute("currentUser", user);
+        response.sendRedirect(request.getContextPath() + "/dashboard.jsp");
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        if ("logout".equals(request.getParameter("action"))) {
+            HttpSession session = request.getSession(false);
+            if (session != null) session.invalidate();
+        }
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+    }
+}
+
+
+Bài 4. Tạo AuthenticationFilter bảo vệ URL đăng nhập
+AuthenticationFilter.java
+@WebFilter(urlPatterns = {"/admin/*", "/staff/*", "/user/*"})
+public class AuthenticationFilter implements Filter {
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("currentUser") == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+        chain.doFilter(request, response);
+    }
+}
+
+
+Bài 5. Tạo AuthorizationFilter phân quyền theo role
+AuthorizationFilter.java - rút gọn
+@WebFilter(urlPatterns = {"/admin/*", "/staff/*"})
+public class AuthorizationFilter implements Filter {
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+        User user = (User) request.getSession().getAttribute("currentUser");
+        String path = request.getRequestURI();
+
+        if (path.contains("/admin/") && user.getRole() != Role.ADMIN) {
+            response.sendRedirect(request.getContextPath() + "/error/403.jsp");
+            return;
+        }
+
+        if (path.contains("/staff/") &&
+            !(user.getRole() == Role.ADMIN || user.getRole() == Role.STAFF)) {
+            response.sendRedirect(request.getContextPath() + "/error/403.jsp");
+            return;
+        }
+
+        chain.doFilter(request, response);
+    }
+}
+
+login.jsp - form đăng nhập
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<html>
+<body>
+<h2>Đăng nhập hệ thống</h2>
+<c:if test="${not empty error}">
+    <p style="color:red">${error}</p>
+</c:if>
+<form method="post" action="${pageContext.request.contextPath}/auth">
+    <p>Email: <input type="email" name="email" required></p>
+    <p>Mật khẩu: <input type="password" name="password" required></p>
+    <button type="submit">Đăng nhập</button>
+</form>
+</body>
+
+
+</html>
+
+
+6. Bài tập không có code gợi ý
+Bài 6. Tạo dữ liệu tài khoản mẫu
+Tạo script hoặc Listener để sinh tài khoản ADMIN, STAFF, USER ban đầu. Đảm bảo email không trùng.
+Bài 7. Quản lý người dùng cho ADMIN
+Xây dựng CRUD tài khoản: thêm, sửa họ tên, đổi vai trò, khóa/mở tài khoản, tìm kiếm theo email.
+Bài 8. Trang hồ sơ cá nhân
+Cho phép người dùng đã đăng nhập xem và cập nhật họ tên, email liên hệ, thông tin cá nhân.
+Bài 9. Đổi mật khẩu
+Người dùng nhập mật khẩu cũ, mật khẩu mới và xác nhận mật khẩu mới. Kiểm tra hợp lệ trước khi cập nhật.
+Bài 10. Hiển thị menu theo role
+ADMIN thấy menu quản trị; STAFF thấy menu nghiệp vụ; USER chỉ thấy menu cá nhân. Không chỉ ẩn menu
+mà vẫn phải bảo vệ URL bằng Filter.
+Bài 11. Trang lỗi 403, 404, 500
+Tạo các trang lỗi thân thiện và cấu hình trong `web.xml`. Có nút quay về dashboard.
+Bài 12. Ghi log đăng nhập và thao tác chính
+Tạo bảng hoặc file log ghi lại thời điểm đăng nhập, đăng xuất, thêm/sửa/xóa dữ liệu quan trọng.
+Bài 13. Hoàn thiện giao diện và điều hướng
+Chuẩn hóa header, footer, menu, dashboard, thông báo thành công/thất bại cho toàn bộ ứng dụng.
+
+7. Bài tập tổng hợp cuối Lab 10
+Hoàn thiện ứng dụng quản lý theo nhóm hoặc cá nhân. Ứng dụng phải có tối thiểu 3 module nghiệp vụ có JPA,
+1 module tài khoản, login/logout, role, bảo vệ URL và báo cáo tổng hợp.
+Hạng mục                                                  Yêu cầu hoàn thiện
+
+                                                          Tối thiểu 3 module: Sinh viên, Sách, Sản phẩm, Hóa đơn, Nhân
+Module nghiệp vụ
+                                                          sự hoặc Điểm.
+
+                                                          Có script tạo bảng, dữ liệu mẫu, ràng buộc khóa chính/khóa ngoại
+CSDL
+                                                          nếu có.
+
+Login/Logout                                              Đăng nhập bằng tài khoản trong CSDL, đăng xuất hủy session.
+
+                                                          Có ít nhất 2 vai trò; khuyến nghị ADMIN và USER hoặc ADMIN,
+Role
+                                                          STAFF, USER.
+
+                                                          Không đăng nhập không vào được trang nội bộ; sai role chuyển
+Bảo vệ URL
+                                                          về 403.
+
+Validate                                                  Form có kiểm tra hợp lệ và hiển thị thông báo lỗi rõ ràng.
+
+                                                          Mô tả kiến trúc, sơ đồ luồng, ảnh chạy, tài khoản test và phần tự
+Báo cáo
+                                                          đánh giá.
+
+
+8. Checklist kiểm thử trước khi nộp
+•   Chạy được project sau khi import vào IDE và cấu hình Tomcat.
+•   Tạo được CSDL từ script nộp kèm.
+•   Đăng nhập ADMIN thành công và truy cập được /admin/*.
+•   USER hoặc STAFF không truy cập trái quyền vào /admin/*.
+
+
+•    Chưa đăng nhập thì bị chuyển về login.jsp.
+•    CRUD tối thiểu 3 module chạy với dữ liệu CSDL.
+•    Form có validate và hiển thị thông báo lỗi/thành công.
+•    Đăng xuất xong không truy cập lại được trang nội bộ bằng nút Back nếu reload.
+•    Báo cáo có ảnh minh chứng rõ ràng.
+
+9. Sản phẩm cần nộp
+ STT                                   Sản phẩm                                       Yêu cầu
+
+                                                                                      Đúng cấu trúc Maven Web Project, chạy
+ 1                                     Source code project
+                                                                                      được trên Tomcat.
+
+ 2                                     File nén ZIP                                   Đặt tên Lab10_MSSV_HoTen.zip.
+
+                                                                                      Có ảnh trang chủ, form, danh sách, chức
+ 3                                     Ảnh chạy chương trình
+                                                                                      năng chính và lỗi/thành công.
+
+                                                                                      Mô tả mục tiêu, cấu trúc project, luồng xử
+ 4                                     Báo cáo ngắn
+                                                                                      lý login/role/protected URL và kết quả.
+
+                                                                                      Nêu phần chưa hoàn thành, lỗi gặp phải và
+ 5                                     Ghi chú lỗi nếu có
+                                                                                      hướng khắc phục.
+
+
+10. Thang điểm đánh giá
+ Tiêu chí                              Mô tả                                          Điểm
+
+                                       Tổ chức đúng package, file cấu hình,
+ Cấu trúc project                                                                     1.0
+                                       view/controller/repository/service
+
+                                       Chạy được các chức năng bắt buộc của
+ Chức năng chính                                                                      3.0
+                                       bài lab
+
+                                       Entity/Repository/Service/Filter xử lý đúng,
+ Xử lý dữ liệu                                                                        1.5
+                                       ít trùng lặp
+
+                                       Form rõ ràng, bảng dễ đọc, thông báo dễ
+ Giao diện                                                                            1.0
+                                       hiểu
+
+                                       Có kiểm tra dữ liệu và hiển thị lỗi/thành
+ Validate/thông báo                                                                   1.0
+                                       công phù hợp
+
+                                       Hoàn thành các bài không có code gợi ý
+ Bài tự làm                                                                           1.5
+                                       theo yêu cầu
+
+                                       Nộp đúng định dạng, có ảnh chạy và giải
+ Báo cáo và minh chứng                                                                1.0
+                                       thích luồng xử lý
+
+ Tổng                                                                                 10.0
+
+
+11. Câu hỏi củng cố
+1.   Authentication và Authorization khác nhau như thế nào?
+2.   Vì sao cần dùng Filter để bảo vệ URL thay vì chỉ ẩn menu?
+3.   Dữ liệu người dùng nên lưu gì trong session và không nên lưu gì?
+4.   Khi người dùng không đủ quyền, ứng dụng nên xử lý như thế nào?
+5.   Vì sao mật khẩu không nên lưu dạng plain text trong hệ thống thật?
+6.   Các URL public và private trong ứng dụng cần được phân loại thế nào?
+7.   Transaction có vai trò gì khi quản lý người dùng và đổi mật khẩu?
+8.   Ứng dụng Lab 10 đã tổng hợp những nội dung nào từ Lab 6 đến Lab 9?
+
+12. Tài liệu tham khảo
+•    Kế hoạch giảng dạy học phần Công nghệ Java - Chương 3: Phát triển ứng dụng đa lớp trong Jakarta EE.
+•    Lab 7 - Xây dựng CRUD bằng Servlet + JSP, dùng MVC đơn giản.
+
+
+•   Lab 8 - Chuyển một form sang JSF, thêm validation và message.
+•   Programming Jakarta Struts - nội dung về JSP Model 2, MVC, Controller và View.
+•   Spring Persistence with Hibernate - nội dung tham khảo về Entity, Repository/DAO và Transaction.
+•   Jakarta Servlet, Jakarta Server Faces, Jakarta Persistence documentation.

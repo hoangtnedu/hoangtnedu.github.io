@@ -1,0 +1,402 @@
+LAB 2
+Cài đặt môi trường phát triển, quản lý dự án với Maven và đóng gói ứng
+                               dụng Java
+Học phần                                                      Công nghệ Java
+                                                              Thiết lập môi trường Java, tạo Maven project và đóng
+Tên bài lab
+                                                              gói JAR
+Vị trí trong kế hoạch                                         Buổi học thứ 2 - Chương 1, mục 1.2
+                                                              Cài đặt môi trường phát triển; Quản lý dự án với Maven;
+Thành phần kiến thức
+                                                              Đóng gói ứng dụng trong Java
+Thời lượng gợi ý                                              01 buổi thực hành
+                                                              Maven project + file JAR chạy được + ảnh minh chứng
+Sản phẩm nộp
+                                                              môi trường/build/run + báo cáo ngắn
+
+
+Ghi chú: Lab 2 này được chỉnh lại để đúng với Buổi học thứ 2 trong kế hoạch giảng dạy. Vì vậy bài lab không dùng
+Java Swing, JDBC, Jakarta EE hoặc Spring. Trọng tâm là môi trường phát triển Java, Maven project và đóng gói
+ứng dụng.
+
+
+1. Nội dung
+
+         Nội dung                     Ý nghĩa trong bài học                          Thể hiện trong Lab 2
+                                Chuẩn bị JDK, IDE, Maven và biến        Kiểm tra java, javac, mvn; cấu hình
+Cài đặt môi trường phát triển
+                                môi trường để lập trình Java.           JAVA_HOME; chụp ảnh minh chứng.
+                                Tổ chức project theo chuẩn, quản lý     Tạo Maven project, cấu trúc src/main/java,
+Quản lý dự án với Maven
+                                vòng đời build và cấu hình biên dịch.   src/test/java, cấu hình pom.xml.
+Đóng gói ứng dụng trong         Biên dịch mã nguồn thành bytecode       Dùng mvn clean package, cấu hình mainClass và
+Java                            và đóng gói thành JAR chạy được.        chạy bằng java -jar.
+
+
+ Lưu ý định vị: Lab 2 được hiểu là bài thực hành thứ 2 của học phần, tương ứng Buổi học thứ 2 trong kế hoạch.
+
+
+2. Mục tiêu
+     STT                                                   Mục tiêu cần đạt
+ 1           Kiểm tra được môi trường Java bằng các lệnh java -version, javac -version và mvn -version.
+ 2           Giải thích ngắn gọn được vai trò của JDK, JRE/JVM và Maven trong quy trình phát triển ứng dụng Java.
+ 3           Tạo được một Maven project theo cấu trúc chuẩn, có groupId, artifactId, version và package rõ ràng.
+ 4           Cấu hình được pom.xml để biên dịch bằng Java 17/21 và khai báo lớp main cho file JAR.
+ 5           Viết được ứng dụng Java SE nhỏ, tổ chức mã nguồn theo package và lớp chức năng.
+
+ 6           Build, đóng gói và chạy được file JAR bằng lệnh java -jar.
+
+
+3. Công cụ sử dụng
+              Công cụ                                                     Mục đích sử dụng
+ JDK 17 hoặc JDK 21                  Biên dịch mã nguồn .java thành bytecode .class và chạy ứng dụng Java.
+ Apache Maven 3.x                    Quản lý cấu trúc project, vòng đời build và đóng gói ứng dụng.
+ IntelliJ IDEA / Eclipse /
+                                     Soạn thảo, chạy thử, quản lý project.
+ NetBeans / VS Code
+ Command Prompt / PowerShell /
+                                     Kiểm tra môi trường, build Maven và chạy file JAR.
+ Terminal
+ Git hoặc ZIP                        Nộp bài, lưu vết mã nguồn và sản phẩm thực hành.
+
+
+4. Yêu cầu trước khi lập trình
+
+Các lệnh kiểm tra môi trường
+ java -version
+ javac -version
+ mvn -version
+
+
+ # Windows
+ echo %JAVA_HOME%
+
+
+ # macOS/Linux
+ echo $JAVA_HOME
+
+
+        Minh chứng cần nộp                                                      Yêu cầu
+ Ảnh java -version                          Thể hiện rõ phiên bản JDK đang dùng.
+ Ảnh javac -version                         Chứng minh JDK đã được cài, không chỉ có JRE.
+
+ Ảnh mvn -version                           Chứng minh Maven nhận đúng Java runtime.
+ Ảnh JAVA_HOME                              Thể hiện đường dẫn JDK đã cấu hình.
+
+
+5. Nội dung bài tập thực hành
+Bài toán thực hành: Xây dựng ứng dụng Java SE Console bằng Maven để nhập thông tin sinh viên, tính điểm
+tổng kết học phần và phân loại kết quả. Trọng tâm không nằm ở độ khó thuật toán, mà nằm ở quy trình công
+nghệ: tạo project, tổ chức package, biên dịch, đóng gói và chạy JAR.
+      Phần                                   Yêu cầu thực hiện                                Gắn với thành phần Buổi 2
+ Phần 1             Tạo Maven project tên lab02-java-maven-jar.                            Quản lý dự án với Maven
+                    Tạo package io.github.hoangtnedu.java.lab2 và các lớp App, Student,
+ Phần 2                                                                                    Cấu trúc mã nguồn Java trong Maven
+                    GradeCalculator.
+                    Cấu hình pom.xml với maven-compiler-plugin và maven-jar-
+ Phần 3                                                                                    Đóng gói ứng dụng trong Java
+                    plugin.
+                    Viết chương trình nhập điểm chuyên cần, giữa kỳ, cuối kỳ; tính         Ứng dụng Java SE đơn giản để kiểm
+ Phần 4
+                    điểm tổng kết.                                                         thử project
+                                                                                           Minh chứng quy trình
+ Phần 5             Build bằng mvn clean package và chạy file JAR bằng java -jar.
+                                                                                           build/package/run
+
+
+6. Cấu trúc dự án Maven yêu cầu
+Cấu trúc thư mục
+ lab02-java-maven-jar/
+ ├── pom.xml
+ └── src/
+    └── main/
+      └── java/
+        └── vn/
+           └── edu/
+             └── hoangtnedu/
+              └── lab2/
+                 ├── App.java
+                 ├── Student.java
+                 └── GradeCalculator.java
+
+
+Lệnh tạo project Maven (trên Windows)
+ mvn archetype:generate ^
+ -DgroupId=io.github.hoangtnedu.java ^
+ -DartifactId=lab02-java-maven-jar ^
+ -DarchetypeArtifactId=maven-archetype-quickstart ^
+ -DinteractiveMode=false
+
+
+ Gợi ý: Sau khi tạo project, sinh viên có thể xóa lớp App mặc định do Maven sinh ra và tạo lại đúng package
+ io.github.hoangtnedu.java.lab2 theo yêu cầu.
+
+
+7. File cấu hình Maven
+File pom.xml
+ <project xmlns="http://maven.apache.org/POM/4.0.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+
+   <groupId>io.github.hoangtnedu.java</groupId>
+   <artifactId>lab02-java-maven-jar</artifactId>
+   <version>1.0-SNAPSHOT</version>
+   <packaging>jar</packaging>
+
+
+   <properties>
+     <maven.compiler.source>17</maven.compiler.source>
+     <maven.compiler.target>17</maven.compiler.target>
+     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+   </properties>
+
+
+   <build>
+     <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.13.0</version>
+        </plugin>
+
+
+        <plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-jar-plugin</artifactId>
+           <version>3.4.2</version>
+           <configuration>
+             <archive>
+                <manifest>
+                   <mainClass>io.github.hoangtnedu.java.lab2.App</mainClass>
+                </manifest>
+             </archive>
+           </configuration>
+        </plugin>
+      </plugins>
+   </build>
+ </project>
+
+
+8. Đặc tả chương trình cần xây dựng
+        Chức năng                                            Mô tả yêu cầu                                   Ví dụ
+                                    Nhập mã sinh viên, họ tên, điểm chuyên cần, điểm giữa kỳ,     SV001, Nguyễn Văn An, 8,
+ Nhập dữ liệu
+                                    điểm cuối kỳ.                                                 7, 9
+                                    Điểm tổng kết = chuyên cần x 10% + giữa kỳ x 30% + cuối kỳ    8 x 0.1 + 7 x 0.3 + 9 x 0.6
+ Tính điểm tổng kết
+                                    x 60%.                                                        = 8.3
+ Xếp loại                           A: từ 8.5; B: từ 7.0; C: từ 5.5; D: từ 4.0; F: dưới 4.0.      8.3 -> B
+
+                                                                                                  SV001 - Nguyễn Văn A -
+ Hiển thị kết quả                   In bảng thông tin sinh viên, điểm tổng kết và xếp loại.
+                                                                                                  8.30 - B
+                                    Nếu điểm ngoài khoảng 0-10, chương trình báo lỗi và yêu cầu
+ Kiểm tra dữ liệu                                                                                 Điểm 12 -> không hợp lệ
+                                    nhập lại.
+
+
+9. Code gợi ý
+File src/main/java/io/github/hoangtnedu/java/lab2/Student.java
+ package io.github.hoangtnedu.java.lab2;
+
+
+ public class Student {
+   private String studentId;
+   private String fullName;
+   private double attendanceScore;
+   private double midtermScore;
+   private double finalScore;
+
+
+   public Student(String studentId, String fullName,
+             double attendanceScore, double midtermScore, double finalScore) {
+     this.studentId = studentId;
+     this.fullName = fullName;
+     this.attendanceScore = attendanceScore;
+     this.midtermScore = midtermScore;
+     this.finalScore = finalScore;
+   }
+
+
+   public String getStudentId() {
+     return studentId;
+   }
+
+
+   public String getFullName() {
+     return fullName;
+   }
+
+
+   public double getAttendanceScore() {
+     return attendanceScore;
+   }
+
+
+   public double getMidtermScore() {
+     return midtermScore;
+   }
+
+
+   public double getFinalScore() {
+
+
+         return finalScore;
+     }
+ }
+
+
+File src/main/java/io/github/hoangtnedu/java/lab2/GradeCalculator.java
+ package io.github.hoangtnedu.java.lab2;
+
+
+ public class GradeCalculator {
+
+
+     public static double calculateFinalScore(Student student) {
+       return student.getAttendanceScore() * 0.10
+             + student.getMidtermScore() * 0.30
+             + student.getFinalScore() * 0.60;
+     }
+
+
+     public static String classify(double score) {
+       if (score >= 8.5) {
+          return "A";
+       }
+       if (score >= 7.0) {
+          return "B";
+       }
+       if (score >= 5.5) {
+          return "C";
+       }
+       if (score >= 4.0) {
+          return "D";
+       }
+       return "F";
+     }
+
+
+     public static void validateScore(double score, String fieldName) {
+       if (score < 0 || score > 10) {
+          throw new IllegalArgumentException(fieldName + " phai nam trong khoang 0 den 10");
+       }
+     }
+ }
+
+
+File src/main/java/io/github/hoangtnedu/java/lab2/App.java
+ package io.github.hoangtnedu.java.lab2;
+
+
+ import java.util.Scanner;
+
+
+ public class App {
+
+
+     public static void main(String[] args) {
+       Scanner scanner = new Scanner(System.in);
+
+
+         System.out.println("===== LAB 2 - MAVEN PROJECT VA DONG GOI JAR =====");
+         System.out.print("Nhap ma sinh vien: ");
+         String studentId = scanner.nextLine();
+
+
+         System.out.print("Nhap ho ten sinh vien: ");
+         String fullName = scanner.nextLine();
+
+
+         double attendanceScore = inputScore(scanner, "diem chuyen can");
+         double midtermScore = inputScore(scanner, "diem giua ky");
+         double finalScore = inputScore(scanner, "diem cuoi ky");
+
+
+         Student student = new Student(studentId, fullName,
+             attendanceScore, midtermScore, finalScore);
+
+
+         double totalScore = GradeCalculator.calculateFinalScore(student);
+         String grade = GradeCalculator.classify(totalScore);
+
+
+         System.out.println("\n----- KET QUA HOC PHAN -----");
+         System.out.println("Ma SV: " + student.getStudentId());
+         System.out.println("Ho ten: " + student.getFullName());
+         System.out.printf("Diem tong ket: %.2f%n", totalScore);
+         System.out.println("Xep loai: " + grade);
+
+
+         scanner.close();
+     }
+
+
+     private static double inputScore(Scanner scanner, String label) {
+        while (true) {
+          try {
+             System.out.print("Nhap " + label + ": ");
+             double score = Double.parseDouble(scanner.nextLine());
+             GradeCalculator.validateScore(score, label);
+             return score;
+          } catch (IllegalArgumentException ex) {
+             System.out.println("Loi: " + ex.getMessage());
+          }
+        }
+     }
+ }
+
+
+10. Build, đóng gói và chạy ứng dụng
+Lệnh build và chạy
+ # Đứng tại thư mục gốc của project
+ mvn clean package
+
+
+ # Chạy file JAR sau khi build thành công
+ java -jar target/lab02-java-maven-jar-1.0-SNAPSHOT.jar
+
+
+                      Lệnh                                                           Mục đích
+ mvn clean                                       Xóa thư mục target và các file build cũ.
+ mvn compile                                     Biên dịch mã nguồn trong src/main/java.
+ mvn package                                     Biên dịch và đóng gói project thành file JAR.
+ java -jar ...                                   Chạy ứng dụng đã được đóng gói bằng JVM.
+
+
+11. Sản phẩm cần nộp
+        STT              Sản phẩm                                           Yêu cầu cụ thể
+    1         Mã nguồn                      Nộp toàn bộ Maven project, có pom.xml và thư mục src đúng cấu trúc.
+    2         File JAR                      Nộp file target/lab02-java-maven-jar-1.0-SNAPSHOT.jar chạy được.
+    3         Ảnh minh chứng môi trường     Ảnh chụp java -version, javac -version, mvn -version, JAVA_HOME.
+    4         Ảnh build thành công          Ảnh chụp kết quả mvn clean package hiển thị BUILD SUCCESS.
+    5         Ảnh chạy JAR                  Ảnh chụp kết quả chạy java -jar và nhập dữ liệu kiểm thử.
+    6         Báo cáo ngắn                  1-2 trang: mô tả cấu trúc project, lệnh đã dùng, lỗi gặp phải và cách xử lý.
+
+
+12. Tiêu chí đánh giá
+               Tiêu chí                                             Mô tả                                           Điểm
+    Môi trường phát triển            Cài đặt và minh chứng đúng JDK, javac, Maven, JAVA_HOME.                 2.0
+    Cấu trúc Maven project           Project đúng groupId/artifactId/package, có pom.xml hợp lệ.              2.0
+    Chương trình Java SE             Code chạy đúng, có tách lớp Student, GradeCalculator, App.               2.0
+    Đóng gói JAR                     mvn clean package thành công, JAR chạy được bằng java -jar.              2.0
+    Báo cáo và minh chứng            Ảnh chụp rõ ràng, báo cáo ngắn đúng nội dung Buổi học thứ 2.             1.5
+    Trình bày mã nguồn               Tên lớp, package, định dạng code rõ ràng, dễ đọc.                        0.5
+
+
+13. Câu hỏi củng cố sau bài lab
+1.      JDK khác JRE ở điểm nào? Vì sao khi lập trình cần kiểm tra cả java và javac?
+2.      Maven hỗ trợ những giai đoạn nào trong vòng đời build của project?
+3.      Trong file pom.xml, groupId, artifactId và version có ý nghĩa gì?
+4.      Vì sao muốn chạy file JAR bằng java -jar cần khai báo mainClass?
+5.      Thư mục target trong Maven project dùng để làm gì? Có nên nộp toàn bộ target hay chỉ nộp JAR?
+
+
+14. Gợi ý mở rộng
+•       Bổ sung chức năng nhập nhiều sinh viên và in danh sách kết quả.
+•       Tách lớp nhập/xuất dữ liệu thành ConsoleView để chuẩn bị cho kiến trúc MVC ở các buổi sau.
+•       Thêm unit test cho GradeCalculator trong src/test/java.
+•       Tìm hiểu thêm maven-shade-plugin để đóng gói JAR kèm thư viện ngoài nếu project có dependency.

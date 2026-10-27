@@ -1,0 +1,639 @@
+LAB 4
+     CHƯƠNG 2: PHÁT TRIỂN ỨNG DỤNG DESKTOP TRONG JAVA SE
+                    Xử lý sự kiện, EDT và SwingWorker trong Java Swing
+Học phần                      Công nghệ Java
+Tên bài lab                   Xây dựng ứng dụng Java Swing có xử lý tác vụ nền bằng SwingWorker
+                              Java Swing, Event Handling, EDT, Multi-threading, SwingWorker, JProgressBar,
+Công nghệ Chương 2
+                              JFileChooser, JTable
+Thời lượng gợi ý              01 buổi thực hành 3 tiết
+Liên kết hệ thống             Lab 3 + Lab 4: từ thiết kế giao diện Swing sang xử lý sự kiện và tác vụ nền
+Sản phẩm nộp                  Maven project + mã nguồn + ảnh chạy chương trình + báo cáo ngắn
+
+
+ Định hướng liên kết Lab 3 + Lab 4
+ Lab 3 tập trung vào Components, Containers, Layout Managers. Lab 4 tiếp tục bằng Event Handling,
+ EDT và SwingWorker để sinh viên biết xử lý tác vụ lâu mà không làm treo giao diện. Đây là bước đệm
+ trước Lab 5, khi sinh viên tích hợp CSDL, JDBC và CRUD trong ứng dụng Java Swing.
+
+
+1. Căn cứ nội dung Chương 2
+Lab này bám theo Chương 2 của học phần Công nghệ Java: phát triển ứng dụng desktop trong Java
+SE, lập trình giao diện GUI bằng Swing, xử lý sự kiện, EDT, multi-threading và chuẩn bị cho tích hợp
+cơ sở dữ liệu trong các buổi tiếp theo.
+
+Nội dung Chương 2                Thể hiện trong bài lab
+                                 Thiết kế giao diện bằng JFrame, JPanel, JLabel, JTextField, JButton, JTable và
+Lập trình GUI trong Java SE
+                                 JProgressBar.
+Components, Containers, Layout
+                               Kế thừa kết quả Lab 3 để bố trí form nhập liệu, vùng kết quả và bảng dữ liệu.
+Managers
+                                 Gắn sự kiện cho JButton, xử lý nhập liệu, thông báo lỗi và phản hồi thao tác
+Event Handling
+                                 người dùng.
+                                 Giải thích vai trò của EDT và yêu cầu không chạy tác vụ lâu trực tiếp trong
+EDT & Multi-threading
+                                 ActionListener.
+SwingWorker                      Chạy tác vụ nền, cập nhật tiến trình và trả kết quả về giao diện an toàn.
+Chuẩn bị Lab 5                   Tạo nền tảng để tải dữ liệu, thống kê và truy vấn CSDL bất đồng bộ.
+
+
+2. Mục tiêu
+STT          Mục tiêu cần đạt
+1            Trình bày được vai trò của EDT trong Java Swing.
+2            Giải thích được vì sao không nên xử lý tác vụ lâu trực tiếp trong ActionListener.
+3            Sử dụng được SwingWorker để chạy tác vụ nền.
+4            Cập nhật được giao diện thông qua publish/process, setProgress và done.
+5            Thiết kế được giao diện có JProgressBar, JTextArea, JFileChooser và JTable.
+6            Biết kiểm soát trạng thái nút bấm: bắt đầu, đang chạy, hoàn thành và hủy tác vụ.
+7            Chuẩn bị nền tảng để chuyển sang Lab 5: tích hợp JDBC, CRUD và tải dữ liệu bất đồng bộ.
+
+
+3. Công cụ sử dụng
+Công cụ                                  Mục đích sử dụng
+JDK 17 hoặc JDK 21                       Biên dịch và chạy ứng dụng Java SE.
+Apache Maven 3.x                         Quản lý cấu trúc project, build và đóng gói.
+IntelliJ IDEA / Eclipse / NetBeans       Soạn thảo mã nguồn và chạy thử chương trình.
+Java Swing                               Xây dựng giao diện desktop.
+SwingWorker                              Xử lý tác vụ nền, tránh làm treo giao diện.
+Command Prompt / PowerShell /
+                                         Kiểm tra môi trường và build project.
+Terminal
+Git hoặc ZIP                             Nộp bài và quản lý mã nguồn nếu giảng viên yêu cầu.
+
+
+Lệnh kiểm tra môi trường
+
+ java -version
+ javac -version
+ mvn -version
+
+
+4. Cấu trúc project yêu cầu
+Tên project Maven gợi ý: lab04-swingworker. Sinh viên tổ chức mã nguồn theo package
+io.github.hoangtnedu.java.lab4.
+Cấu trúc thư mục chuẩn
+
+ lab04-swingworker/
+ ├── pom.xml
+ └── src/
+     └── main/
+         └── java/
+             └── vn/
+                 └── edu/
+                     └── hoangtnedu/
+                          └── lab4/
+
+
+                             ├── App.java
+                             ├── CountdownFrame.java
+                             ├── ProgressDemoFrame.java
+                             ├── PrimeSumFrame.java
+                             ├── FibonacciFrame.java
+                             └── FileLineCounterFrame.java
+
+
+File cấu hình Maven pom.xml
+
+ <project xmlns="http://maven.apache.org/POM/4.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
+     <modelVersion>4.0.0</modelVersion>
+
+     <groupId>io.github.hoangtnedu.java</groupId>
+     <artifactId>lab04-swingworker</artifactId>
+     <version>1.0-SNAPSHOT</version>
+
+     <properties>
+         <maven.compiler.source>17</maven.compiler.source>
+         <maven.compiler.target>17</maven.compiler.target>
+         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+     </properties>
+ </project>
+
+
+File chạy chính App.java
+
+ package io.github.hoangtnedu.java.lab4;
+
+ import javax.swing.SwingUtilities;
+
+ public class App {
+     public static void main(String[] args) {
+         SwingUtilities.invokeLater(() -> {
+             new CountdownFrame().setVisible(true);
+         });
+     }
+ }
+
+
+5. Nội dung bài tập có gợi ý code
+Bài 1. Tạo đồng hồ đếm ngược bằng SwingWorker
+Thiết kế giao diện gồm JTextField nhập số giây, JButton “Bắt đầu” và JLabel hiển thị thời gian còn
+lại. Khi nhấn nút, chương trình dùng SwingWorker để đếm ngược trong nền, giao diện không bị treo.
+
+Thành phần                    Yêu cầu
+JTextField                    Nhập số giây.
+JButton                       Nút “Bắt đầu”.
+JLabel                        Hiển thị thời gian còn lại.
+SwingWorker                   Thực hiện đếm ngược trong nền.
+
+
+Gợi ý code
+
+
+package io.github.hoangtnedu.java.lab4;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
+
+public class CountdownFrame extends JFrame {
+    private JTextField txtSeconds;
+    private JButton btnStart;
+    private JLabel lblTime;
+
+   public CountdownFrame() {
+       setTitle("Bài 1 - Đồng hồ đếm ngược");
+       setSize(400, 180);
+       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       setLocationRelativeTo(null);
+
+       txtSeconds = new JTextField(10);
+       btnStart = new JButton("Bắt đầu");
+       lblTime = new JLabel("Thời gian còn lại: ");
+       lblTime.setFont(new Font("Arial", Font.BOLD, 20));
+
+       JPanel panel = new JPanel(new GridLayout(3, 1, 10, 10));
+       panel.add(txtSeconds);
+       panel.add(btnStart);
+       panel.add(lblTime);
+       add(panel);
+
+       btnStart.addActionListener(e -> startCountdown());
+   }
+
+   private void startCountdown() {
+       int seconds;
+       try {
+           seconds = Integer.parseInt(txtSeconds.getText().trim());
+           if (seconds <= 0) {
+               JOptionPane.showMessageDialog(this, "Số giây phải lớn hơn 0");
+               return;
+           }
+       } catch (NumberFormatException ex) {
+           JOptionPane.showMessageDialog(this, "Vui lòng nhập số nguyên hợp lệ");
+           return;
+       }
+
+       btnStart.setEnabled(false);
+
+       SwingWorker<Void, Integer> worker = new SwingWorker<>() {
+           @Override
+           protected Void doInBackground() throws Exception {
+               for (int i = seconds; i >= 0; i--) {
+                   publish(i);
+                   Thread.sleep(1000);
+               }
+               return null;
+           }
+
+            @Override
+            protected void process(List<Integer> chunks) {
+                int value = chunks.get(chunks.size() - 1);
+                lblTime.setText("Thời gian còn lại: " + value + " giây");
+            }
+
+            @Override
+            protected void done() {
+                btnStart.setEnabled(true);
+                JOptionPane.showMessageDialog(CountdownFrame.this, "Hoàn thành!");
+            }
+       };
+
+
+          worker.execute();
+     }
+ }
+
+
+Bài 2. Mô phỏng tiến trình tải dữ liệu
+Thiết kế giao diện có JButton “Tải dữ liệu”, JProgressBar và JLabel trạng thái. Khi nhấn nút, dùng
+SwingWorker để mô phỏng tải dữ liệu trong 10 giây và cập nhật tiến độ từ 0 đến 100%.
+
+Thành phần                    Yêu cầu
+JButton                       Nút “Tải dữ liệu”.
+JProgressBar                  Hiển thị tiến độ từ 0 đến 100%.
+JLabel                        Hiển thị trạng thái xử lý.
+SwingWorker                   Mô phỏng tải dữ liệu trong nền.
+
+
+Gợi ý code
+
+ package io.github.hoangtnedu.java.lab4;
+
+ import javax.swing.*;
+ import java.awt.*;
+
+ public class ProgressDemoFrame extends JFrame {
+     private JButton btnLoad;
+     private JProgressBar progressBar;
+     private JLabel lblStatus;
+
+     public ProgressDemoFrame() {
+         setTitle("Bài 2 - Mô phỏng tải dữ liệu");
+         setSize(450, 180);
+         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         setLocationRelativeTo(null);
+
+          btnLoad = new JButton("Tải dữ liệu");
+          progressBar = new JProgressBar(0, 100);
+          progressBar.setStringPainted(true);
+          lblStatus = new JLabel("Chưa tải dữ liệu");
+
+          JPanel panel = new JPanel(new GridLayout(3, 1, 10, 10));
+          panel.add(btnLoad);
+          panel.add(progressBar);
+          panel.add(lblStatus);
+          add(panel);
+
+          btnLoad.addActionListener(e -> loadData());
+     }
+
+     private void loadData() {
+         btnLoad.setEnabled(false);
+         progressBar.setValue(0);
+         lblStatus.setText("Đang tải dữ liệu...");
+
+          SwingWorker<Void, Integer> worker = new SwingWorker<>() {
+              @Override
+              protected Void doInBackground() throws Exception {
+                  for (int i = 0; i <= 100; i += 10) {
+                      setProgress(i);
+                      Thread.sleep(1000);
+
+
+                  }
+                  return null;
+              }
+
+              @Override
+              protected void done() {
+                  progressBar.setValue(100);
+                  lblStatus.setText("Tải dữ liệu hoàn tất");
+                  btnLoad.setEnabled(true);
+              }
+         };
+
+         worker.addPropertyChangeListener(evt -> {
+             if ("progress".equals(evt.getPropertyName())) {
+                 progressBar.setValue((int) evt.getNewValue());
+             }
+         });
+
+         worker.execute();
+     }
+ }
+
+
+Bài 3. Tính tổng các số nguyên tố nhỏ hơn N
+Giao diện gồm JTextField nhập N, JButton “Tính”, JLabel kết quả và JProgressBar. Khi nhấn nút,
+dùng SwingWorker để tính tổng các số nguyên tố nhỏ hơn N mà không làm treo giao diện.
+Ví dụ: N = 10, các số nguyên tố nhỏ hơn 10 là 2, 3, 5, 7 nên tổng bằng 17.
+Gợi ý hàm kiểm tra số nguyên tố
+
+ private boolean isPrime(int n) {
+     if (n < 2) return false;
+     if (n == 2) return true;
+     if (n % 2 == 0) return false;
+
+     for (int i = 3; i <= Math.sqrt(n); i += 2) {
+         if (n % i == 0) return false;
+     }
+     return true;
+ }
+
+
+Gợi ý xử lý bằng SwingWorker
+
+ private void calculatePrimeSum() {
+     int n;
+     try {
+         n = Integer.parseInt(txtN.getText().trim());
+         if (n <= 2) {
+             JOptionPane.showMessageDialog(this, "N phải lớn hơn 2");
+             return;
+         }
+     } catch (NumberFormatException ex) {
+         JOptionPane.showMessageDialog(this, "Vui lòng nhập số nguyên hợp lệ");
+         return;
+     }
+
+     btnCalculate.setEnabled(false);
+     progressBar.setValue(0);
+     lblResult.setText("Đang tính...");
+
+     SwingWorker<Long, Void> worker = new SwingWorker<>() {
+         @Override
+         protected Long doInBackground() {
+
+
+              long sum = 0;
+              for (int i = 2; i < n; i++) {
+                  if (isPrime(i)) sum += i;
+                  int progress = (int) ((i * 100.0) / n);
+                  setProgress(progress);
+              }
+              return sum;
+          }
+
+          @Override
+          protected void done() {
+              try {
+                  long result = get();
+                  lblResult.setText("Tổng các số nguyên tố nhỏ hơn " + n + " = " + result);
+              } catch (Exception ex) {
+                  lblResult.setText("Có lỗi khi tính toán");
+              }
+              btnCalculate.setEnabled(true);
+              progressBar.setValue(100);
+          }
+     };
+
+     worker.addPropertyChangeListener(evt -> {
+         if ("progress".equals(evt.getPropertyName())) {
+             progressBar.setValue((int) evt.getNewValue());
+         }
+     });
+
+     worker.execute();
+ }
+
+
+Bài 4. Tìm số Fibonacci thứ N bằng memoization
+Giao diện gồm JTextField nhập N, JButton “Tìm”, JLabel kết quả và JProgressBar. Dùng
+SwingWorker để tính Fibonacci trong nền. Sử dụng BigInteger để tránh tràn số và Map<Integer,
+BigInteger> để ghi nhớ kết quả đã tính.
+Import cần có
+
+ import java.math.BigInteger;
+ import java.util.HashMap;
+ import java.util.Map;
+
+
+Gợi ý hàm Fibonacci có memoization
+
+ private BigInteger fibonacci(int n, Map<Integer, BigInteger> memo) {
+     if (n <= 1) {
+         return BigInteger.valueOf(n);
+     }
+
+     if (memo.containsKey(n)) {
+         return memo.get(n);
+     }
+
+     BigInteger value = fibonacci(n - 1, memo).add(fibonacci(n - 2, memo));
+     memo.put(n, value);
+     return value;
+ }
+
+
+Gợi ý xử lý bằng SwingWorker
+
+
+ private void findFibonacci() {
+     int n;
+     try {
+         n = Integer.parseInt(txtN.getText().trim());
+         if (n < 0) {
+             JOptionPane.showMessageDialog(this, "N phải >= 0");
+             return;
+         }
+     } catch (NumberFormatException ex) {
+         JOptionPane.showMessageDialog(this, "Vui lòng nhập số nguyên hợp lệ");
+         return;
+     }
+
+     btnFind.setEnabled(false);
+     progressBar.setIndeterminate(true);
+     lblResult.setText("Đang tính Fibonacci...");
+
+     SwingWorker<BigInteger, Void> worker = new SwingWorker<>() {
+         @Override
+         protected BigInteger doInBackground() {
+             Map<Integer, BigInteger> memo = new HashMap<>();
+             return fibonacci(n, memo);
+         }
+
+          @Override
+          protected void done() {
+              try {
+                  BigInteger result = get();
+                  lblResult.setText("Fibonacci(" + n + ") = " + result);
+              } catch (Exception ex) {
+                  lblResult.setText("Có lỗi khi tính Fibonacci");
+              }
+              progressBar.setIndeterminate(false);
+              progressBar.setValue(100);
+              btnFind.setEnabled(true);
+          }
+     };
+
+     worker.execute();
+ }
+
+
+Bài 5. Đọc file lớn và đếm số dòng
+Thiết kế giao diện cho phép chọn file bằng JFileChooser, sau đó nhấn nút “Đếm dòng”. Chương trình
+dùng SwingWorker để đọc file theo từng dòng, đếm số dòng và cập nhật JProgressBar nếu có thể.
+
+Thành phần                    Yêu cầu
+JButton                       Nút “Chọn file” và nút “Đếm dòng”.
+JFileChooser                  Cho phép chọn file văn bản.
+JLabel                        Hiển thị đường dẫn file và số dòng.
+JProgressBar                  Hiển thị tiến trình đọc file.
+SwingWorker                   Đọc file trong nền, không làm treo giao diện.
+
+
+Import cần có
+
+ import java.io.BufferedReader;
+ import java.io.File;
+ import java.nio.charset.StandardCharsets;
+ import java.nio.file.Files;
+
+
+Gợi ý chọn file
+
+ private File selectedFile;
+
+ private void chooseFile() {
+     JFileChooser chooser = new JFileChooser();
+     int result = chooser.showOpenDialog(this);
+
+     if (result == JFileChooser.APPROVE_OPTION) {
+         selectedFile = chooser.getSelectedFile();
+         lblFile.setText("File: " + selectedFile.getAbsolutePath());
+     }
+ }
+
+
+Gợi ý đếm dòng bằng SwingWorker
+
+ private void countLines() {
+     if (selectedFile == null) {
+         JOptionPane.showMessageDialog(this, "Vui lòng chọn file trước");
+         return;
+     }
+
+     btnCount.setEnabled(false);
+     progressBar.setValue(0);
+     lblResult.setText("Đang đọc file...");
+
+     SwingWorker<Long, Void> worker = new SwingWorker<>() {
+         @Override
+         protected Long doInBackground() throws Exception {
+             long totalBytes = Files.size(selectedFile.toPath());
+             long readBytes = 0;
+             long lines = 0;
+
+              try (BufferedReader reader = Files.newBufferedReader(
+                      selectedFile.toPath(), StandardCharsets.UTF_8)) {
+                  String line;
+                  while ((line = reader.readLine()) != null) {
+                      lines++;
+                      readBytes += line.getBytes(StandardCharsets.UTF_8).length + 1;
+                      int progress = totalBytes == 0
+                               ? 100
+                               : (int) Math.min(100, (readBytes * 100 / totalBytes));
+                      setProgress(progress);
+                  }
+              }
+              return lines;
+          }
+
+          @Override
+          protected void done() {
+              try {
+                  long lineCount = get();
+                  lblResult.setText("Số dòng: " + lineCount);
+              } catch (Exception ex) {
+                  lblResult.setText("Lỗi khi đọc file");
+              }
+              progressBar.setValue(100);
+              btnCount.setEnabled(true);
+          }
+     };
+
+     worker.addPropertyChangeListener(evt -> {
+         if ("progress".equals(evt.getPropertyName())) {
+             progressBar.setValue((int) evt.getNewValue());
+
+
+               }
+         });
+
+         worker.execute();
+    }
+
+
+6. Bài tập tự làm
+Bài 6. Bổ sung chức năng hủy tác vụ
+• Nâng cấp Bài 2 hoặc Bài 3, thêm nút “Hủy”.
+• Khi tác vụ đang chạy, nút bắt đầu/tính bị khóa.
+• Khi nhấn “Hủy”, SwingWorker dừng xử lý và giao diện hiển thị “Đã hủy tác vụ”.
+• Sinh viên tự tìm hiểu worker.cancel(true) và isCancelled().
+
+Bài 7. Tìm kiếm từ khóa trong file văn bản lớn
+• Cho phép chọn file .txt bằng JFileChooser.
+• Cho phép nhập từ khóa cần tìm.
+• Dùng SwingWorker để đọc file trong nền.
+• Hiển thị các dòng có chứa từ khóa vào JTextArea.
+• Hiển thị số dòng tìm thấy, không phân biệt hoa/thường.
+
+Bài 8. Đọc file CSV điểm sinh viên và thống kê
+File CSV có dạng:
+
+    MaSV,HoTen,Diem
+    SV01,Nguyen Van A,8.5
+    SV02,Tran Thi B,7.0
+    SV03,Le Van C,9.0
+
+
+•       Đọc dữ liệu bằng SwingWorker.
+•       Hiển thị danh sách sinh viên trong JTable.
+•       Tính điểm trung bình và tìm sinh viên có điểm cao nhất.
+•       Không làm treo giao diện khi đọc file.
+
+Bài 9. Mô phỏng tải danh sách sản phẩm
+• Thiết kế nút “Tải sản phẩm”, JTable, JProgressBar và JLabel trạng thái.
+• Dữ liệu sản phẩm có thể tạo giả lập trong code.
+• Khi tải dữ liệu, giao diện không bị treo.
+• Bài này chuẩn bị cho Lab 5, khi dữ liệu sản phẩm sẽ được lấy từ CSDL.
+    Mã SP                    Tên SP                                             Đơn giá
+    SP01                     Bàn phím                                           250000
+    SP02                     Chuột                                              150000
+    SP03                     Màn hình                                           2500000
+
+
+Bài 10. Mini project: Quản lý sản phẩm bằng file CSV
+Chức năng                            Yêu cầu
+Thêm sản phẩm                        Nhập mã, tên, đơn giá.
+Sửa sản phẩm                         Chọn dòng trong JTable và cập nhật thông tin.
+Xóa sản phẩm                         Xóa sản phẩm đang chọn.
+Lưu file CSV                         Lưu danh sách sản phẩm ra file.
+Đọc file CSV                         Đọc danh sách sản phẩm từ file.
+SwingWorker                          Dùng cho chức năng đọc và lưu file.
+
+
+Ý nghĩa: đây là bài tổng hợp cuối Lab 4 và là bước đệm sang Lab 5. Sang Lab 5, sinh viên thay phần đọc/ghi
+CSV bằng JDBC và tổ chức lại theo mô hình 3 lớp: Model - DAL - BUS - GUI.
+
+
+7. Sản phẩm cần nộp
+STT        Sản phẩm                            Yêu cầu
+           Maven project lab04-
+1                                              Đúng cấu trúc src/main/java, đúng package io.github.hoangtnedu.java.lab4.
+           swingworker
+2          Mã nguồn 5 bài có gợi ý code        Có thể chạy được từng bài.
+3          Mã nguồn 5 bài tự làm               Có giao diện, xử lý đúng yêu cầu.
+4          Ảnh chạy chương trình               Mỗi bài tối thiểu 1 ảnh minh chứng.
+5          Báo cáo ngắn                        Trình bày EDT, SwingWorker và kết quả thực hiện.
+6          File ZIP nộp bài                    Đặt tên: Lab04_MSSV_HoTen.zip.
+
+
+8. Đánh giá
+Tiêu chí                           Mô tả                                                                Điểm
+5 bài có gợi ý code                Hoàn thành Bài 1 đến Bài 5, chạy đúng, giao diện không treo.         4.0
+5 bài tự làm                       Hoàn thành Bài 6 đến Bài 10, có mở rộng hợp lý.                      3.0
+                                   Không xử lý tác vụ lâu trực tiếp trong ActionListener; dùng
+Áp dụng đúng SwingWorker                                                                                1.0
+                                   doInBackground, done, setProgress đúng cách.
+Giao diện Swing                    Bố cục rõ ràng, dễ dùng, có thông báo lỗi nhập liệu.                 0.75
+Cấu trúc project                   Đúng package, tên lớp rõ ràng, mã nguồn sạch.                        0.75
+Báo cáo và minh chứng              Có ảnh chạy, giải thích ngắn EDT/SwingWorker, nộp đúng tên file.     0.5
+
+Tổng                                                                                                    10.0
+
+
+9. Câu hỏi củng cố
+1. EDT trong Java Swing là gì?
+
+
+2.   Vì sao không nên đọc file lớn hoặc truy vấn dữ liệu trực tiếp trong ActionListener?
+3.   Phương thức doInBackground() của SwingWorker dùng để làm gì?
+4.   Phương thức done() được gọi khi nào?
+5.   Sự khác nhau giữa publish/process và setProgress là gì?
+6.   Vì sao Lab 4 là bước chuẩn bị cần thiết trước khi làm Lab 5 tích hợp CSDL?
+
+
+10. Tài liệu tham khảo
+•    Kế hoạch giảng dạy học phần Công nghệ Java: Chương 2 - Phát triển ứng dụng desktop trong
+     Java SE.
+•    Lab 4 mẫu: Làm quen với SwingWorker trong Java Swing.
+•    Lab 5 mẫu: Tích hợp CSDL với Java Swing.
+•    Oracle Java Documentation: SwingWorker, JFrame, JPanel, JButton, JLabel, JTextField,
+     JProgressBar, JFileChooser, JTable.
+•    Java Tutorials: Concurrency in Swing, Event Dispatch Thread và background tasks.
