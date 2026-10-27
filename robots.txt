@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://hoangtnedu.github.io/sitemap.xml

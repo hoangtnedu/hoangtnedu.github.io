@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="790" height="628" viewBox="0 0 790 628">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#334155"/></marker></defs>
+<rect width="100%" height="100%" fill="white"/>
+<polyline points="395.0,64 395.0,78" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<polyline points="395.0,122 395.0,136" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<polyline points="395.0,180 395.0,194" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<polyline points="395.0,238 395.0,252" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<polyline points="395.0,296 395.0,310" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<polyline points="395.0,354 395.0,368" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<polyline points="395.0,412 395.0,426" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<polyline points="150,459.0 55,459.0 55,158.0 150,158.0" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text x="82" y="451.0" font-family="DejaVu Sans" font-size="15" fill="#111827">Có</text>
+<polyline points="395.0,492 395.0,506" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<text x="424.0" y="503" font-family="DejaVu Sans" font-size="15" fill="#111827">Không</text>
+<polyline points="395.0,550 395.0,564" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="150" y="20" width="490" height="44" rx="22" fill="#dbeafe" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="48.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">BẮT ĐẦU</text>
+<rect x="150" y="78" width="490" height="44" rx="3" fill="#f1f5f9" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="106.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">Khởi tạo bản đồ trạng thái và ô nhớ</text>
+<rect x="150" y="136" width="490" height="44" rx="3" fill="#f1f5f9" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="164.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">Đọc ảnh tại thời điểm hiện tại</text>
+<rect x="150" y="194" width="490" height="44" rx="3" fill="#f1f5f9" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="222.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">Tích chập ảnh và trạng thái để tính các cổng</text>
+<rect x="150" y="252" width="490" height="44" rx="3" fill="#f1f5f9" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="280.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">Tính bản đồ ô nhớ ứng viên</text>
+<rect x="150" y="310" width="490" height="44" rx="3" fill="#f1f5f9" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="338.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">Cập nhật bản đồ ô nhớ và trạng thái ẩn</text>
+<rect x="150" y="368" width="490" height="44" rx="3" fill="#f1f5f9" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="396.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">Chuyển sang ảnh tiếp theo</text>
+<polygon points="395.0,426 640,459.0 395.0,492 150,459.0" fill="#fff4d6" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="465.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">Còn ảnh trong chuỗi?</text>
+<polygon points="168,506 640,506 622,550 150,550" fill="#e3f2e8" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="534.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">Xuất bản đồ đặc trưng không gian thời gian</text>
+<rect x="150" y="564" width="490" height="44" rx="22" fill="#dbeafe" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="592.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">KẾT THÚC</text>
+</svg>

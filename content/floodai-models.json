@@ -1,0 +1,2016 @@
+{
+  "items": [
+    {
+      "code": "00",
+      "title": "Huấn luyện mô hình học sâu",
+      "role": "Quy trình dùng chung cho các mạng trong tài liệu",
+      "io": "Đầu vào: dữ liệu đã chia theo sự kiện và thời gian. Đầu ra: mô hình tốt nhất theo tập validation.",
+      "arch": "Dữ liệu → dự báo → hàm mất mát → gradient → cập nhật tham số.",
+      "idea": "Kiến trúc mạng quyết định cách tạo dự báo. Lan truyền ngược và bộ tối ưu như Adam quyết định cách điều chỉnh trọng số. Test chỉ được sử dụng sau khi đã chốt mô hình.",
+      "steps": [
+        "Chia train validation và test theo thời gian hoặc sự kiện",
+        "Chuẩn hóa bằng thống kê train và tạo cửa sổ nhân quả",
+        "Khởi tạo tham số và bộ tối ưu",
+        "Lấy mini batch và chạy lan truyền thuận",
+        "Tính loss có xét mặt nạ nhãn",
+        "Lan truyền ngược và cập nhật tham số",
+        "Đánh giá validation và lưu checkpoint tốt nhất"
+      ],
+      "eq": "\\theta \\leftarrow \\theta-\\eta\\nabla_{\\theta}\\mathcal{L}",
+      "note": "Công thức minh họa bước gradient descent; Adam sử dụng thêm các ước lượng mômen. Dừng theo số epoch hoặc early stopping; khôi phục checkpoint tốt nhất trước khi đánh giá test.",
+      "refs": "[1]",
+      "loop": 3,
+      "decision": "Tiếp tục huấn luyện?",
+      "height": 686
+    },
+    {
+      "code": "01",
+      "title": "MLP",
+      "role": "Bộ mã hóa đặc trưng tĩnh",
+      "io": "Đầu vào: độ cao, độ dốc, diện tích và mã loại đất. Đầu ra: vector đặc trưng lưu vực.",
+      "arch": "Vector đặc trưng → các lớp Dense và kích hoạt → vector biểu diễn.",
+      "idea": "MLP học quan hệ phi tuyến giữa các đặc trưng. Biến phân loại được mã hóa bằng embedding hoặc cách biểu diễn phù hợp trước khi ghép với biến liên tục.",
+      "steps": [
+        "Nhận đặc trưng tĩnh đã chuẩn hóa",
+        "Mã hóa biến phân loại và ghép đặc trưng",
+        "Tính phép biến đổi tuyến tính của lớp",
+        "Áp dụng hàm kích hoạt",
+        "Chuyển qua lớp kế tiếp"
+      ],
+      "eq": "h^{(l+1)}=\\phi(W^{(l)}h^{(l)}+b^{(l)})",
+      "note": "Không có bộ nhớ thời gian hay cấu trúc mạng sông mặc định. Trong đề cương, MLP chủ yếu là một nhánh encoder, không phải toàn bộ mô hình dự báo.",
+      "refs": "[1]",
+      "loop": 2,
+      "decision": "Còn lớp ẩn?",
+      "height": 570
+    },
+    {
+      "code": "02",
+      "title": "CNN",
+      "role": "Bộ mã hóa ảnh radar hoặc vệ tinh",
+      "io": "Đầu vào: ảnh dạng lưới, có thể nhiều kênh. Đầu ra: bản đồ hoặc vector đặc trưng.",
+      "arch": "Ảnh → tích chập và kích hoạt → tổng hợp không gian → đặc trưng.",
+      "idea": "Bộ lọc dùng chung trọng số quét qua ảnh để phát hiện các mẫu cục bộ. Các lớp sâu hơn kết hợp chúng thành cấu trúc lớn hơn như hình dạng và phân bố vùng mưa.",
+      "steps": [
+        "Nhận ảnh và mặt nạ vùng hợp lệ",
+        "Áp dụng các bộ lọc tích chập",
+        "Áp dụng kích hoạt và chuẩn hóa nếu dùng",
+        "Lặp khối tích chập hoặc giảm mẫu",
+        "Tổng hợp bản đồ thành vector khi cần"
+      ],
+      "eq": "F_{ij}=\\phi\\left(\\sum_{u,v}K_{uv}X_{i+u,j+v}+b\\right)",
+      "note": "Công thức minh họa một bộ lọc một kênh. CNN 2D xử lý từng ảnh riêng lẻ chưa tự học sự dịch chuyển theo thời gian; cần kết hợp mô đun thời gian hoặc dùng ConvLSTM.",
+      "refs": "[1, 2]",
+      "loop": null,
+      "decision": null,
+      "height": 490
+    },
+    {
+      "code": "03",
+      "title": "TCN",
+      "role": "Mô hình nền và encoder chuỗi thời gian",
+      "io": "Đầu vào: lịch sử mưa, Q hoặc H. Đầu ra: biểu diễn chuỗi hoặc dự báo nhiều bước.",
+      "arch": "Chuỗi → các khối tích chập nhân quả giãn cách và kết nối dư → đầu ra.",
+      "idea": "Tích chập nhân quả tránh nhìn vào tương lai. Độ giãn cách tăng theo lớp giúp mở rộng vùng quá khứ được sử dụng; kết nối dư giúp tối ưu mạng sâu.",
+      "steps": [
+        "Nhận cửa sổ quan trắc kết thúc tại thời điểm phát báo",
+        "Đặt mức giãn cách cho khối hiện tại",
+        "Tích chập nhân quả và áp dụng kích hoạt",
+        "Kết hợp nhánh dư có cùng kích thước",
+        "Tăng mức giãn cách và chuyển sang khối tiếp"
+      ],
+      "eq": "h_t=\\phi\\left(\\sum_{k=0}^{K-1}W_kx_{t-dk}+b\\right)",
+      "note": "Độ dài phụ thuộc học được bị giới hạn bởi receptive field. Cần chọn số lớp, kích thước kernel và dilation theo lịch sử cần quan sát; mọi đầu vào đều phải sẵn có tại thời điểm dự báo.",
+      "refs": "[1, 3]",
+      "loop": 1,
+      "decision": "Còn khối TCN?",
+      "height": 570
+    },
+    {
+      "code": "04",
+      "title": "GRU",
+      "role": "Mô hình nền và encoder trạng thái mưa lũ",
+      "io": "Đầu vào: chuỗi vector quan trắc. Đầu ra: trạng thái ẩn và dự báo.",
+      "arch": "Dữ liệu hiện tại và trạng thái cũ → reset gate và update gate → trạng thái mới.",
+      "idea": "Reset gate điều khiển mức sử dụng trạng thái cũ khi tạo ứng viên. Update gate điều khiển mức kết hợp thông tin cũ và mới. Trạng thái được truyền qua các bước thời gian.",
+      "steps": [
+        "Khởi tạo trạng thái ẩn và chỉ số thời gian",
+        "Đọc dữ liệu tại bước hiện tại",
+        "Tính reset gate và update gate",
+        "Tính trạng thái ứng viên từ dữ liệu và trạng thái cũ",
+        "Trộn trạng thái cũ với ứng viên",
+        "Tăng chỉ số thời gian"
+      ],
+      "eq": "h_t=(1-z_t)\\odot h_{t-1}+z_t\\odot\\widetilde{h}_t",
+      "note": "Dùng quy ước update gate nhân với ứng viên; một số thư viện dùng quy ước ngược. Khi triển khai cần giữ nhất quán công thức. GRU học trạng thái thống kê, không mặc nhiên là một đại lượng thủy văn.",
+      "refs": "[1, 4]",
+      "loop": 1,
+      "decision": "Còn bước thời gian?",
+      "height": 628
+    },
+    {
+      "code": "05",
+      "title": "LSTM",
+      "role": "Mô hình nền và encoder chuỗi mưa dòng chảy",
+      "io": "Đầu vào: chuỗi quan trắc và trạng thái khởi tạo. Đầu ra: ô nhớ, trạng thái ẩn và dự báo.",
+      "arch": "Dữ liệu và hai trạng thái cũ → ba cổng → cập nhật ô nhớ và trạng thái ẩn.",
+      "idea": "Forget gate giữ hoặc giảm thông tin trong ô nhớ cũ. Input gate chọn thông tin được ghi vào ô nhớ. Output gate chọn phần thông tin ô nhớ được biểu diễn ở trạng thái ẩn.",
+      "steps": [
+        "Khởi tạo trạng thái ẩn h và ô nhớ c",
+        "Đọc dữ liệu tại bước hiện tại",
+        "Tính các cổng quên vào ra và ô nhớ ứng viên",
+        "Cập nhật ô nhớ bằng thông tin cũ và thông tin mới",
+        "Tính trạng thái ẩn từ ô nhớ mới",
+        "Tăng chỉ số thời gian"
+      ],
+      "eq": "c_t=f_t\\odot c_{t-1}+i_t\\odot\\widetilde{c}_t,\\quad h_t=o_t\\odot\\tanh(c_t)",
+      "note": "Ô nhớ có thể nắm bắt ảnh hưởng tích lũy của mưa. Không diễn giải trực tiếp ô nhớ thành độ ẩm đất hoặc lượng nước trữ nếu chưa có bằng chứng kiểm chứng.",
+      "refs": "[1, 5]",
+      "loop": 1,
+      "decision": "Còn bước thời gian?",
+      "height": 628
+    },
+    {
+      "code": "06",
+      "title": "GRU D",
+      "role": "Mô hình được dẫn trong tổng quan về dữ liệu thiếu",
+      "io": "Đầu vào: giá trị, mặt nạ có thiếu, thời gian từ lần đo gần nhất. Đầu ra: biểu diễn chuỗi chịu thiếu.",
+      "arch": "Quan trắc và metadata thiếu → decay đầu vào và trạng thái → ô GRU.",
+      "idea": "GRU D học cách giảm ảnh hưởng của quan trắc và trạng thái cũ khi khoảng thiếu kéo dài. Giá trị thay thế kết hợp lần đo gần nhất với trung bình của biến tính trên train.",
+      "steps": [
+        "Khởi tạo trạng thái và giá trị quan trắc gần nhất",
+        "Đọc giá trị mặt nạ và khoảng thời gian thiếu",
+        "Tính hệ số decay cho đầu vào và trạng thái",
+        "Giữ giá trị hợp lệ hoặc tạo giá trị thay thế bằng decay",
+        "Cập nhật trạng thái GRU có xét mặt nạ",
+        "Cập nhật lịch sử quan trắc và tăng thời gian"
+      ],
+      "eq": "x_t^*=m_tx_t+(1-m_t)[\\gamma_tx_{last}+(1-\\gamma_t)\\bar{x}]",
+      "note": "Công thức minh họa một biến. GRU D gốc còn có decay trạng thái ẩn. Đây là cơ sở tham khảo cho mask aware encoder; không đồng nghĩa đề cương đã chốt dùng GRU D.",
+      "refs": "[1, 6]",
+      "loop": 1,
+      "decision": "Còn bước thời gian?",
+      "height": 628
+    },
+    {
+      "code": "07",
+      "title": "ConvLSTM",
+      "role": "Encoder chuỗi ảnh radar hoặc vệ tinh",
+      "io": "Đầu vào: chuỗi ảnh có cấu trúc không gian. Đầu ra: bản đồ trạng thái không gian thời gian.",
+      "arch": "Chuỗi ảnh → các ô LSTM dùng tích chập → đặc trưng không gian thời gian.",
+      "idea": "Thay phép biến đổi kết nối đầy đủ của LSTM bằng tích chập. Trạng thái ẩn và ô nhớ giữ dạng bản đồ, giúp học đồng thời vị trí và diễn biến vùng mưa.",
+      "steps": [
+        "Khởi tạo bản đồ trạng thái và ô nhớ",
+        "Đọc ảnh tại thời điểm hiện tại",
+        "Tích chập ảnh và trạng thái để tính các cổng",
+        "Tính bản đồ ô nhớ ứng viên",
+        "Cập nhật bản đồ ô nhớ và trạng thái ẩn",
+        "Chuyển sang ảnh tiếp theo"
+      ],
+      "eq": "f_t=\\sigma(W_{xf}*X_t+W_{hf}*H_{t-1}+b_f)",
+      "note": "Công thức là dạng giản lược, không biểu diễn peephole. Dấu sao là tích chập; H ở công thức này là trạng thái ẩn, không phải mực nước. Có thể tổng hợp bản đồ để đưa vào mô hình dự báo Q và H.",
+      "refs": "[1, 7]",
+      "loop": 1,
+      "decision": "Còn ảnh trong chuỗi?",
+      "height": 628
+    },
+    {
+      "code": "08",
+      "title": "GCN",
+      "role": "Phương án tổng hợp thông tin trên đồ thị",
+      "io": "Đầu vào: đặc trưng các nút và ma trận kề. Đầu ra: biểu diễn nút có thông tin lân cận.",
+      "arch": "Đặc trưng nút và đồ thị → chuẩn hóa kết nối → tổng hợp lân cận → biểu diễn mới.",
+      "idea": "Mỗi lớp kết hợp thông tin nút với các nút lân cận. Chuẩn hóa theo bậc giúp điều tiết mức đóng góp. Qua nhiều lớp, phạm vi thu nhận thông tin được mở rộng.",
+      "steps": [
+        "Nhận ma trận đặc trưng nút và ma trận kề",
+        "Thêm self loop và tính ma trận bậc",
+        "Chuẩn hóa ma trận kề",
+        "Tổng hợp lân cận và nhân ma trận trọng số",
+        "Áp dụng kích hoạt và chuyển lớp"
+      ],
+      "eq": "H^{(l+1)}=\\phi(\\widetilde{D}^{-1/2}\\widetilde{A}\\widetilde{D}^{-1/2}H^{(l)}W^{(l)})",
+      "note": "Đây là GCN chuẩn cho đồ thị không hướng. Giữ hướng thượng lưu đến hạ lưu cần biến thể phù hợp. H là ma trận trạng thái nút; không phải ký hiệu mực nước ở công thức này.",
+      "refs": "[1, 8]",
+      "loop": 3,
+      "decision": "Còn lớp đồ thị?",
+      "height": 570
+    },
+    {
+      "code": "09",
+      "title": "GraphSAGE",
+      "role": "Phương án đồ thị có khả năng áp dụng cho nút mới",
+      "io": "Đầu vào: đặc trưng nút và lân cận. Đầu ra: embedding nút từ hàm tổng hợp dùng chung.",
+      "arch": "Lấy mẫu lân cận → tổng hợp → ghép với nút trung tâm → biến đổi.",
+      "idea": "GraphSAGE học hàm tạo embedding từ đặc trưng và lân cận thay vì học riêng một vector cho từng mã nút. Có thể áp dụng cho trạm mới khi có đặc trưng và cấu trúc kết nối tương thích.",
+      "steps": [
+        "Nhận nút mục tiêu và xác định lân cận",
+        "Lấy mẫu lân cận cho từng tầng",
+        "Tổng hợp đặc trưng lân cận",
+        "Ghép với đặc trưng nút và biến đổi tuyến tính",
+        "Kích hoạt và chuẩn hóa nếu dùng",
+        "Chuyển sang tầng tiếp theo"
+      ],
+      "eq": "h_i^{(l+1)}=\\phi(W^{(l)}[h_i^{(l)};\\mathrm{AGG}_{j\\in N(i)}h_j^{(l)}])",
+      "note": "AGG có thể là mean, pooling hoặc phương án khác. Khả năng tạo embedding cho trạm mới không tự bảo đảm chất lượng dự báo; cần đánh giá leave one station out và kiểm tra dịch chuyển miền.",
+      "refs": "[1, 9]",
+      "loop": 2,
+      "decision": "Còn tầng tổng hợp?",
+      "height": 628
+    },
+    {
+      "code": "10",
+      "title": "GAT",
+      "role": "Phương án đồ thị học trọng số lân cận",
+      "io": "Đầu vào: đặc trưng nút và tập cạnh cho phép. Đầu ra: biểu diễn tổng hợp bằng attention.",
+      "arch": "Biến đổi đặc trưng → điểm attention trên cạnh → softmax → tổng có trọng số.",
+      "idea": "Attention cho phép cùng một nút sử dụng thông tin từ các hàng xóm với trọng số khác nhau. Có thể dùng nhiều đầu attention để kết hợp các kiểu biểu diễn.",
+      "steps": [
+        "Nhận đặc trưng nút và tập cạnh hợp lệ",
+        "Biến đổi tuyến tính đặc trưng nút",
+        "Tính điểm attention cho từng cạnh",
+        "Softmax trong lân cận nút nhận",
+        "Tổng hợp thông điệp có trọng số",
+        "Kết hợp các đầu và áp dụng kích hoạt"
+      ],
+      "eq": "\\alpha_{ij}=\\frac{\\exp(e_{ij})}{\\sum_{k\\in N(i)}\\exp(e_{ik})},\\quad h_i^\\prime=\\phi(\\sum_j\\alpha_{ij}Wh_j)",
+      "note": "Chỉ tính trên cạnh được cho phép; muốn có hướng phải xác định đúng nút gửi và nút nhận. Trọng số attention không tự chứng minh quan hệ nhân quả hay lượng nước đóng góp thực tế.",
+      "refs": "[1, 10]",
+      "loop": null,
+      "decision": null,
+      "height": 548
+    },
+    {
+      "code": "11",
+      "title": "Transformer",
+      "role": "Mô hình nền và encoder chuỗi quan trắc",
+      "io": "Đầu vào: chuỗi vector và thông tin vị trí thời gian. Đầu ra: biểu diễn hoặc dự báo đa bước.",
+      "arch": "Embedding và thời gian → multi head attention → mạng truyền thẳng và các kết nối dư.",
+      "idea": "Self attention so sánh các thời điểm để kết hợp thông tin theo mức liên quan. Mạng cần thông tin vị trí vì phép attention đơn thuần không xác định thứ tự chuỗi.",
+      "steps": [
+        "Nhận cửa sổ đầu vào có sẵn tại thời điểm dự báo",
+        "Tạo embedding và thêm thông tin vị trí thời gian",
+        "Tính các ma trận query key value",
+        "Áp dụng mặt nạ phù hợp và attention nhiều đầu",
+        "Kết nối dư chuẩn hóa và mạng truyền thẳng",
+        "Đưa biểu diễn sang lớp hoặc đầu dự báo"
+      ],
+      "eq": "\\mathrm{Attention}(Q_a,K,V)=\\mathrm{softmax}(Q_aK^T/\\sqrt{d_k})V",
+      "note": "Query ký hiệu Q_a để tránh nhầm lưu lượng. Encoder có thể attention toàn bộ cửa sổ lịch sử; decoder tự hồi quy cần causal mask. Không đưa quan trắc tương lai chưa có vào đầu vào.",
+      "refs": "[1, 11]",
+      "loop": null,
+      "decision": null,
+      "height": 548
+    },
+    {
+      "code": "12",
+      "title": "TFT",
+      "role": "Mô hình nền cho dự báo đa thời hạn",
+      "io": "Đầu vào: biến tĩnh, quan trắc lịch sử và biến tương lai đã biết nếu có. Đầu ra: dự báo theo thời hạn.",
+      "arch": "Mã hóa tĩnh và chọn biến → LSTM → làm giàu ngữ cảnh → attention → đầu ra phân vị.",
+      "idea": "TFT kết hợp lựa chọn biến, gating, xử lý tuần tự cục bộ và attention dài hạn. Biến tương lai chỉ được dùng nếu thực sự biết tại thời điểm phát báo, như lịch hoặc dự báo ngoại sinh sẵn có.",
+      "steps": [
+        "Phân nhóm biến tĩnh lịch sử và tương lai đã biết",
+        "Mã hóa biến tĩnh và thực hiện lựa chọn biến",
+        "Xử lý cục bộ bằng lớp hồi tiếp",
+        "Làm giàu biểu diễn bằng ngữ cảnh tĩnh",
+        "Áp dụng attention theo thời gian và gating",
+        "Xuất các phân vị theo từng thời hạn"
+      ],
+      "eq": "\\widehat{y}_{t+\\Delta}^{(\\tau)}=f_{\\tau,\\Delta}(X_{\\leq t},S,U_{known})",
+      "note": "Công thức mô tả ánh xạ tổng thể, không thay thế thuật toán đầy đủ của TFT. Gating lựa chọn biến trong TFT không đồng nhất với quality aware adaptive gate của đề cương.",
+      "refs": "[1, 12]",
+      "loop": null,
+      "decision": null,
+      "height": 548
+    },
+    {
+      "code": "13",
+      "title": "STGNN có hướng",
+      "role": "Thành phần cốt lõi phục vụ RQ2",
+      "io": "Đầu vào: chuỗi đa trạm, đồ thị mạng sông và thuộc tính cạnh. Đầu ra: dự báo đa thời hạn tại từng nút.",
+      "arch": "Encoder thời gian → truyền tin theo mạng sông → decoder đa thời hạn.",
+      "idea": "Mô đun thời gian học diễn biến tại từng trạm. Mô đun đồ thị kết hợp thông tin từ thượng lưu theo cạnh có hướng. Đây là một họ kiến trúc, có thể sắp xếp hoặc đan xen hai phép học.",
+      "steps": [
+        "Dựng đồ thị có hướng và thuộc tính nút cạnh",
+        "Mã hóa cửa sổ lịch sử tại từng nút",
+        "Tạo thông điệp theo cạnh thượng lưu đến hạ lưu",
+        "Tổng hợp thông điệp và cập nhật trạng thái nút",
+        "Giải mã theo từng thời hạn dự báo",
+        "Xuất Q H hoặc đầu ra xác suất tại nút"
+      ],
+      "eq": "m_{i,t}=\\sum_{j\\in N_{up}(i)}\\psi(u_{j,t},u_{i,t},e_{ji}),\\quad z_{i,t}=\\phi(u_{i,t},m_{i,t})",
+      "note": "Lưu đồ minh họa temporal encoder rồi graph rồi decoder. Graph Convolutional GRU và LSTM kết hợp GNN routing trong tổng quan là các cách ghép liên quan. Cần kiểm chứng riêng hiệu quả của topology và độ trễ truyền.",
+      "refs": "[1, 13]",
+      "loop": null,
+      "decision": null,
+      "height": 548
+    },
+    {
+      "code": "14",
+      "title": "Mô hình đa nguồn thích nghi và STGNN đa nhiệm",
+      "role": "Kiến trúc tổng thể đề xuất trong RQ1 và RQ2",
+      "io": "Đầu vào: các nguồn quan trắc, metadata chất lượng và mạng sông. Đầu ra: Q, H, xác suất vượt ngưỡng và bất định.",
+      "arch": "Encoder từng nguồn → phép chiếu → quality aware gate → STGNN → các đầu đa nhiệm.",
+      "idea": "Mỗi nguồn được mã hóa bằng một kiến trúc phù hợp rồi chiếu về cùng số chiều. Cổng hợp nhất học mức đóng góp theo mask, tuổi dữ liệu, chất lượng và ngữ cảnh trước khi truyền tin trên mạng sông.",
+      "steps": [
+        "Nhận dữ liệu từng nguồn và metadata chất lượng",
+        "Mã hóa từng nguồn rồi chiếu về cùng số chiều",
+        "Tính điểm nguồn theo mask age quality và ngữ cảnh",
+        "Chuẩn hóa trọng số và tổng hợp đa nguồn",
+        "Truyền tin trên đồ thị mạng sông có hướng",
+        "Giải mã đa thời hạn bằng các đầu Q H và cảnh báo",
+        "Tính các phân vị hoặc tham số phân phối nếu dùng"
+      ],
+      "eq": "\\alpha_s=\\mathrm{softmax}_s(g([\\widetilde{h}_s,M_s,A_s,R_s,c])),\\quad z=\\sum_s\\alpha_s\\widetilde{h}_s",
+      "note": "Chọn encoder theo từng nhánh; không cần xếp tất cả mạng vào một nhánh. Nguồn vắng hoàn toàn cần mask loại trừ rõ ràng và phương án khi không còn nguồn. Đóng góp mới phải được chứng minh bằng baseline và ablation.",
+      "refs": "[1]",
+      "loop": null,
+      "decision": null,
+      "height": 606
+    },
+    {
+      "code": "15",
+      "title": "Mixture Density Network",
+      "role": "Phương án đầu ra phân phối cho bất định",
+      "io": "Đầu vào: biểu diễn từ backbone. Đầu ra: trọng số và tham số các phân phối thành phần.",
+      "arch": "Backbone → các đầu tham số hỗn hợp → phân phối có điều kiện.",
+      "idea": "MDN mô tả nhiều khả năng của đầu ra bằng một hỗn hợp phân phối. Softmax bảo đảm trọng số cộng bằng một; tham số dương dùng phép biến đổi thích hợp. Đề cương chưa chốt họ phân phối.",
+      "steps": [
+        "Nhận biểu diễn từ encoder hoặc STGNN",
+        "Tính trọng số hỗn hợp bằng softmax",
+        "Tính tham số từng thành phần với ràng buộc phù hợp",
+        "Tạo mật độ hỗn hợp có điều kiện",
+        "Tối thiểu hóa âm log likelihood khi huấn luyện",
+        "Suy ra xác suất vượt ngưỡng hoặc khoảng dự báo"
+      ],
+      "eq": "p(y|x)=\\sum_{k=1}^{K}\\pi_k(x)p_k(y;\\theta_k(x))",
+      "note": "Cần chọn phân phối phù hợp miền giá trị và đặc điểm Q hoặc H. MDN là phương án đầu ra bất định, không phải encoder thay thế trực tiếp cho TCN hay LSTM.",
+      "refs": "[1, 14]",
+      "loop": null,
+      "decision": null,
+      "height": 548
+    },
+    {
+      "code": "16",
+      "title": "Dự báo phân vị",
+      "role": "Phương án lượng hóa bất định bằng quantile loss",
+      "io": "Đầu vào: biểu diễn học được và các mức phân vị. Đầu ra: các phân vị theo từng thời hạn.",
+      "arch": "Backbone → nhiều đầu phân vị → quantile loss → khoảng dự báo.",
+      "idea": "Mỗi đầu học một mức phân vị thay vì chỉ giá trị trung bình. Kết hợp các phân vị thấp và cao để tạo khoảng dự báo; cần kiểm soát hiện tượng các phân vị đảo thứ tự.",
+      "steps": [
+        "Chọn các mức phân vị và thời hạn",
+        "Chạy backbone và xuất dự báo từng phân vị",
+        "Tính quantile loss trên nhãn hợp lệ",
+        "Tổng hợp loss và cập nhật trọng số",
+        "Tạo khoảng từ phân vị thấp và cao",
+        "Đánh giá độ phủ độ rộng và hiệu chuẩn"
+      ],
+      "eq": "\\rho_\\tau(y-\\hat y)=\\max\\{\\tau(y-\\hat y),(\\tau-1)(y-\\hat y)\\}",
+      "note": "Ví dụ phân vị 0,05 và 0,95 tạo khoảng dự báo danh định 90 phần trăm; độ phủ thực tế phải được đo. Có thể bổ sung hiệu chuẩn conformal bằng tập riêng.",
+      "refs": "[1, 12]",
+      "loop": null,
+      "decision": null,
+      "height": 548
+    },
+    {
+      "code": "17",
+      "title": "Deep ensemble",
+      "role": "Phương pháp tổng hợp nhiều mạng để khảo sát bất định mô hình",
+      "io": "Đầu vào: tập train và nhiều cấu hình khởi tạo. Đầu ra: tập dự báo và các thống kê tổng hợp.",
+      "arch": "Huấn luyện nhiều mạng độc lập → dự báo cùng đầu vào → tổng hợp.",
+      "idea": "Các mạng cùng hoặc khác kiến trúc có thể cho dự báo khác nhau vì khởi tạo và quá trình tối ưu khác nhau. Độ phân tán giữa chúng là một chỉ báo về bất định mô hình.",
+      "steps": [
+        "Chọn số mô hình và các seed",
+        "Huấn luyện từng mô hình chỉ trên train",
+        "Chọn checkpoint bằng validation",
+        "Chạy cùng đầu vào qua các mô hình đã chọn",
+        "Tổng hợp dự báo và tính độ phân tán",
+        "Đánh giá hoặc hiệu chuẩn khoảng dự báo"
+      ],
+      "eq": "\\bar y=\\frac{1}{M}\\sum_{m=1}^{M}\\hat y_m",
+      "note": "Nếu mỗi mạng còn xuất phân phối thì tổng hợp cả thành phần bất định trong và giữa các mạng. Phân tán ensemble không tự tạo bảo đảm độ phủ; chi phí tăng theo số mạng.",
+      "refs": "[1, 14]",
+      "loop": null,
+      "decision": null,
+      "height": 548
+    },
+    {
+      "code": "18",
+      "title": "Monte Carlo dropout",
+      "role": "Phương pháp suy luận lặp với dropout",
+      "io": "Đầu vào: mạng được huấn luyện với dropout và một mẫu cần dự báo. Đầu ra: nhiều dự báo ngẫu nhiên.",
+      "arch": "Giữ dropout khi suy luận → chạy nhiều lần → tổng hợp trung bình và phân tán.",
+      "idea": "Mỗi lần suy luận dùng một mẫu dropout, tạo một kết quả hơi khác. Nhiều lần chạy cung cấp ước lượng xấp xỉ độ nhạy dự báo đối với cấu hình mạng bị bỏ ngẫu nhiên.",
+      "steps": [
+        "Nạp checkpoint và chọn số lần chạy M lớn hơn một",
+        "Bật dropout khi suy luận và giữ các lớp khác ở chế độ phù hợp",
+        "Chạy suy luận với một mẫu dropout",
+        "Lưu kết quả và đổi mẫu dropout",
+        "Tổng hợp trung bình phân tán và các phân vị"
+      ],
+      "eq": "\\widehat{\\mathrm{Var}}(y)=\\frac{1}{M-1}\\sum_{m=1}^{M}(\\hat y_m-\\bar y)^2",
+      "note": "Không bật toàn bộ mạng sang train một cách máy móc vì BatchNorm có thể thay đổi hành vi. Khoảng từ các lần chạy cần được kiểm tra hiệu chuẩn; đây là xấp xỉ, không phải hậu nghiệm Bayes chính xác.",
+      "refs": "[1, 14]",
+      "loop": 2,
+      "decision": "Chưa đủ số lần chạy?",
+      "height": 570
+    },
+    {
+      "code": "19",
+      "title": "Conformal prediction",
+      "role": "Hiệu chuẩn khoảng dự báo sau huấn luyện",
+      "io": "Đầu vào: mô hình đã chốt, calibration set và mức sai số alpha. Đầu ra: khoảng đã hiệu chuẩn.",
+      "arch": "Dự báo calibration → điểm sai lệch → phân vị hiệu chuẩn → khoảng cho mẫu mới.",
+      "idea": "Lưu đồ minh họa split conformal cho dự báo điểm. Với từng thời hạn, tính sai số tuyệt đối trên calibration rồi dùng phân vị hiệu chỉnh hữu hạn mẫu để mở rộng khoảng.",
+      "steps": [
+        "Khóa mô hình và chọn calibration độc lập với train",
+        "Tính dự báo và sai số tuyệt đối trên calibration",
+        "Tính chỉ số phân vị hữu hạn mẫu theo alpha",
+        "Lấy ngưỡng sai số cho từng thời hạn",
+        "Dự báo điểm cho mẫu mới",
+        "Tạo khoảng đối xứng bằng ngưỡng hiệu chuẩn"
+      ],
+      "eq": "C(x)=[\\hat y(x)-q,\\hat y(x)+q],\\quad k=\\lceil(n+1)(1-\\alpha)\\rceil",
+      "note": "q là phần tử thứ k của điểm calibration đã sắp xếp; nếu k vượt n, dùng quy ước ngưỡng vô hạn hoặc tăng cỡ mẫu. Bảo đảm chuẩn cần tính trao đổi; chuỗi thủy văn phụ thuộc hoặc lệch miền không tự thỏa điều kiện này.",
+      "refs": "[1, 15]",
+      "loop": null,
+      "decision": null,
+      "height": 548
+    },
+    {
+      "code": "20",
+      "title": "Source dropout",
+      "role": "Kỹ thuật huấn luyện chịu mất nguồn",
+      "io": "Đầu vào: một mini batch đa nguồn. Đầu ra: dự báo và loss khi một phần nguồn bị che.",
+      "arch": "Lấy mẫu nguồn bị bỏ → cập nhật mask → mô hình đa nguồn → cập nhật tham số.",
+      "idea": "Thay vì chỉ bỏ các nơ ron, source dropout bỏ cả nguồn trong cửa sổ huấn luyện. Curriculum có thể tăng dần mức hoặc độ dài mất nguồn theo các kịch bản có cơ sở.",
+      "steps": [
+        "Lấy mini batch đa nguồn và metadata",
+        "Lấy mẫu kịch bản mất nguồn phù hợp",
+        "Che nguồn và cập nhật mặt nạ cùng metadata",
+        "Kiểm tra còn nguồn theo quy tắc vận hành",
+        "Chạy encoder gate và mô hình dự báo",
+        "Tính loss rồi lan truyền ngược"
+      ],
+      "eq": "\\mathcal L_{drop}=\\mathcal L(f_\\theta(X\\odot D,M_D),y)",
+      "note": "Cần quy định rõ trường hợp mất mọi nguồn: dùng nguồn nền hợp lệ, mô hình dự phòng hoặc báo thiếu điều kiện. Kịch bản mô phỏng phải phân biệt mất nguồn với mất vài giá trị.",
+      "refs": "[1]",
+      "loop": null,
+      "decision": null,
+      "height": 548
+    },
+    {
+      "code": "21",
+      "title": "Consistency training",
+      "role": "Điều chuẩn nhất quán trước thiếu hoặc nhiễu",
+      "io": "Đầu vào: hai phiên bản cùng cửa sổ và cùng nhãn. Đầu ra: loss giám sát cộng điều chuẩn.",
+      "arch": "Nhánh đầy đủ và nhánh bị che → hai dự báo → loss giám sát và nhất quán.",
+      "idea": "Mô hình được khuyến khích đưa ra dự báo gần nhau khi thông tin bị suy giảm có kiểm soát. Cả hai phiên bản phải tuân thủ thông tin sẵn có tại thời điểm dự báo.",
+      "steps": [
+        "Lấy cửa sổ quan trắc và nhãn hợp lệ",
+        "Tạo phiên bản đầy đủ và phiên bản che hoặc nhiễu",
+        "Dự báo cả hai phiên bản bằng mạng dùng chung hoặc teacher",
+        "Tính loss giám sát và khoảng cách giữa dự báo",
+        "Kết hợp hai loss với hệ số điều chuẩn",
+        "Cập nhật tham số theo thiết kế gradient"
+      ],
+      "eq": "\\mathcal L=\\mathcal L_{sup}+\\lambda\\,d(f_\\theta(X),f_\\theta(\\widetilde X))",
+      "note": "Cần chốt khoảng cách d, hệ số lambda và có stop gradient ở nhánh tham chiếu hay không. Không ép hai dự báo bằng nhau khi biến đổi đã làm mất thông tin quyết định mà không xét mức độ tin cậy.",
+      "refs": "[1]",
+      "loop": null,
+      "decision": null,
+      "height": 548
+    },
+    {
+      "code": "22",
+      "title": "Transfer learning",
+      "role": "Chuyển giao từ dữ liệu mở sang Lạng Sơn",
+      "io": "Đầu vào: dữ liệu nguồn và train địa phương. Đầu ra: mô hình tinh chỉnh và kết quả test địa phương.",
+      "arch": "Pretrain → chuyển trọng số → fine tune → hiệu chuẩn → test địa phương.",
+      "idea": "Pretraining học biểu diễn trên nhiều trạm hoặc lưu vực. Fine tuning thích nghi với đặc điểm địa phương. Phải so sánh với huấn luyện từ đầu dưới cùng ngân sách và cách chia dữ liệu.",
+      "steps": [
+        "Chốt train validation calibration và test địa phương",
+        "Pretrain trên dữ liệu nguồn hợp lệ",
+        "Chuyển trọng số và chọn phần đóng băng hoặc tinh chỉnh",
+        "Fine tune bằng train và chọn bằng validation địa phương",
+        "Hiệu chuẩn bằng tập calibration địa phương",
+        "Đánh giá test khóa và so sánh train from scratch"
+      ],
+      "eq": "\\theta_{LS}\\leftarrow\\mathrm{FineTune}(\\theta_{pre},\\mathcal D_{LS,train})",
+      "note": "Không dùng test địa phương để chuẩn hóa, chọn siêu tham số hay hiệu chuẩn. Khi chuyển từ ngày sang giờ hoặc khác biến đầu vào, cần kiểm tra tương thích trước khi tái sử dụng trọng số.",
+      "refs": "[1]",
+      "loop": null,
+      "decision": null,
+      "height": 548
+    },
+    {
+      "code": "23",
+      "title": "Học có hướng dẫn vật lý",
+      "role": "Ràng buộc miền và mở rộng residual có điều kiện",
+      "io": "Đầu vào: dự báo mạng và các ràng buộc miền. Đầu ra: dự báo đã ràng buộc hoặc loss bổ sung.",
+      "arch": "Mô hình dữ liệu → kiểm tra ràng buộc → loss hoặc tham số hóa phù hợp.",
+      "idea": "Đề cương ưu tiên topology sông, quan hệ dự báo với ngưỡng và thứ tự xác suất cảnh báo. Physics guided residual là mở rộng có điều kiện, chưa phải mô hình đã chốt.",
+      "steps": [
+        "Xác định ràng buộc có căn cứ và miền áp dụng",
+        "Tạo dự báo bằng mô hình học sâu",
+        "Áp dụng tham số hóa hoặc tính độ vi phạm",
+        "Kết hợp loss dữ liệu và loss ràng buộc",
+        "Cập nhật tham số",
+        "Kiểm tra hiệu năng và vi phạm trên dữ liệu độc lập"
+      ],
+      "eq": "\\mathcal L=\\mathcal L_{data}+\\lambda_{phys}\\mathcal L_{phys}",
+      "note": "Có thể ràng buộc Q không âm; mực nước phải theo mốc cao độ quy ước, không mặc nhiên không âm. Luồng thông tin có hướng không tự bảo đảm bảo toàn khối lượng. Cần ablation để chứng minh lợi ích.",
+      "refs": "[1]",
+      "loop": null,
+      "decision": null,
+      "height": 548
+    },
+    {
+      "code": "24",
+      "title": "Mask aware encoder",
+      "role": "Biểu diễn có nhận biết tình trạng thiếu dữ liệu",
+      "io": "Đầu vào: giá trị, mặt nạ, tuổi dữ liệu và chất lượng. Đầu ra: biểu diễn nguồn có ngữ cảnh thiếu.",
+      "arch": "Giá trị thay thế hữu hạn và metadata → encoder có xét mask → biểu diễn.",
+      "idea": "Encoder được cung cấp thông tin để phân biệt giá trị bằng không thực với giá trị tạm thay do thiếu. Mặt nạ cần đi cùng phép tổng hợp và hàm mất mát phù hợp.",
+      "steps": [
+        "Nhận dữ liệu thô và xác định mask hợp lệ",
+        "Tạo giá trị thay thế hữu hạn bằng thông tin cho phép",
+        "Ghép mask tuổi dữ liệu và chỉ báo chất lượng",
+        "Chạy encoder và phép tổng hợp có xét mask",
+        "Đánh dấu nguồn vắng hoàn toàn",
+        "Xuất biểu diễn cùng trạng thái khả dụng"
+      ],
+      "eq": "h_s=E_s([X_s^*,M_s,A_s,R_s])",
+      "note": "Công thức là một cách triển khai minh họa, không phải định nghĩa duy nhất. Đưa mask vào mạng không tự bảo đảm nguồn bị thiếu nhận trọng số bằng không; cần cơ chế loại trừ ở gate khi cần.",
+      "refs": "[1, 6]",
+      "loop": null,
+      "decision": null,
+      "height": 548
+    },
+    {
+      "code": "25",
+      "title": "Robust loss và loss mask",
+      "role": "Huấn luyện khi có ngoại lai hoặc nhãn thiếu",
+      "io": "Đầu vào: dự báo, nhãn và mặt nạ nhãn. Đầu ra: loss chỉ tính trên nhãn hợp lệ.",
+      "arch": "Sai số → Huber loss hoặc loss phù hợp → áp dụng mask → tổng hợp.",
+      "idea": "Huber loss dùng phạt bậc hai với sai số nhỏ và tăng tuyến tính với sai số lớn. Loss mask loại phần tử không có nhãn khỏi tổng và mẫu số; không được coi nhãn thiếu là giá trị bằng không.",
+      "steps": [
+        "Nhận dự báo nhãn và mặt nạ nhãn",
+        "Kiểm tra số nhãn hợp lệ và bỏ batch nếu bằng không",
+        "Tính sai số tại phần tử có nhãn",
+        "Dùng Huber loss theo ngưỡng delta",
+        "Áp dụng trọng số nhiệm vụ và thời hạn nếu có",
+        "Chia tổng loss cho số nhãn hợp lệ lớn hơn không"
+      ],
+      "eq": "\\mathcal L=\\frac{\\sum_i m_i\\ell_\\delta(y_i-\\hat y_i)}{\\sum_i m_i},\\quad \\sum_i m_i>0",
+      "note": "Không tự loại hoặc giảm trọng số mọi đỉnh lũ lớn vì đó có thể là cực trị thật. Chọn delta bằng validation và báo cáo riêng sai số đỉnh; có thể kết hợp trọng số sự kiện theo đề cương.",
+      "refs": "[1]",
+      "loop": null,
+      "decision": null,
+      "height": 548
+    }
+  ],
+  "specs": {
+    "00": {
+      "labels": [
+        "Mini batch\nX và Y",
+        "Mạng fθ\nDự báo Ŷ",
+        "Loss hợp lệ\nL vô hướng",
+        "Gradient\n∇θ L",
+        "Adam\nCập nhật θ",
+        "Validation\nCheckpoint"
+      ],
+      "rows": [
+        [
+          "Chia dữ liệu",
+          "Theo thời gian hoặc sự kiện",
+          "Train / val / test"
+        ],
+        [
+          "Chuẩn hóa",
+          "Fit bằng train; áp dụng val/test",
+          "X cùng kích thước"
+        ],
+        [
+          "Mini batch",
+          "B = 32; L = 24; F = 6",
+          "X: B × 24 × 6"
+        ],
+        [
+          "Backbone và head",
+          "GRU 32; Dense 6",
+          "Ŷ: B × 6"
+        ],
+        [
+          "Loss",
+          "Chỉ nhãn hợp lệ; bỏ batch rỗng",
+          "Một số vô hướng"
+        ],
+        [
+          "Adam",
+          "Learning rate minh họa 0,001",
+          "Tham số θ mới"
+        ],
+        [
+          "Validation",
+          "Lưu checkpoint tốt nhất; early stop",
+          "Mô hình đã chọn"
+        ]
+      ],
+      "note": "Sơ đồ minh họa một vòng huấn luyện. Sau khi chọn checkpoint mới đánh giá test; không dùng test để chọn mô hình.",
+      "links": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          1,
+          "θ mới"
+        ],
+        [
+          1,
+          5
+        ]
+      ]
+    },
+    "01": {
+      "labels": [
+        "Đặc trưng tĩnh\nB × 5",
+        "Dense và ReLU\nB × 64",
+        "Dense và ReLU\nB × 32",
+        "Biểu diễn lưu vực\nB × 32"
+      ],
+      "rows": [
+        [
+          "Đầu vào",
+          "5 biến số đã chuẩn hóa",
+          "B × 5"
+        ],
+        [
+          "Dense 1",
+          "5 → 64; ReLU",
+          "B × 64"
+        ],
+        [
+          "Dense 2",
+          "64 → 32; ReLU",
+          "B × 32"
+        ],
+        [
+          "Đầu ra encoder",
+          "D = 32",
+          "B × 32"
+        ]
+      ],
+      "note": "Ví dụ dùng 5 biến liên tục. Nếu có loại đất hoặc lớp phủ dạng phân loại, thêm embedding trước khi ghép vector.",
+      "links": null
+    },
+    "02": {
+      "labels": [
+        "Ảnh radar\nB × 1 × 64 × 64",
+        "Conv 3 × 3 + ReLU\nB × 16 × 64 × 64",
+        "MaxPool 2 × 2\nB × 16 × 32 × 32",
+        "Conv 3 × 3 + ReLU\nB × 32 × 32 × 32",
+        "Global average pool\nB × 32",
+        "Vector đặc trưng\nB × 32"
+      ],
+      "rows": [
+        [
+          "Ảnh đầu vào",
+          "1 kênh; 64 × 64 điểm ảnh",
+          "B × 1 × 64 × 64"
+        ],
+        [
+          "Conv2d + ReLU",
+          "16 lọc; k = 3; s = 1; p = 1",
+          "B × 16 × 64 × 64"
+        ],
+        [
+          "MaxPool2d",
+          "k = 2; s = 2",
+          "B × 16 × 32 × 32"
+        ],
+        [
+          "Conv2d + ReLU",
+          "32 lọc; k = 3; s = 1; p = 1",
+          "B × 32 × 32 × 32"
+        ],
+        [
+          "Global average pool",
+          "Trung bình trên hai chiều ảnh",
+          "B × 32"
+        ],
+        [
+          "Đầu ra encoder",
+          "Không có softmax phân lớp",
+          "B × 32"
+        ]
+      ],
+      "note": "Đây là CNN mã hóa ảnh cho FloodAI. Không sử dụng đầu phát hiện vật thể hay các lớp Darknet trong hình mẫu.",
+      "links": null
+    },
+    "03": {
+      "labels": [
+        "Chuỗi đầu vào\nB × 24 × 6",
+        "Chiếu kênh\nB × 32 × 24",
+        "Khối dư TCN 1\ndilation = 1",
+        "Khối dư TCN 2\ndilation = 2",
+        "Khối dư TCN 3\ndilation = 4",
+        "Bước cuối + Dense\nB × 6"
+      ],
+      "rows": [
+        [
+          "Đầu vào và đổi trục",
+          "L = 24; F = 6",
+          "B × 6 × 24"
+        ],
+        [
+          "Chiếu kênh",
+          "Conv1d 1 × 1; 6 → 32",
+          "B × 32 × 24"
+        ],
+        [
+          "Khối dư 1",
+          "2 causal conv; k = 3; d = 1",
+          "B × 32 × 24"
+        ],
+        [
+          "Khối dư 2",
+          "2 causal conv; k = 3; d = 2",
+          "B × 32 × 24"
+        ],
+        [
+          "Khối dư 3",
+          "2 causal conv; k = 3; d = 4",
+          "B × 32 × 24"
+        ],
+        [
+          "Lấy bước cuối",
+          "Receptive field = 29 bước",
+          "B × 32"
+        ],
+        [
+          "Head dự báo",
+          "Dense 32 → 6",
+          "B × 6"
+        ]
+      ],
+      "note": "Mỗi khối có hai tích chập nhân quả và nhánh cộng dư. Receptive field = 1 + 2(3 − 1)(1 + 2 + 4) = 29; cửa sổ 24 chỉ chứa 24 quan trắc thật.",
+      "links": null
+    },
+    "04": {
+      "labels": [
+        "Chuỗi X\nB × 24 × 6",
+        "Ô GRU\nr, z và ứng viên",
+        "Trạng thái cuối\nB × 32",
+        "Dense dự báo\nB × 6"
+      ],
+      "rows": [
+        [
+          "Chuỗi đầu vào",
+          "L = 24; F = 6",
+          "B × 24 × 6"
+        ],
+        [
+          "Trạng thái khởi tạo",
+          "h₀ = 0; D = 32",
+          "B × 32"
+        ],
+        [
+          "Ô GRU",
+          "1 tầng; hidden size = 32",
+          "B × 24 × 32"
+        ],
+        [
+          "Lấy h cuối",
+          "h tại bước 24",
+          "B × 32"
+        ],
+        [
+          "Head dự báo",
+          "Dense 32 → 6",
+          "B × 6"
+        ]
+      ],
+      "note": "Mũi tên hồi tiếp biểu thị h từ bước trước. Reset gate và update gate đều có 32 phần tử cho mỗi mẫu.",
+      "links": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1,
+          "h trước"
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ]
+      ]
+    },
+    "05": {
+      "labels": [
+        "Chuỗi X\nB × 24 × 6",
+        "Ô LSTM\nf, i, o và ứng viên",
+        "h cuối và c cuối\nMỗi trạng thái B × 32",
+        "Dense từ h cuối\nB × 6"
+      ],
+      "rows": [
+        [
+          "Chuỗi đầu vào",
+          "L = 24; F = 6",
+          "B × 24 × 6"
+        ],
+        [
+          "Khởi tạo h₀ và c₀",
+          "Hai trạng thái 32 chiều",
+          "Mỗi trạng thái B × 32"
+        ],
+        [
+          "Ô LSTM",
+          "1 tầng; hidden size = 32",
+          "B × 24 × 32"
+        ],
+        [
+          "Trạng thái cuối",
+          "Head nhận h; c giữ nội bộ",
+          "B × 32"
+        ],
+        [
+          "Head dự báo",
+          "Dense 32 → 6",
+          "B × 6"
+        ]
+      ],
+      "note": "Từng cổng và ô nhớ ứng viên có 32 phần tử. Ô nhớ c không được tự diễn giải là trữ lượng nước.",
+      "links": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1,
+          "h và c trước"
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ]
+      ]
+    },
+    "06": {
+      "labels": [
+        "X, mask và δ\nB × 24 × 6",
+        "Decay đầu vào\nGiá trị x*",
+        "Decay trạng thái\nh trước đã giảm",
+        "GRU có mask\nB × 24 × 32",
+        "Trạng thái cuối\nB × 32",
+        "Dense dự báo\nB × 6"
+      ],
+      "rows": [
+        [
+          "Đầu vào X, M, δ",
+          "M = 1 nếu có quan trắc",
+          "Mỗi tensor B × 24 × 6"
+        ],
+        [
+          "Mean và last value",
+          "Mean fit trên train",
+          "6 giá trị / mẫu"
+        ],
+        [
+          "Decay đầu vào",
+          "γx theo δ; thay giá trị thiếu",
+          "B × 24 × 6"
+        ],
+        [
+          "Decay trạng thái",
+          "γh theo δ; 32 chiều",
+          "B × 32 mỗi bước"
+        ],
+        [
+          "GRU có mask",
+          "hidden size = 32; 24 bước",
+          "B × 24 × 32"
+        ],
+        [
+          "Lấy cuối và Dense",
+          "32 → 6",
+          "B × 6"
+        ]
+      ],
+      "note": "Đây là cấu hình minh họa theo nguyên lý GRU-D; triển khai cần giữ decay đầu vào, decay trạng thái và mask đúng theo mô hình gốc.",
+      "links": null
+    },
+    "07": {
+      "labels": [
+        "Chuỗi ảnh\nB × 24 × 1 × 64 × 64",
+        "Ô ConvLSTM\n32 kênh; k = 3",
+        "H cuối\nB × 32 × 64 × 64",
+        "Global average pool\nB × 32",
+        "Dense dự báo\nB × 6"
+      ],
+      "rows": [
+        [
+          "Chuỗi ảnh",
+          "24 ảnh; 1 kênh; 64 × 64",
+          "B × 24 × 1 × 64 × 64"
+        ],
+        [
+          "Khởi tạo H và C",
+          "32 kênh; lưới 64 × 64",
+          "B × 32 × 64 × 64"
+        ],
+        [
+          "ConvLSTM cell",
+          "k = 3; s = 1; p = 1",
+          "B × 32 × 64 × 64 / bước"
+        ],
+        [
+          "Trạng thái H cuối",
+          "Sau ảnh thứ 24",
+          "B × 32 × 64 × 64"
+        ],
+        [
+          "Global average pool",
+          "Trung bình theo hai trục ảnh",
+          "B × 32"
+        ],
+        [
+          "Head dự báo",
+          "Dense 32 → 6",
+          "B × 6"
+        ]
+      ],
+      "note": "Cấu hình đơn tầng, giữ độ phân giải ảnh. H trong ô nhớ là trạng thái mạng; đầu dự báo minh họa cho một vùng đã chọn.",
+      "links": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1,
+          "H và C trước"
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          4
+        ]
+      ]
+    },
+    "08": {
+      "labels": [
+        "Đặc trưng nút X\nB × 10 × 6",
+        "A và self loop\n10 × 10",
+        "GCN 1 + ReLU\nB × 10 × 32",
+        "GCN 2\nB × 10 × 32",
+        "Dense theo nút\nB × 10 × 6"
+      ],
+      "rows": [
+        [
+          "Đặc trưng đầu vào",
+          "N = 10; F = 6",
+          "B × 10 × 6"
+        ],
+        [
+          "Đồ thị không hướng",
+          "A cộng I; chuẩn hóa đối xứng",
+          "10 × 10"
+        ],
+        [
+          "GCN 1 + ReLU",
+          "6 → 32",
+          "B × 10 × 32"
+        ],
+        [
+          "GCN 2",
+          "32 → 32",
+          "B × 10 × 32"
+        ],
+        [
+          "Head theo nút",
+          "Dense dùng chung 32 → 6",
+          "B × 10 × 6"
+        ]
+      ],
+      "note": "GCN này nhận một lát thời gian để minh họa phép toán đồ thị. Dự báo động lực học cần encoder thời gian; đồ thị có hướng cần biến thể khác.",
+      "links": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          4
+        ]
+      ]
+    },
+    "09": {
+      "labels": [
+        "X và lân cận\nB × 10 × 6",
+        "Mean aggregator 1\nB × 10 × 6",
+        "Concat + Dense\nB × 10 × 32",
+        "Mean aggregator 2\nB × 10 × 32",
+        "Concat + Dense\nB × 10 × 32",
+        "Head theo nút\nB × 10 × 6"
+      ],
+      "rows": [
+        [
+          "Đầu vào",
+          "N = 10; F = 6",
+          "B × 10 × 6"
+        ],
+        [
+          "Lấy mẫu",
+          "Tối đa 4 hàng xóm / tầng",
+          "Tập lân cận từng nút"
+        ],
+        [
+          "Mean tầng 1",
+          "Trung bình hàng xóm",
+          "B × 10 × 6"
+        ],
+        [
+          "Ghép và biến đổi 1",
+          "[6; 6] → 32; ReLU",
+          "B × 10 × 32"
+        ],
+        [
+          "Mean và ghép tầng 2",
+          "[32; 32] → 32; ReLU",
+          "B × 10 × 32"
+        ],
+        [
+          "Head theo nút",
+          "Dense dùng chung 32 → 6",
+          "B × 10 × 6"
+        ]
+      ],
+      "note": "Nếu nút không có hàng xóm, quy định vector tổng hợp bằng 0. Chuẩn hóa embedding là lựa chọn riêng, không bắt buộc cho mọi biến thể.",
+      "links": null
+    },
+    "10": {
+      "labels": [
+        "X và cạnh\nB × 10 × 6",
+        "Chiếu 4 đầu\n4 × 8 chiều",
+        "Attention trên cạnh\nα trong từng lân cận",
+        "Ghép các đầu\nB × 10 × 32",
+        "Dense theo nút\nB × 10 × 6"
+      ],
+      "rows": [
+        [
+          "Đầu vào",
+          "N = 10; F = 6; thêm self loop",
+          "B × 10 × 6"
+        ],
+        [
+          "Chiếu đa đầu",
+          "4 heads; 8 chiều / head",
+          "B × 10 × 4 × 8"
+        ],
+        [
+          "Điểm cạnh và softmax",
+          "Chỉ chuẩn hóa trên hàng xóm",
+          "α cho mỗi cạnh và head"
+        ],
+        [
+          "Tổng hợp và concat",
+          "4 × 8 = 32; ELU",
+          "B × 10 × 32"
+        ],
+        [
+          "Head theo nút",
+          "Dense dùng chung 32 → 6",
+          "B × 10 × 6"
+        ]
+      ],
+      "note": "Cấu hình GAT một tầng minh họa. Với mạng sông, khai báo rõ chiều gửi–nhận và tập cạnh được phép.",
+      "links": null
+    },
+    "11": {
+      "labels": [
+        "Lịch sử X\nB × 24 × 6",
+        "Embedding + vị trí\nB × 24 × 32",
+        "Attention 4 đầu\nB × 24 × 32",
+        "Add Norm + FFN\nB × 24 × 32",
+        "Lấy token cuối\nB × 32",
+        "Dense dự báo\nB × 6"
+      ],
+      "rows": [
+        [
+          "Đầu vào",
+          "L = 24; F = 6",
+          "B × 24 × 6"
+        ],
+        [
+          "Embedding và vị trí",
+          "Dense 6 → 32",
+          "B × 24 × 32"
+        ],
+        [
+          "Self attention",
+          "4 heads; dₖ = 8",
+          "B × 24 × 32"
+        ],
+        [
+          "Add Norm và FFN",
+          "32 → 64 → 32; nhánh dư",
+          "B × 24 × 32"
+        ],
+        [
+          "Lấy token cuối",
+          "Chỉ dữ liệu lịch sử đến t",
+          "B × 32"
+        ],
+        [
+          "Head trực tiếp",
+          "Dense 32 → 6",
+          "B × 6"
+        ]
+      ],
+      "note": "Đây là encoder Transformer một khối. Vì mọi token thuộc cửa sổ đã quan trắc, có thể attention toàn lịch sử; decoder tự hồi quy cần causal mask.",
+      "links": null
+    },
+    "12": {
+      "labels": [
+        "Biến tĩnh, lịch sử\nvà tương lai đã biết",
+        "Chọn biến + gating\nD = 32",
+        "LSTM encoder decoder\n24 + 6 bước",
+        "Ngữ cảnh tĩnh\nvà attention 4 đầu",
+        "Gating và head\n3 phân vị / thời hạn",
+        "Dự báo phân vị\nB × 6 × 3"
+      ],
+      "rows": [
+        [
+          "Ba nhóm đầu vào",
+          "Tĩnh 5; lịch sử 24 × 6; lịch 6 × 2",
+          "B × 5; B × 24 × 6; B × 6 × 2"
+        ],
+        [
+          "Embedding và chọn biến",
+          "D = 32; GRN và gating",
+          "B × 24 × 32; B × 6 × 32"
+        ],
+        [
+          "LSTM encoder decoder",
+          "hidden size = 32",
+          "B × 30 × 32"
+        ],
+        [
+          "Làm giàu ngữ cảnh",
+          "Ngữ cảnh tĩnh; D = 32",
+          "B × 30 × 32"
+        ],
+        [
+          "Attention thời gian",
+          "4 đầu; giữ 6 bước dự báo",
+          "B × 6 × 32"
+        ],
+        [
+          "Gating và đầu phân vị",
+          "τ = 0,1; 0,5; 0,9",
+          "B × 6 × 3"
+        ]
+      ],
+      "note": "Sơ đồ TFT được giản lược. Kích thước khối attention là quy ước minh họa; dùng biến tương lai chỉ khi chúng đã biết tại thời điểm phát báo.",
+      "links": null
+    },
+    "13": {
+      "labels": [
+        "Chuỗi tại 10 nút\nB × 10 × 24 × 6",
+        "GRU dùng chung\nB × 10 × 32",
+        "Đồ thị sông có hướng\nCạnh j → i",
+        "Truyền tin theo cạnh\nB × 10 × 32",
+        "Dense theo nút\nB × 10 × 6"
+      ],
+      "rows": [
+        [
+          "Chuỗi nhiều nút",
+          "N = 10; L = 24; F = 6",
+          "B × 10 × 24 × 6"
+        ],
+        [
+          "GRU từng nút",
+          "Cùng bộ trọng số; D = 32",
+          "B × 10 × 32"
+        ],
+        [
+          "Thuộc tính cạnh",
+          "Khoảng cách; độ dốc; độ trễ",
+          "E × 3"
+        ],
+        [
+          "Message function",
+          "MLP: [32; 32; 3] → 32",
+          "B × E × 32"
+        ],
+        [
+          "Tổng hợp và cập nhật",
+          "Sum hàng xóm vào; [32; 32] → 32",
+          "B × 10 × 32"
+        ],
+        [
+          "Head dùng chung",
+          "Dense 32 → 6",
+          "B × 10 × 6"
+        ]
+      ],
+      "note": "Đây là phương án mã hóa thời gian rồi truyền tin có hướng. Độ trễ trong thuộc tính cạnh không tự bảo đảm đã mô hình hóa thời gian truyền lũ.",
+      "links": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          4
+        ]
+      ]
+    },
+    "14": {
+      "labels": [
+        "Nhánh chuỗi\nB × 10 × 32",
+        "Nhánh radar\nB × 10 × 32",
+        "Nhánh tĩnh\nB × 10 × 32",
+        "Gate mask age quality\nHợp nhất D = 32",
+        "STGNN có hướng\nB × 10 × 32",
+        "Q H và cảnh báo\nB × 10 × 6 × 3"
+      ],
+      "rows": [
+        [
+          "Chuỗi tại mỗi nút",
+          "GRU hidden = 32; L = 24; F = 6",
+          "B × 10 × 32"
+        ],
+        [
+          "Chuỗi radar từng vùng",
+          "ConvLSTM 32 + global pool",
+          "B × 10 × 32"
+        ],
+        [
+          "Thuộc tính tĩnh",
+          "MLP 5 → 32",
+          "B × 10 × 32"
+        ],
+        [
+          "Gate ba nguồn",
+          "Mask; age; quality; masked softmax",
+          "α: B × 10 × 3"
+        ],
+        [
+          "Hợp nhất và đồ thị",
+          "Tổng có trọng số; D = 32",
+          "B × 10 × 32"
+        ],
+        [
+          "Các head dùng chung",
+          "6 thời hạn; Q, H, p vượt ngưỡng",
+          "B × 10 × 6 × 3"
+        ],
+        [
+          "Bất định tùy chọn",
+          "Head phân vị Q và H; 3 mức",
+          "B × 10 × 6 × 2 × 3"
+        ]
+      ],
+      "note": "Kiến trúc là đề xuất minh họa, chưa chốt trong luận án. Nếu mọi nguồn đều không khả dụng, đánh dấu không phát dự báo; không softmax trên toàn bộ giá trị bị loại.",
+      "links": [
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          5
+        ]
+      ]
+    },
+    "15": {
+      "labels": [
+        "Backbone\nB × 32",
+        "Dense tham số\nB × 6 × 9",
+        "Softmax trọng số\nπ: B × 6 × 3",
+        "μ và σ dương\nMỗi tensor B × 6 × 3",
+        "Hỗn hợp 3 Gaussian\np(y | x)",
+        "NLL hoặc phân vị\nLoss / dự báo"
+      ],
+      "rows": [
+        [
+          "Biểu diễn đầu vào",
+          "D = 32",
+          "B × 32"
+        ],
+        [
+          "Dense",
+          "6 × (3 trọng số + 3 μ + 3 σ)",
+          "B × 54"
+        ],
+        [
+          "Reshape",
+          "6 thời hạn; K = 3 Gaussian",
+          "B × 6 × 9"
+        ],
+        [
+          "Biến đổi tham số",
+          "Softmax π; softplus σ + ε",
+          "Ba tensor B × 6 × 3"
+        ],
+        [
+          "Hàm mật độ hỗn hợp",
+          "Tổng πₖ Normal(μₖ, σₖ)",
+          "Mật độ / thời hạn"
+        ],
+        [
+          "Loss khi train",
+          "Âm log likelihood của nhãn hợp lệ",
+          "Một số vô hướng"
+        ]
+      ],
+      "note": "Phân phối Gaussian chỉ là lựa chọn cho ví dụ, không phải loại phân phối đã được đề cương chốt. Lưu lượng không âm có thể cần phân phối hoặc biến đổi phù hợp.",
+      "links": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          5
+        ]
+      ]
+    },
+    "16": {
+      "labels": [
+        "Backbone\nB × 32",
+        "Dense đầu phân vị\nB × 18",
+        "Reshape\nB × 6 × 3",
+        "Pinball loss\nτ = 0,1; 0,5; 0,9",
+        "Khoảng và trung vị\n6 thời hạn"
+      ],
+      "rows": [
+        [
+          "Biểu diễn backbone",
+          "D = 32",
+          "B × 32"
+        ],
+        [
+          "Dense trực tiếp",
+          "32 → 18",
+          "B × 18"
+        ],
+        [
+          "Reshape",
+          "6 thời hạn × 3 phân vị",
+          "B × 6 × 3"
+        ],
+        [
+          "Pinball loss",
+          "τ = 0,1; 0,5; 0,9; nhãn hợp lệ",
+          "Một số vô hướng"
+        ],
+        [
+          "Đầu ra suy luận",
+          "q₀,₁; q₀,₅; q₀,₉",
+          "Khoảng 80% danh nghĩa"
+        ]
+      ],
+      "note": "Cần kiểm tra quantile crossing và độ bao phủ thực nghiệm. Khoảng 80% danh nghĩa không mặc nhiên được hiệu chuẩn.",
+      "links": null
+    },
+    "17": {
+      "labels": [
+        "Dữ liệu train\nChia val riêng",
+        "5 mạng độc lập\n5 bộ trọng số",
+        "5 dự báo\n5 × B × 6",
+        "Trung bình\nB × 6",
+        "Độ phân tán\nB × 6"
+      ],
+      "rows": [
+        [
+          "Mạng thành viên",
+          "GRU 32 + Dense 6",
+          "Một dự báo B × 6"
+        ],
+        [
+          "Số thành viên",
+          "M = 5; khởi tạo seed khác nhau",
+          "5 bộ trọng số"
+        ],
+        [
+          "Huấn luyện",
+          "Mỗi mạng chọn checkpoint riêng",
+          "5 mạng đã fit"
+        ],
+        [
+          "Suy luận",
+          "Chạy từng thành viên",
+          "5 × B × 6"
+        ],
+        [
+          "Trung bình",
+          "Theo trục thành viên",
+          "B × 6"
+        ],
+        [
+          "Phương sai mẫu",
+          "Chia M − 1; cần M > 1",
+          "B × 6"
+        ]
+      ],
+      "note": "Độ phân tán các dự báo điểm không phải toàn bộ bất định quan trắc. Có thể dùng head phân phối để tách thêm thành phần bất định.",
+      "links": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ]
+      ]
+    },
+    "18": {
+      "labels": [
+        "Mạng đã huấn luyện\nCó dropout p = 0,1",
+        "20 lượt suy luận\nMask dropout khác nhau",
+        "20 dự báo\n20 × B × 6",
+        "Trung bình dự báo\nB × 6",
+        "Phương sai mẫu\nB × 6"
+      ],
+      "rows": [
+        [
+          "Backbone minh họa",
+          "GRU 32 → dropout → Dense 6",
+          "B × 6"
+        ],
+        [
+          "Dropout",
+          "p = 0,1 khi train",
+          "B × 32"
+        ],
+        [
+          "Suy luận MC",
+          "Chỉ bật dropout; T = 20",
+          "20 mask ngẫu nhiên"
+        ],
+        [
+          "Dự báo lặp",
+          "Cùng một đầu vào",
+          "20 × B × 6"
+        ],
+        [
+          "Tổng hợp",
+          "Mean và phương sai với T − 1",
+          "Mỗi tensor B × 6"
+        ]
+      ],
+      "note": "Khi suy luận chỉ bật các lớp dropout cần thiết; BatchNorm nếu có vẫn dùng thống kê đánh giá. Độ phân tán không mặc nhiên tạo khoảng dự báo đã hiệu chuẩn.",
+      "links": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ]
+      ]
+    },
+    "19": {
+      "labels": [
+        "Mô hình đã cố định\nfθ",
+        "Calibration riêng\n100 mẫu minh họa",
+        "Điểm sai số\n|y − ŷ|",
+        "Phân vị hữu hạn mẫu\nk = 91 cho α = 0,1",
+        "Dự báo mới\nŷ ± q hiệu chuẩn"
+      ],
+      "rows": [
+        [
+          "Mô hình điểm",
+          "Đã chọn bằng train và validation",
+          "fθ cố định"
+        ],
+        [
+          "Calibration",
+          "n = 100 nhãn hợp lệ / thời hạn",
+          "100 sai số / thời hạn"
+        ],
+        [
+          "Nonconformity score",
+          "|y − ŷ|",
+          "n giá trị không âm"
+        ],
+        [
+          "Chỉ số phân vị",
+          "ceil((n + 1)(1 − α)); α = 0,1",
+          "k = 91"
+        ],
+        [
+          "Ngưỡng hiệu chuẩn",
+          "Phần tử thứ 91 theo thứ tự tăng",
+          "q cho từng thời hạn"
+        ],
+        [
+          "Khoảng mới",
+          "[ŷ − q; ŷ + q]",
+          "B × 6 × 2"
+        ]
+      ],
+      "note": "Split conformal minh họa cho từng thời hạn, không bảo đảm đồng thời cả quỹ đạo. Bao phủ hữu hạn mẫu dựa trên điều kiện trao đổi; chuỗi lũ có thể vi phạm điều kiện này.",
+      "links": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          0,
+          4
+        ]
+      ]
+    },
+    "20": {
+      "labels": [
+        "Ba nguồn đầu vào\nChuỗi, radar, tĩnh",
+        "Mask bỏ nguồn\nTrong huấn luyện",
+        "Mặt nạ kết hợp\nCó thật × giữ nguồn",
+        "Encoder + gate\nD = 32",
+        "Dự báo và loss\nCập nhật trọng số"
+      ],
+      "rows": [
+        [
+          "Ba nguồn",
+          "M = 3 nguồn; mask có thật",
+          "B × 3 mask"
+        ],
+        [
+          "Drop nguồn train",
+          "p bỏ = 0,2; Bernoulli / mẫu / nguồn",
+          "Mask giữ B × 3"
+        ],
+        [
+          "Kết hợp mask",
+          "Mhiệu lực = Mcó thật × Mgiữ",
+          "B × 3"
+        ],
+        [
+          "Tránh tất cả bị bỏ",
+          "Giữ lại ít nhất 1 nguồn đang có",
+          "Mask hợp lệ"
+        ],
+        [
+          "Mã hóa và hợp nhất",
+          "Các embedding D = 32; gate",
+          "B × 32"
+        ],
+        [
+          "Head và loss",
+          "6 thời hạn; mask nhãn",
+          "B × 6 và loss"
+        ]
+      ],
+      "note": "Chỉ áp dụng source dropout nhân tạo khi huấn luyện. Nếu đầu vào vốn thiếu toàn bộ nguồn, đánh dấu không khả dụng thay vì cố tạo nguồn mới.",
+      "links": null
+    },
+    "21": {
+      "labels": [
+        "Đầu vào đầy đủ\nX",
+        "Đầu vào nhiễu hoặc thiếu\nX′",
+        "Cùng mạng fθ\nHai lượt chạy",
+        "Loss có nhãn\nLsup",
+        "Loss nhất quán\nLcons",
+        "Tổng loss\nLsup + 0,1 Lcons"
+      ],
+      "rows": [
+        [
+          "Nhánh tham chiếu",
+          "X có các nguồn đang khả dụng",
+          "Ŷ = fθ(X)"
+        ],
+        [
+          "Nhánh biến đổi",
+          "Bỏ nguồn hoặc thêm nhiễu",
+          "Ŷ′ = fθ(X′)"
+        ],
+        [
+          "Backbone",
+          "Chia sẻ cùng tham số θ",
+          "Mỗi dự báo B × 6"
+        ],
+        [
+          "Loss giám sát",
+          "Hai nhánh nếu có nhãn hợp lệ",
+          "Lsup"
+        ],
+        [
+          "Loss nhất quán",
+          "Mean squared difference trên cặp hợp lệ",
+          "Lcons"
+        ],
+        [
+          "Loss kết hợp",
+          "λcons = 0,1 minh họa",
+          "Một số vô hướng"
+        ]
+      ],
+      "note": "Ví dụ dùng hai nhánh chia sẻ tham số và cho gradient qua cả hai. Teacher EMA hoặc stop gradient là các biến thể khác; cần chỉ rõ nếu dùng.",
+      "links": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5
+        ]
+      ]
+    },
+    "22": {
+      "labels": [
+        "Dữ liệu miền nguồn\nTrain và val",
+        "Pretrain backbone\nθ nguồn",
+        "Đầu địa phương\nKhởi tạo lại",
+        "Dữ liệu Lạng Sơn\nTrain và val",
+        "Fine tune\nChọn checkpoint",
+        "Test địa phương\nSự kiện giữ riêng"
+      ],
+      "rows": [
+        [
+          "Mô hình nguồn",
+          "GRU 32 + head phù hợp",
+          "θ nguồn"
+        ],
+        [
+          "Chuyển trọng số",
+          "Giữ encoder nếu biến tương thích",
+          "Encoder khởi tạo tốt"
+        ],
+        [
+          "Head địa phương",
+          "Dense 32 → 6; khởi tạo mới",
+          "B × 6"
+        ],
+        [
+          "Warm up",
+          "Tạm đóng băng encoder nếu cần",
+          "Chỉ cập nhật head"
+        ],
+        [
+          "Fine tune",
+          "Mở encoder; LR minh họa 0,0001",
+          "θ địa phương"
+        ],
+        [
+          "Test",
+          "Các sự kiện chưa dùng chọn mô hình",
+          "Chỉ số dự báo"
+        ]
+      ],
+      "note": "Chuẩn hóa địa phương fit bằng train địa phương, và phải kiểm tra tương thích đơn vị, tần suất cùng định nghĩa biến. Đánh giá negative transfer với mô hình train từ đầu.",
+      "links": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          5
+        ]
+      ]
+    },
+    "23": {
+      "labels": [
+        "Dữ liệu quan trắc\nX",
+        "Đồ thị và metadata\nQuan hệ miền",
+        "Mạng dự báo\nQ̂ và Ĥ",
+        "Loss dữ liệu\nLdata",
+        "Phạt ràng buộc\nLphys",
+        "Loss chung\nLdata + λ Lphys"
+      ],
+      "rows": [
+        [
+          "Backbone",
+          "Encoder + đồ thị có hướng",
+          "Biểu diễn B × N × 32"
+        ],
+        [
+          "Head Q và H",
+          "6 thời hạn; 2 đại lượng",
+          "B × N × 6 × 2"
+        ],
+        [
+          "Loss dữ liệu",
+          "Sai số theo nhãn hợp lệ",
+          "Ldata"
+        ],
+        [
+          "Ví dụ ràng buộc Q",
+          "Mean ReLU(−Q̂), sau đổi về đơn vị gốc",
+          "Lnonneg"
+        ],
+        [
+          "Trọng số ràng buộc",
+          "λ = 0,1 chỉ để minh họa",
+          "Ldata + λ Lnonneg"
+        ],
+        [
+          "Đánh giá",
+          "Sai số và mức vi phạm ràng buộc",
+          "Hai nhóm chỉ số"
+        ]
+      ],
+      "note": "Mực nước có thể âm so với mốc, nên không áp đặt H ≥ 0 tùy tiện. Bảo toàn khối lượng cần đủ thông tin dòng vào, dòng ra và trữ lượng; ví dụ này chỉ phạt Q âm.",
+      "links": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5
+        ]
+      ]
+    },
+    "24": {
+      "labels": [
+        "Giá trị và mask\nX, M",
+        "Age và quality\nA, R",
+        "Điền thiếu an toàn\nKhông để NaN",
+        "Ghép metadata\nB × 24 × 24",
+        "GRU encoder\nB × 32",
+        "Embedding + khả dụng\nCho gate đa nguồn"
+      ],
+      "rows": [
+        [
+          "Dữ liệu X, M, A, R",
+          "Mỗi nhóm gồm 6 biến; L = 24",
+          "4 tensor B × 24 × 6"
+        ],
+        [
+          "Giá trị thay thế",
+          "where(M, X, 0) sau chuẩn hóa",
+          "B × 24 × 6"
+        ],
+        [
+          "Ghép theo đặc trưng",
+          "6 giá trị + 6 mask + 6 age + 6 quality",
+          "B × 24 × 24"
+        ],
+        [
+          "GRU minh họa",
+          "input size = 24; hidden = 32",
+          "B × 24 × 32"
+        ],
+        [
+          "Lấy trạng thái cuối",
+          "Embedding D = 32",
+          "B × 32"
+        ],
+        [
+          "Khả dụng nguồn",
+          "Có ít nhất một quan trắc dùng được",
+          "B × 1 Boolean"
+        ]
+      ],
+      "note": "Đây là ví dụ encoder nhận metadata, không phải kiến trúc chuẩn duy nhất. Dùng where để xử lý NaN; phép nhân 0 × NaN vẫn có thể tạo NaN.",
+      "links": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          5
+        ]
+      ]
+    },
+    "25": {
+      "labels": [
+        "Dự báo và nhãn\nŶ, Y",
+        "Mask nhãn\nMvalid",
+        "Chọn cặp hợp lệ\nTránh phép toán với NaN",
+        "Huber theo phần tử\nδ = 1 chuẩn hóa",
+        "Mean nếu còn nhãn\nLoss vô hướng",
+        "Backward hoặc bỏ batch\nNếu số nhãn bằng 0"
+      ],
+      "rows": [
+        [
+          "Đầu vào",
+          "Ŷ, Y, M: B × 6",
+          "Các cặp ứng viên"
+        ],
+        [
+          "Chọn nhãn hợp lệ",
+          "Boolean indexing trước tính residual",
+          "nvalid cặp"
+        ],
+        [
+          "Huber loss",
+          "δ = 1 trên thang chuẩn hóa",
+          "nvalid giá trị"
+        ],
+        [
+          "Miền bậc hai",
+          "0,5 r² nếu |r| ≤ δ",
+          "Mỗi phần tử"
+        ],
+        [
+          "Miền tuyến tính",
+          "δ(|r| − 0,5δ) nếu |r| > δ",
+          "Mỗi phần tử"
+        ],
+        [
+          "Tổng hợp",
+          "Sum / nvalid; chỉ khi nvalid > 0",
+          "Loss vô hướng"
+        ],
+        [
+          "Nếu nvalid = 0",
+          "Bỏ bước optimizer của batch",
+          "Không chia cho 0"
+        ]
+      ],
+      "note": "Mask nhãn khác mask đầu vào. Robust loss giảm ảnh hưởng residual lớn nhưng không tự phân biệt nhiễu cảm biến với đỉnh lũ thật.",
+      "links": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          5
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="790" height="548" viewBox="0 0 790 548">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#334155"/></marker></defs>
+<rect width="100%" height="100%" fill="white"/>
+<polyline points="395.0,64 395.0,78" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<polyline points="395.0,122 395.0,136" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<polyline points="395.0,180 395.0,194" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<polyline points="395.0,238 395.0,252" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<polyline points="395.0,296 395.0,310" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<polyline points="395.0,354 395.0,368" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<polyline points="395.0,412 395.0,426" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<polyline points="395.0,470 395.0,484" fill="none" stroke="#334155" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="150" y="20" width="490" height="44" rx="22" fill="#dbeafe" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="48.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">BẮT ĐẦU</text>
+<rect x="150" y="78" width="490" height="44" rx="3" fill="#f1f5f9" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="96.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">Chốt train validation calibration và test địa</text>
+<text x="395.0" y="116.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">phương</text>
+<rect x="150" y="136" width="490" height="44" rx="3" fill="#f1f5f9" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="164.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">Pretrain trên dữ liệu nguồn hợp lệ</text>
+<rect x="150" y="194" width="490" height="44" rx="3" fill="#f1f5f9" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="212.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">Chuyển trọng số và chọn phần đóng băng hoặc</text>
+<text x="395.0" y="232.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">tinh chỉnh</text>
+<rect x="150" y="252" width="490" height="44" rx="3" fill="#f1f5f9" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="270.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">Fine tune bằng train và chọn bằng validation</text>
+<text x="395.0" y="290.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">địa phương</text>
+<rect x="150" y="310" width="490" height="44" rx="3" fill="#f1f5f9" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="338.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">Hiệu chuẩn bằng tập calibration địa phương</text>
+<rect x="150" y="368" width="490" height="44" rx="3" fill="#f1f5f9" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="386.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">Đánh giá test khóa và so sánh train from</text>
+<text x="395.0" y="406.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">scratch</text>
+<polygon points="168,426 640,426 622,470 150,470" fill="#e3f2e8" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="454.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">Xuất mô hình địa phương và kết quả kiểm chứng</text>
+<rect x="150" y="484" width="490" height="44" rx="22" fill="#dbeafe" stroke="#475569" stroke-width="1.5"/>
+<text x="395.0" y="512.0" text-anchor="middle" font-family="DejaVu Sans" font-size="17" fill="#111827">KẾT THÚC</text>
+</svg>

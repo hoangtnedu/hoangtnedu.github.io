@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500">
+<rect width="100%" height="100%" fill="white"/>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9Z" fill="#475569"/></marker></defs>
+<text x="30" y="48" font-family="DejaVu Sans" font-size="26" font-weight="bold">19A  Conformal prediction</text>
+<polyline points="365,156.0 431,156.0" fill="none" stroke="#475569" stroke-width="2.3" marker-end="url(#arrow)"/>
+<polyline points="731,156.0 797,156.0" fill="none" stroke="#475569" stroke-width="2.3" marker-end="url(#arrow)"/>
+<polyline points="947.0,212 947.0,275" fill="none" stroke="#475569" stroke-width="2.3" marker-end="url(#arrow)"/>
+<polyline points="797,331.0 731,331.0" fill="none" stroke="#475569" stroke-width="2.3" marker-end="url(#arrow)"/>
+<polyline points="365,156.0 398.0,156.0 398.0,331.0 431,331.0" fill="none" stroke="#475569" stroke-width="2.3" marker-end="url(#arrow)"/>
+<path d="M65 100 l12 -12 h300 v112 l-12 12 M365 100 l12 -12" fill="#FCE8CB" stroke="#526174" stroke-width="1.6"/>
+<rect x="65" y="100" width="300" height="112" rx="4" fill="#FCE8CB" stroke="#526174" stroke-width="1.8"/>
+<text x="215.0" y="151.0" text-anchor="middle" font-family="DejaVu Sans" font-size="21">Mô hình đã cố định</text>
+<text x="215.0" y="177.0" text-anchor="middle" font-family="DejaVu Sans" font-size="21">fθ</text>
+<path d="M431 100 l12 -12 h300 v112 l-12 12 M731 100 l12 -12" fill="#DCEBFA" stroke="#526174" stroke-width="1.6"/>
+<rect x="431" y="100" width="300" height="112" rx="4" fill="#DCEBFA" stroke="#526174" stroke-width="1.8"/>
+<text x="581.0" y="151.0" text-anchor="middle" font-family="DejaVu Sans" font-size="21">Calibration riêng</text>
+<text x="581.0" y="177.0" text-anchor="middle" font-family="DejaVu Sans" font-size="21">100 mẫu minh họa</text>
+<path d="M797 100 l12 -12 h300 v112 l-12 12 M1097 100 l12 -12" fill="#E1EDD9" stroke="#526174" stroke-width="1.6"/>
+<rect x="797" y="100" width="300" height="112" rx="4" fill="#E1EDD9" stroke="#526174" stroke-width="1.8"/>
+<text x="947.0" y="151.0" text-anchor="middle" font-family="DejaVu Sans" font-size="21">Điểm sai số</text>
+<text x="947.0" y="177.0" text-anchor="middle" font-family="DejaVu Sans" font-size="21">|y − ŷ|</text>
+<path d="M797 275 l12 -12 h300 v112 l-12 12 M1097 275 l12 -12" fill="#E7E0F2" stroke="#526174" stroke-width="1.6"/>
+<rect x="797" y="275" width="300" height="112" rx="4" fill="#E7E0F2" stroke="#526174" stroke-width="1.8"/>
+<text x="947.0" y="326.0" text-anchor="middle" font-family="DejaVu Sans" font-size="21">Phân vị hữu hạn mẫu</text>
+<text x="947.0" y="352.0" text-anchor="middle" font-family="DejaVu Sans" font-size="21">k = 91 cho α = 0,1</text>
+<path d="M431 275 l12 -12 h300 v112 l-12 12 M731 275 l12 -12" fill="#DDEEF0" stroke="#526174" stroke-width="1.6"/>
+<rect x="431" y="275" width="300" height="112" rx="4" fill="#DDEEF0" stroke="#526174" stroke-width="1.8"/>
+<text x="581.0" y="326.0" text-anchor="middle" font-family="DejaVu Sans" font-size="21">Dự báo mới</text>
+<text x="581.0" y="352.0" text-anchor="middle" font-family="DejaVu Sans" font-size="21">ŷ ± q hiệu chuẩn</text>
+<text x="30" y="478" font-family="DejaVu Sans" font-size="18" fill="#526174">Cấu hình minh họa cho học tập và triển khai thử nghiệm</text></svg>
