@@ -1,0 +1,7 @@
+package io.github.hoangtnedu.java;
+@org.springframework.stereotype.Controller @org.springframework.web.bind.annotation.RequestMapping("/enrollments") public class EnrollmentController {
+ private final StudentRepository students;private final CourseRepository courses;private final EnrollmentRepository records;private final EnrollmentService service;
+ public EnrollmentController(StudentRepository s,CourseRepository c,EnrollmentRepository r,EnrollmentService e){students=s;courses=c;records=r;service=e;}
+ @org.springframework.web.bind.annotation.GetMapping public String form(org.springframework.ui.Model m){m.addAttribute("students",students.findAll());m.addAttribute("courses",courses.findAll());m.addAttribute("records",records.findAll());return "enrollments";}
+ @org.springframework.web.bind.annotation.PostMapping public String save(@org.springframework.web.bind.annotation.RequestParam Long studentId,@org.springframework.web.bind.annotation.RequestParam Long courseId,org.springframework.web.servlet.mvc.support.RedirectAttributes a){try{service.enroll(studentId,courseId);a.addFlashAttribute("message","Da dang ky");}catch(RuntimeException ex){a.addFlashAttribute("message","Khong the dang ky: du lieu sai hoac trung dang ky");}return "redirect:/enrollments";}
+}

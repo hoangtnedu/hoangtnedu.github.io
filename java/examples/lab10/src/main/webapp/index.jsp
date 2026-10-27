@@ -1,0 +1,1 @@
+<%@ page contentType="text/html; charset=UTF-8" %><!doctype html><html lang="vi"><head><meta charset="utf-8"><title>HoangTN Java Web</title></head><body><h1>HoangTN - Java Web</h1><a href="auth">Dang nhap</a> <a href="students">Sinh vien</a></body></html>

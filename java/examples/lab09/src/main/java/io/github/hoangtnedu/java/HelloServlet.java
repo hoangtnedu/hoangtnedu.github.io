@@ -1,0 +1,2 @@
+package io.github.hoangtnedu.java;import jakarta.servlet.annotation.WebServlet;import jakarta.servlet.http.*;import java.io.*;
+@WebServlet("/hello") public class HelloServlet extends HttpServlet {protected void doGet(HttpServletRequest q,HttpServletResponse r)throws IOException{r.setContentType("text/plain;charset=UTF-8");r.getWriter().print("Hello, Servlet - HoangTN");}}

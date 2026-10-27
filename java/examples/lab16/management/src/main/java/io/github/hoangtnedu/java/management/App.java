@@ -1,0 +1,2 @@
+package io.github.hoangtnedu.java.management;
+@org.springframework.boot.autoconfigure.SpringBootApplication @org.springframework.boot.autoconfigure.domain.EntityScan("io.github.hoangtnedu.java.orders") public class App {public static void main(String[] args)throws Exception{io.github.hoangtnedu.java.orders.Database.init();org.springframework.boot.SpringApplication.run(App.class,args);}}

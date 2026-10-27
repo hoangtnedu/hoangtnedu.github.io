@@ -1,0 +1,1 @@
+package io.github.hoangtnedu.java;public interface EnrollmentRepository extends org.springframework.data.jpa.repository.JpaRepository<Enrollment,Long>{boolean existsByStudentIdAndCourseId(Long studentId,Long courseId);java.util.List<Enrollment> findByStudentId(Long studentId);}

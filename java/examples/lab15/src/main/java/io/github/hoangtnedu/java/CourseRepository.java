@@ -1,0 +1,1 @@
+package io.github.hoangtnedu.java;public interface CourseRepository extends org.springframework.data.jpa.repository.JpaRepository<Course,Long>{}

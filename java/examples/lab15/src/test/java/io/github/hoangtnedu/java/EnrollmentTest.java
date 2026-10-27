@@ -1,0 +1,6 @@
+package io.github.hoangtnedu.java;
+import org.junit.jupiter.api.Test;import org.springframework.beans.factory.annotation.Autowired;import org.springframework.boot.test.context.SpringBootTest;import static org.junit.jupiter.api.Assertions.*;
+@SpringBootTest class EnrollmentTest {
+ @Autowired StudentRepository students;@Autowired CourseRepository courses;@Autowired EnrollmentRepository records;@Autowired EnrollmentService service;
+ @Test void enrollmentValidatesForeignKeysAndDuplicates(){Student s=new Student();s.setStudentCode("EN"+System.nanoTime());s.setFullName("Enrollment Demo");s.setEmail("en@example.com");s.setClassName("JAVA01");students.save(s);Course c=new Course();c.setCourseCode("JAVA"+System.nanoTime());c.setCourseName("Java");c.setCredits(3);courses.save(c);service.enroll(s.getId(),c.getId());assertEquals(1,records.findByStudentId(s.getId()).size());assertThrows(IllegalArgumentException.class,()->service.enroll(s.getId(),c.getId()));assertThrows(IllegalArgumentException.class,()->service.enroll(s.getId(),-1L));assertEquals(1,records.findByStudentId(s.getId()).size());}
+}

@@ -1,0 +1,19 @@
+package io.github.hoangtnedu.java.orders;
+import java.sql.*;import java.util.*;import org.mindrot.jbcrypt.BCrypt;
+public class Database {
+ public static String url(){return System.getenv().getOrDefault("DB_URL","jdbc:h2:./data/integrated;MODE=MySQL");}
+ public static Connection open()throws SQLException{return DriverManager.getConnection(url(),System.getenv().getOrDefault("DB_USER","sa"),System.getenv().getOrDefault("DB_PASSWORD",""));}
+ public static Map<String,Object> jpa(){return Map.of("jakarta.persistence.jdbc.url",url(),"jakarta.persistence.jdbc.user",System.getenv().getOrDefault("DB_USER","sa"),"jakarta.persistence.jdbc.password",System.getenv().getOrDefault("DB_PASSWORD",""));}
+ public static void init()throws SQLException{try(var c=open();var s=c.createStatement()){
+ s.execute("CREATE TABLE IF NOT EXISTS users(id BIGINT AUTO_INCREMENT PRIMARY KEY,username VARCHAR(50) UNIQUE NOT NULL,password_hash VARCHAR(100) NOT NULL,full_name VARCHAR(100),role VARCHAR(20) NOT NULL)");
+ s.execute("CREATE TABLE IF NOT EXISTS products(id BIGINT AUTO_INCREMENT PRIMARY KEY,code VARCHAR(30) UNIQUE,name VARCHAR(150),price DECIMAL(15,2),stock INT NOT NULL,version INT NOT NULL DEFAULT 0)");
+ s.execute("CREATE TABLE IF NOT EXISTS orders(id BIGINT AUTO_INCREMENT PRIMARY KEY,customer_id BIGINT NOT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,total_amount DECIMAL(15,2),status VARCHAR(20) NOT NULL,note VARCHAR(500),version INT NOT NULL DEFAULT 0,FOREIGN KEY(customer_id) REFERENCES users(id))");
+ s.execute("CREATE TABLE IF NOT EXISTS order_items(id BIGINT AUTO_INCREMENT PRIMARY KEY,order_id BIGINT NOT NULL,product_id BIGINT NOT NULL,quantity INT NOT NULL,unit_price DECIMAL(15,2),subtotal DECIMAL(15,2),FOREIGN KEY(order_id) REFERENCES orders(id),FOREIGN KEY(product_id) REFERENCES products(id))");
+ s.execute("CREATE TABLE IF NOT EXISTS order_status_history(id BIGINT AUTO_INCREMENT PRIMARY KEY,order_id BIGINT NOT NULL,old_status VARCHAR(20),new_status VARCHAR(20) NOT NULL,changed_by BIGINT,changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,platform VARCHAR(30),note VARCHAR(500),FOREIGN KEY(order_id) REFERENCES orders(id),FOREIGN KEY(changed_by) REFERENCES users(id))");
+ for(String role:List.of("CUSTOMER","WAREHOUSE","MANAGER","ADMIN")){String username=role.toLowerCase();try(var p=c.prepareStatement("SELECT id FROM users WHERE username=?")){p.setString(1,username);try(var r=p.executeQuery()){if(r.next())continue;}}try(var p=c.prepareStatement("INSERT INTO users(username,password_hash,full_name,role) VALUES(?,?,?,?)")){p.setString(1,username);p.setString(2,BCrypt.hashpw(System.getenv().getOrDefault("LAB_DEMO_PASSWORD","change-me-local"),BCrypt.gensalt()));p.setString(3,username);p.setString(4,role);p.executeUpdate();}}
+ }}
+ public record User(long id,String username,String hash,String role){}
+ public static User user(String username)throws SQLException{try(var c=open();var p=c.prepareStatement("SELECT id,username,password_hash,role FROM users WHERE username=?")){p.setString(1,username);try(var r=p.executeQuery()){return r.next()?new User(r.getLong(1),r.getString(2),r.getString(3),r.getString(4)):null;}}}
+ public static User authenticate(String u,String p)throws SQLException{User user=user(u);return user!=null&&BCrypt.checkpw(p,user.hash())?user:null;}
+ public static void history(Connection c,long id,String from,String to,long by,String platform)throws SQLException{try(var p=c.prepareStatement("INSERT INTO order_status_history(order_id,old_status,new_status,changed_by,platform) VALUES(?,?,?,?,?)")){p.setLong(1,id);p.setString(2,from);p.setString(3,to);p.setLong(4,by);p.setString(5,platform);p.executeUpdate();}}
+}

@@ -1,0 +1,6 @@
+package io.github.hoangtnedu.java;
+import javax.swing.*;import org.junit.jupiter.api.Test;import static org.junit.jupiter.api.Assertions.*;
+class SwingTest {
+ @Test void exerciseResults(){assertEquals("-2.0",Logic.solve(2,4));assertEquals("Vo so nghiem",Logic.solve(0,0));assertEquals("Vo nghiem",Logic.solve(0,1));assertEquals("Vuong",Logic.triangle(3,4,5));assertEquals("0 1 1 2 3 5 8",Logic.fibonacci(7));assertThrows(IllegalArgumentException.class,()->Logic.fibonacci(0));}
+ @Test void buttonEventUpdatesUiOnEdt()throws Exception{SwingUtilities.invokeAndWait(()->{JFrame f=App.window();try{JTabbedPane t=(JTabbedPane)f.getContentPane().getComponent(0);assertEquals(5,t.getTabCount());JPanel p=(JPanel)t.getComponentAt(0);JPanel top=(JPanel)p.getComponent(0);JTextField in=(JTextField)top.getComponent(1);in.setText("An");((JButton)top.getComponent(2)).doClick();JTextArea out=(JTextArea)((JScrollPane)p.getComponent(1)).getViewport().getView();assertEquals("Xin chao, An",out.getText());}finally{f.dispose();}});}
+}

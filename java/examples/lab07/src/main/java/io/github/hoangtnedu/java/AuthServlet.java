@@ -1,0 +1,5 @@
+package io.github.hoangtnedu.java;import jakarta.servlet.*;import jakarta.servlet.annotation.WebServlet;import jakarta.servlet.http.*;import java.io.*;
+@WebServlet("/auth") public class AuthServlet extends HttpServlet {
+ protected void doGet(HttpServletRequest q,HttpServletResponse r)throws IOException,ServletException{q.getRequestDispatcher("/WEB-INF/login.jsp").forward(q,r);}
+ protected void doPost(HttpServletRequest q,HttpServletResponse r)throws IOException{if("logout".equals(q.getParameter("action"))){q.getSession().invalidate();r.sendRedirect(q.getContextPath()+"/auth");return;}String role=AppState.authenticate(q.getParameter("username"),q.getParameter("password")==null?"":q.getParameter("password"));if(role==null){r.sendError(401);return;}q.changeSessionId();q.getSession().setAttribute("role",role);r.sendRedirect(q.getContextPath()+"/students");}
+}

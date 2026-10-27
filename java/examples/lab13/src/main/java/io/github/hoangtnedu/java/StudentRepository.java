@@ -1,0 +1,1 @@
+package io.github.hoangtnedu.java;public interface StudentRepository extends org.springframework.data.jpa.repository.JpaRepository<Student,Long> {java.util.List<Student> findByFullNameContainingIgnoreCase(String q);boolean existsByStudentCodeAndIdNot(String code,Long id);}

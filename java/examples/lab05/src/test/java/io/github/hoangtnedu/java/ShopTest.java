@@ -1,0 +1,6 @@
+package io.github.hoangtnedu.java;
+import org.junit.jupiter.api.*;import static org.junit.jupiter.api.Assertions.*;import java.math.BigDecimal;import java.util.*;import javax.swing.*;
+class ShopTest {
+ @Test void crudInvoiceAndRollback()throws Exception{ShopDao d=new ShopDao();d.init();ShopService s=new ShopService(d);String key=UUID.randomUUID().toString();long p=s.product(key,new BigDecimal("25.50"),10),c=s.customer("An","0912345678","Demo");assertFalse(s.products(key).isEmpty());s.editProduct(p,key,new BigDecimal("25.50"),10);long invoice=s.invoice(c,Map.of(p,2));assertTrue(invoice>0);assertEquals(8,((Number)d.rows("SELECT so_luong FROM san_pham WHERE ma_sp=?",p).get(0)[0]).intValue());assertThrows(java.sql.SQLException.class,()->s.invoice(c,Map.of(p,99)));assertEquals(8,((Number)d.rows("SELECT so_luong FROM san_pham WHERE ma_sp=?",p).get(0)[0]).intValue());assertEquals(1,((Number)d.rows("SELECT COUNT(*) FROM hoa_don WHERE ma_kh=?",c).get(0)[0]).intValue());assertFalse(s.revenue().isEmpty());assertThrows(IllegalArgumentException.class,()->s.customer("An","abc",""));}
+ @Test void fourTabsBuildOnEdt()throws Exception{SwingUtilities.invokeAndWait(()->{JFrame f=App.window(new ShopService(new ShopDao()));try{assertEquals(4,((JTabbedPane)f.getContentPane().getComponent(0)).getTabCount());}finally{f.dispose();}});}
+}

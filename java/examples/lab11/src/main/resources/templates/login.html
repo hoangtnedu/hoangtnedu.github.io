@@ -1,0 +1,1 @@
+<!doctype html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="utf-8"><title>Login</title></head><body><h1>Dang nhap</h1><p th:if="${param.error}">Sai tai khoan</p><form th:action="@{/login}" method="post"><input name="username"><input name="password" type="password"><button>Dang nhap</button></form></body></html>

@@ -1,0 +1,7 @@
+package io.github.hoangtnedu.java;
+import org.springframework.context.annotation.*;import org.springframework.security.config.annotation.web.builders.HttpSecurity;import org.springframework.security.web.SecurityFilterChain;import org.springframework.security.core.userdetails.*;import org.springframework.security.provisioning.InMemoryUserDetailsManager;import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+@Configuration public class SecurityConfig {
+ @Bean BCryptPasswordEncoder encoder(){return new BCryptPasswordEncoder();}
+ @Bean UserDetailsService users(BCryptPasswordEncoder e){String password=System.getenv().getOrDefault("LAB_DEMO_PASSWORD","change-me-local");return new InMemoryUserDetailsManager(User.withUsername("admin").password(e.encode(password)).roles("ADMIN").build(),User.withUsername("user").password(e.encode(password)).roles("USER").build());}
+ @Bean SecurityFilterChain chain(HttpSecurity http)throws Exception{return http.authorizeHttpRequests(a->a.requestMatchers("/","/about","/login","/error","/css/**").permitAll().requestMatchers("/students/create","/students/save","/students/edit/**","/students/delete/**","/courses/**","/enrollments/**").hasRole("ADMIN").anyRequest().authenticated()).formLogin(f->f.loginPage("/login").defaultSuccessUrl("/students",true).permitAll()).logout(l->l.logoutSuccessUrl("/")).build();}
+}

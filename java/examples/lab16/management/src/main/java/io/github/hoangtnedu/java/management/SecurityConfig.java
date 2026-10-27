@@ -1,0 +1,6 @@
+package io.github.hoangtnedu.java.management;import io.github.hoangtnedu.java.orders.*;
+@org.springframework.context.annotation.Configuration public class SecurityConfig {
+ @org.springframework.context.annotation.Bean org.springframework.security.core.userdetails.UserDetailsService users(){return username->{try{Database.User u=Database.user(username);if(u==null)throw new org.springframework.security.core.userdetails.UsernameNotFoundException(username);return org.springframework.security.core.userdetails.User.withUsername(u.username()).password(u.hash()).roles(u.role()).build();}catch(java.sql.SQLException e){throw new IllegalStateException(e);}};}
+ @org.springframework.context.annotation.Bean org.springframework.security.crypto.password.PasswordEncoder encoder(){return new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();}
+ @org.springframework.context.annotation.Bean org.springframework.security.web.SecurityFilterChain security(org.springframework.security.config.annotation.web.builders.HttpSecurity h)throws Exception{return h.authorizeHttpRequests(a->a.anyRequest().hasAnyRole("MANAGER","ADMIN")).formLogin(org.springframework.security.config.Customizer.withDefaults()).build();}
+}

@@ -1,0 +1,7 @@
+package io.github.hoangtnedu.java;import jakarta.servlet.*;import jakarta.servlet.annotation.WebFilter;import jakarta.servlet.http.*;import java.io.*;import java.util.*;
+@WebFilter("/*") public class AccessFilter implements Filter {
+ public void doFilter(ServletRequest request,ServletResponse response,FilterChain chain)throws IOException,ServletException{HttpServletRequest q=(HttpServletRequest)request;HttpServletResponse r=(HttpServletResponse)response;q.setCharacterEncoding("UTF-8");String path=q.getServletPath();HttpSession session=q.getSession();if(session.getAttribute("csrf")==null)session.setAttribute("csrf",UUID.randomUUID().toString());String role=(String)session.getAttribute("role");boolean privateUrl=path.startsWith("/students")||path.startsWith("/admin")||path.startsWith("/staff")||path.startsWith("/user");
+ if(privateUrl&&role==null){r.sendRedirect(q.getContextPath()+"/auth");return;}
+ if(false&&((path.startsWith("/admin")&&!"ADMIN".equals(role))||(path.startsWith("/staff")&&!List.of("ADMIN","STAFF").contains(role==null?"":role))||("POST".equals(q.getMethod())&&path.equals("/students")&&"USER".equals(role)))){r.sendError(403);return;}
+ if("POST".equals(q.getMethod())&&!path.endsWith(".xhtml")&&!Objects.equals(session.getAttribute("csrf"),q.getParameter("csrf"))){r.sendError(403);return;}chain.doFilter(q,r);}
+}
