@@ -1,0 +1,626 @@
+[
+  {
+    "number": 1,
+    "title": "Làm quen Visual Studio và lập trình Console",
+    "chapter": 1,
+    "sections": [
+      {
+        "title": "1. Mục tiêu cần đạt được",
+        "text": "     Tạo, biên dịch, chạy và gỡ lỗi một dự án C# Console trong Visual Studio.\n     Sử dụng biến, kiểu dữ liệu, toán tử, cấu trúc rẽ nhánh và cấu trúc lặp.\n     Kiểm tra dữ liệu nhập và xử lý ngoại lệ cơ bản bằng try-catch.\n     Hình thành quy tắc đặt tên, chú thích và tổ chức mã nguồn."
+      },
+      {
+        "title": "2. Công cụ và dữ liệu chuẩn bị",
+        "text": "     Visual Studio 2022 với workload .NET desktop development.\n     .NET Framework 4.8 hoặc .NET 8 cho ứng dụng Console.\n     Công cụ vẽ lưu đồ: draw.io/diagrams.net khi cần."
+      },
+      {
+        "title": "3. Liên kết trong chuỗi bài lab",
+        "text": "Ngữ cảnh xuyên suốt: Lab 1 tạo nền tảng cú pháp C#. Các bài toán về sinh viên và điểm học tập sẽ được tái sử\n    dụng khi xây dựng lớp ở Lab 2."
+      },
+      {
+        "title": "4. Chuẩn bị trước khi thực hành",
+        "text": "     Cài Visual Studio và xác nhận tạo được Console App.\n     Tạo Solution tên DotNetLabs, trong đó tạo project Lab01_Console.\n     Bật hiển thị số dòng và thử đặt breakpoint trong Visual Studio."
+      },
+      {
+        "title": "5. Bài tập có hướng dẫn và code mẫu",
+        "text": "1. Tạo ứng dụng Console và nhập thông tin cá nhân\nYêu cầu: Tạo dự án Lab01_Console. Nhập họ tên, năm sinh; tính tuổi gần đúng và hiển thị thông tin theo\nđịnh dạng rõ ràng.\nGợi ý triển khai: Dùng Console.ReadLine(), int.TryParse() và chuỗi nội suy.\nCode mẫu\n     using System;\n\n     class Program\n     {\n       static void Main()\n       {\n          Console.OutputEncoding = System.Text.Encoding.UTF8;\n          Console.Write(\"Họ và tên: \");\n          string hoTen = Console.ReadLine();\n          Console.Write(\"Năm sinh: \");\n          int namSinh;\n          if (!int.TryParse(Console.ReadLine(), out namSinh))\n\n          {\n              Console.WriteLine(\"Năm sinh không hợp lệ.\");\n              return;\n          }\n          int tuoi = DateTime.Now.Year - namSinh;\n          Console.WriteLine(\"Xin chào {0}, tuổi gần đúng: {1}\", hoTen, tuoi);\n      }\n  }\n\n2. Tính toán hình trụ\nYêu cầu: Nhập bán kính và chiều cao; tính diện tích xung quanh và thể tích. Không chấp nhận số âm hoặc\nbằng 0.\nGợi ý triển khai: Sử dụng Math.PI và kiểu double.\nCode mẫu\n  double r, h;\n  Console.Write(\"Bán kính r = \");\n  if (!double.TryParse(Console.ReadLine(), out r) || r <= 0) return;\n  Console.Write(\"Chiều cao h = \");\n  if (!double.TryParse(Console.ReadLine(), out h) || h <= 0) return;\n\n  double dienTichXQ = 2 * Math.PI * r * h;\n  double theTich = Math.PI * r * r * h;\n  Console.WriteLine(\"Sxq = {0:N2}; V = {1:N2}\", dienTichXQ, theTich);\n\n3. Xếp loại kết quả học tập\nYêu cầu: Nhập điểm từ 0 đến 10 và xếp loại: Xuất sắc, Giỏi, Khá, Trung bình, Yếu.\nGợi ý triển khai: Kiểm tra miền giá trị trước khi dùng if-else.\nCode mẫu\n  double diem;\n  if (!double.TryParse(Console.ReadLine(), out diem) || diem < 0 || diem > 10)\n  {\n     Console.WriteLine(\"Điểm phải thuộc [0, 10].\");\n  }\n  else if (diem >= 9) Console.WriteLine(\"Xuất sắc\");\n  else if (diem >= 8) Console.WriteLine(\"Giỏi\");\n  else if (diem >= 6.5) Console.WriteLine(\"Khá\");\n  else if (diem >= 5) Console.WriteLine(\"Trung bình\");\n  else Console.WriteLine(\"Yếu\");\n\n4. Menu xử lý bằng switch và vòng lặp\nYêu cầu: Tạo menu lặp cho phép tính tổng 1..n, in bảng cửu chương hoặc thoát chương trình.\nGợi ý triển khai: Dùng do-while và switch.\nCode mẫu\n  int chon;\n  do\n  {\n    Console.WriteLine(\"1. Tổng 1..n\");\n    Console.WriteLine(\"2. Bảng cửu chương\");\n    Console.WriteLine(\"0. Thoát\");\n    int.TryParse(Console.ReadLine(), out chon);\n    switch (chon)\n    {\n       case 1:\n         Console.Write(\"n = \");\n         int n = int.Parse(Console.ReadLine());\n         int tong = 0;\n         for (int i = 1; i <= n; i++) tong += i;\n         Console.WriteLine(\"Tổng = \" + tong);\n         break;\n       case 2:\n\n           for (int i = 1; i <= 10; i++)\n             Console.WriteLine(\"7 x {0} = {1}\", i, 7 * i);\n           break;\n      }\n    } while (chon != 0);\n\n5. Xử lý ngoại lệ phép chia\nYêu cầu: Nhập hai số nguyên, thực hiện phép chia và xử lý lỗi định dạng, chia cho 0.\nGợi ý triển khai: Bắt ngoại lệ cụ thể trước ngoại lệ tổng quát.\nCode mẫu\n    try\n    {\n       Console.Write(\"a = \");\n       int a = int.Parse(Console.ReadLine());\n       Console.Write(\"b = \");\n       int b = int.Parse(Console.ReadLine());\n       Console.WriteLine(\"a / b = \" + (a / b));\n    }\n    catch (FormatException)\n    {\n       Console.WriteLine(\"Dữ liệu phải là số nguyên.\");\n    }\n    catch (DivideByZeroException)\n    {\n       Console.WriteLine(\"Không thể chia cho 0.\");\n    }\n    finally\n    {\n       Console.WriteLine(\"Kết thúc phép tính.\");\n    }"
+      },
+      {
+        "title": "6. Bài tập tự thực hiện - không có code gợi ý",
+        "text": "6. Giải phương trình bậc hai\nYêu cầu: Nhập a, b, c; xét đầy đủ các trường hợp và hiển thị nghiệm với 2 chữ số thập phân.\n7. Thống kê dãy số\nYêu cầu: Nhập n số nguyên; tính tổng, trung bình, số lớn nhất, số nhỏ nhất và số lượng số chẵn.\n8. Kiểm tra số nguyên tố\nYêu cầu: Nhập n và in các số nguyên tố không vượt quá n; tối ưu kiểm tra đến căn bậc hai.\n9. Đọc số từ 0 đến 99\nYêu cầu: Sử dụng switch để chuyển số nguyên từ 0 đến 99 thành cách đọc tiếng Việt.\n10. Vẽ hình bằng ký tự\nYêu cầu: Tạo menu vẽ tam giác vuông đặc, tam giác vuông rỗng và hình vuông rỗng bằng dấu *."
+      },
+      {
+        "title": "7. Sản phẩm nộp",
+        "text": "     Thư mục mã nguồn Lab1 có thể build và chạy.\n     Ảnh chụp kết quả từng bài tập hoặc tệp báo cáo ngắn.\n     Tệp README.txt mô tả cách chạy, dữ liệu thử và phần đã hoàn thành."
+      },
+      {
+        "title": "8. Đánh giá",
+        "text": "STT                                   Nội dung đánh giá                                  Điểm\n     1    Bài tập 1-5 (có hướng dẫn)                                                         5,0\n     2    Bài tập 6-10 (tự thực hiện)                                                        4,0\n     3    Mã nguồn, giao diện, đặt tên và xử lý lỗi                                          0,5\n     4    Báo cáo kết quả và nộp đúng quy định                                               0,5"
+      }
+    ]
+  },
+  {
+    "number": 2,
+    "title": "Lớp, đối tượng, constructor và đóng gói",
+    "chapter": 2,
+    "sections": [
+      {
+        "title": "1. Mục tiêu cần đạt được",
+        "text": "       Khai báo lớp, trường dữ liệu, thuộc tính và phương thức trong C#.\n       Khởi tạo đối tượng bằng constructor mặc định và constructor có tham số.\n       Áp dụng đóng gói và kiểm tra dữ liệu tại thuộc tính.\n       Quản lý danh sách đối tượng bằng List<T>."
+      },
+      {
+        "title": "2. Công cụ và dữ liệu chuẩn bị",
+        "text": "       Visual Studio 2022.\n       Dự án Console Lab02_OOPBasics.\n       Kiến thức Lab 1 về nhập dữ liệu và xử lý ngoại lệ."
+      },
+      {
+        "title": "3. Liên kết trong chuỗi bài lab",
+        "text": "Ngữ cảnh xuyên suốt: Xây dựng mô hình đối tượng SinhVien. Lớp này sẽ tiếp tục được mở rộng bằng kế thừa\n    ở Lab 3 và đưa lên giao diện WinForms từ Lab 4."
+      },
+      {
+        "title": "4. Chuẩn bị trước khi thực hành",
+        "text": "       Sao chép Solution của Lab 1 và tạo project Lab02_OOPBasics.\n       Ôn lại phạm vi truy cập public, private và từ khóa this.\n       Chuẩn bị tối thiểu 5 bản ghi sinh viên để kiểm thử."
+      },
+      {
+        "title": "5. Bài tập có hướng dẫn và code mẫu",
+        "text": "1. Khai báo lớp SinhVien\nYêu cầu: Tạo lớp SinhVien gồm MaSV, HoTen, NgaySinh và DiemTB; tạo một đối tượng và in thông tin.\nGợi ý triển khai: Mỗi lớp đặt trong một tệp .cs riêng.\nCode mẫu\n    public class SinhVien\n    {\n      public string MaSV { get; set; }\n      public string HoTen { get; set; }\n      public DateTime NgaySinh { get; set; }\n      public double DiemTB { get; set; }\n\n        public void HienThi()\n        {\n          Console.WriteLine(\"{0} - {1} - {2:dd/MM/yyyy} - {3:N2}\",\n            MaSV, HoTen, NgaySinh, DiemTB);\n        }\n    }\n\n2. Constructor và nạp chồng constructor\nYêu cầu: Bổ sung constructor không tham số và constructor đầy đủ tham số cho SinhVien.\nGợi ý triển khai: Constructor phải bảo đảm đối tượng có trạng thái ban đầu hợp lệ.\nCode mẫu\n  public SinhVien()\n  {\n    MaSV = \"Chưa có\";\n    HoTen = \"Chưa có\";\n    NgaySinh = DateTime.Today;\n    DiemTB = 0;\n  }\n\n  public SinhVien(string maSV, string hoTen, DateTime ngaySinh, double diemTB)\n  {\n    MaSV = maSV;\n    HoTen = hoTen;\n    NgaySinh = ngaySinh;\n    DiemTB = diemTB;\n  }\n\n3. Đóng gói và kiểm tra dữ liệu\nYêu cầu: Không cho phép DiemTB ngoài [0,10] và HoTen rỗng.\nGợi ý triển khai: Dùng trường private làm backing field.\nCode mẫu\n  private string _hoTen;\n  private double _diemTB;\n\n  public string HoTen\n  {\n    get { return _hoTen; }\n    set\n    {\n      if (string.IsNullOrWhiteSpace(value))\n         throw new ArgumentException(\"Họ tên không được rỗng.\");\n      _hoTen = value.Trim();\n    }\n  }\n\n  public double DiemTB\n  {\n    get { return _diemTB; }\n    set\n    {\n      if (value < 0 || value > 10)\n         throw new ArgumentOutOfRangeException(\"DiemTB\");\n      _diemTB = value;\n    }\n  }\n\n4. Phương thức nghiệp vụ của SinhVien\nYêu cầu: Viết phương thức TinhTuoi() và XepLoai() trả về kết quả tương ứng.\nGợi ý triển khai: Không viết trực tiếp logic xếp loại trong Main().\nCode mẫu\n  public int TinhTuoi()\n  {\n    int tuoi = DateTime.Today.Year - NgaySinh.Year;\n    if (NgaySinh.Date > DateTime.Today.AddYears(-tuoi)) tuoi--;\n    return tuoi;\n  }\n\n    public string XepLoai()\n    {\n      if (DiemTB >= 9) return \"Xuất sắc\";\n      if (DiemTB >= 8) return \"Giỏi\";\n      if (DiemTB >= 6.5) return \"Khá\";\n      if (DiemTB >= 5) return \"Trung bình\";\n      return \"Yếu\";\n    }\n\n5. Quản lý danh sách SinhVien\nYêu cầu: Tạo List<SinhVien>, thêm dữ liệu mẫu, in danh sách và tìm theo mã.\nGợi ý triển khai: Dùng foreach và phương thức Find hoặc vòng lặp.\nCode mẫu\n    List<SinhVien> ds = new List<SinhVien>();\n    ds.Add(new SinhVien(\"SV01\", \"Nguyễn An\", new DateTime(2005, 5, 12), 8.2));\n    ds.Add(new SinhVien(\"SV02\", \"Trần Bình\", new DateTime(2005, 9, 3), 6.8));\n\n    foreach (SinhVien sv in ds) sv.HienThi();\n    Console.Write(\"Mã cần tìm: \");\n    string ma = Console.ReadLine();\n    SinhVien ketQua = ds.Find(x => x.MaSV.Equals(ma,\n       StringComparison.OrdinalIgnoreCase));\n    Console.WriteLine(ketQua == null ? \"Không tìm thấy\" : ketQua.HoTen);"
+      },
+      {
+        "title": "6. Bài tập tự thực hiện - không có code gợi ý",
+        "text": "6. Lớp SanPham\nYêu cầu: Xây dựng lớp sản phẩm có mã, tên, đơn giá, số lượng; tính thành tiền và kiểm tra dữ liệu.\n7. Lớp TaiKhoanNganHang\nYêu cầu: Cài đặt nạp tiền, rút tiền, chuyển tiền; không cho số dư âm.\n8. Lớp NhanVien\nYêu cầu: Tính lương theo lương cơ bản, hệ số và phụ cấp; in bảng lương.\n9. Lớp HinhChuNhat\nYêu cầu: Dùng constructor, thuộc tính kiểm tra cạnh dương; tính chu vi và diện tích.\n10. Ứng dụng quản lý sinh viên Console\nYêu cầu: Tạo menu thêm, sửa, xóa, tìm kiếm, sắp xếp và thống kê danh sách SinhVien trong bộ nhớ."
+      },
+      {
+        "title": "7. Sản phẩm nộp",
+        "text": "    Thư mục mã nguồn Lab2 có thể build và chạy.\n    Ảnh chụp kết quả từng bài tập hoặc tệp báo cáo ngắn.\n    Tệp README.txt mô tả cách chạy, dữ liệu thử và phần đã hoàn thành."
+      },
+      {
+        "title": "8. Đánh giá",
+        "text": "STT                                   Nội dung đánh giá                                  Điểm\n     1    Bài tập 1-5 (có hướng dẫn)                                                         5,0\n     2    Bài tập 6-10 (tự thực hiện)                                                        4,0\n     3    Mã nguồn, giao diện, đặt tên và xử lý lỗi                                          0,5\n     4    Báo cáo kết quả và nộp đúng quy định                                               0,5"
+      }
+    ]
+  },
+  {
+    "number": 3,
+    "title": "Kế thừa, đa hình, lớp trừu tượng và interface",
+    "chapter": 2,
+    "sections": [
+      {
+        "title": "1. Mục tiêu cần đạt được",
+        "text": "        Mô hình hóa quan hệ kế thừa và sử dụng từ khóa base.\n        Ghi đè phương thức bằng virtual/override và khai thác đa hình.\n        Thiết kế lớp trừu tượng và interface.\n        Vận dụng nguyên lý OOP vào bài toán quản lý."
+      },
+      {
+        "title": "2. Công cụ và dữ liệu chuẩn bị",
+        "text": "        Visual Studio 2022.\n        Dự án Console Lab03_OOPAdvanced.\n        Lớp SinhVien từ Lab 2."
+      },
+      {
+        "title": "3. Liên kết trong chuỗi bài lab",
+        "text": "Ngữ cảnh xuyên suốt: Mở rộng mô hình người học thành hệ thống nhiều loại đối tượng. Các interface kiểm tra\n    dữ liệu và hiển thị sẽ được tái sử dụng ở tầng BUS trong các lab sau."
+      },
+      {
+        "title": "4. Chuẩn bị trước khi thực hành",
+        "text": "        Hoàn thiện lớp SinhVien của Lab 2.\n        Vẽ sơ đồ lớp đơn giản cho Nguoi, SinhVien và NguoiHoc.\n        Ôn từ khóa virtual, override, abstract, interface và base."
+      },
+      {
+        "title": "5. Bài tập có hướng dẫn và code mẫu",
+        "text": "1. Kế thừa Nguoi - SinhVien\nYêu cầu: Tạo lớp cơ sở Nguoi và lớp SinhVien kế thừa; gọi constructor lớp cha bằng base.\nGợi ý triển khai: Đưa HoTen, NgaySinh lên lớp Nguoi.\nCode mẫu\n     public class Nguoi\n     {\n       public string HoTen { get; set; }\n       public DateTime NgaySinh { get; set; }\n\n         public Nguoi(string hoTen, DateTime ngaySinh)\n         {\n           HoTen = hoTen;\n           NgaySinh = ngaySinh;\n         }\n     }\n\n     public class SinhVien : Nguoi\n\n  {\n      public string MaSV { get; set; }\n      public double DiemTB { get; set; }\n\n      public SinhVien(string ma, string ten, DateTime ngaySinh, double diem)\n        : base(ten, ngaySinh)\n      {\n        MaSV = ma;\n        DiemTB = diem;\n      }\n  }\n\n2. Ghi đè phương thức hiển thị\nYêu cầu: Khai báo phương thức MoTa() ảo ở Nguoi và ghi đè trong SinhVien.\nGợi ý triển khai: Gọi base.MoTa() khi cần tái sử dụng hành vi lớp cha.\nCode mẫu\n  public class Nguoi\n  {\n    public virtual string MoTa()\n    {\n      return HoTen + \" - \" + NgaySinh.ToString(\"dd/MM/yyyy\");\n    }\n  }\n\n  public class SinhVien : Nguoi\n  {\n    public override string MoTa()\n    {\n      return base.MoTa() + \" - \" + MaSV + \" - \" + DiemTB.ToString(\"N2\");\n    }\n  }\n\n3. Lớp trừu tượng HocPhi\nYêu cầu: Tạo lớp trừu tượng NguoiHoc có phương thức TinhHocPhi(); cài đặt SinhVienChinhQuy và\nSinhVienLienThong.\nGợi ý triển khai: Mỗi loại người học có công thức học phí khác nhau.\nCode mẫu\n  public abstract class NguoiHoc\n  {\n    public string HoTen { get; set; }\n    public int SoTinChi { get; set; }\n    public abstract decimal TinhHocPhi();\n  }\n\n  public class SinhVienChinhQuy : NguoiHoc\n  {\n    public override decimal TinhHocPhi()\n    {\n      return SoTinChi * 450000m;\n    }\n  }\n\n  public class SinhVienLienThong : NguoiHoc\n  {\n    public override decimal TinhHocPhi()\n    {\n      return SoTinChi * 520000m;\n    }\n  }\n\n4. Interface kiểm tra và in dữ liệu\nYêu cầu: Tạo IValidatable và IPrintable; cho SinhVien thực thi cả hai interface.\nGợi ý triển khai: Interface chỉ khai báo hợp đồng, lớp cài đặt nội dung.\nCode mẫu\n  public interface IValidatable\n  {\n    bool IsValid(out string message);\n  }\n\n  public interface IPrintable\n  {\n    string ToDisplayText();\n  }\n\n  public class SinhVien : IValidatable, IPrintable\n  {\n    public string MaSV { get; set; }\n    public string HoTen { get; set; }\n    public double DiemTB { get; set; }\n\n      public bool IsValid(out string message)\n      {\n        if (string.IsNullOrWhiteSpace(MaSV)) { message = \"Thiếu mã\"; return false; }\n        if (DiemTB < 0 || DiemTB > 10) { message = \"Điểm sai\"; return false; }\n        message = \"\"; return true;\n      }\n      public string ToDisplayText() { return MaSV + \" - \" + HoTen; }\n  }\n\n5. Danh sách đa hình\nYêu cầu: Tạo List<NguoiHoc> chứa nhiều kiểu sinh viên và tính tổng học phí.\nGợi ý triển khai: Gọi phương thức qua tham chiếu lớp cha để thể hiện đa hình.\nCode mẫu\n  List<NguoiHoc> ds = new List<NguoiHoc>();\n  ds.Add(new SinhVienChinhQuy { HoTen = \"An\", SoTinChi = 18 });\n  ds.Add(new SinhVienLienThong { HoTen = \"Bình\", SoTinChi = 15 });\n\n  decimal tong = 0;\n  foreach (NguoiHoc item in ds)\n  {\n    decimal hocPhi = item.TinhHocPhi();\n    tong += hocPhi;\n    Console.WriteLine(\"{0}: {1:N0}\", item.HoTen, hocPhi);\n  }\n  Console.WriteLine(\"Tổng học phí: {0:N0}\", tong);"
+      },
+      {
+        "title": "6. Bài tập tự thực hiện - không có code gợi ý",
+        "text": "6. Hệ thống nhân viên\nYêu cầu: Thiết kế NhanVien trừu tượng và các lớp NhanVienVanPhong, NhanVienKinhDoanh, GiangVien;\ntính lương đa hình.\n7. Quản lý phương tiện\nYêu cầu: Tạo interface IMove, lớp XeMay, OTo, XeDap; mô phỏng tốc độ và chi phí vận hành.\n8. Quản lý tài liệu thư viện\nYêu cầu: Xây dựng lớp TaiLieu, Sach, TapChi, LuanVan; tìm kiếm và in thông tin theo kiểu tài liệu.\n9. Hệ thống thanh toán\nYêu cầu: Tạo IPayment với ThanhToanTienMat, ChuyenKhoan, ViDienTu; kiểm tra và ghi nhận giao dịch.\n\n10. Nâng cấp quản lý sinh viên\nYêu cầu: Bổ sung nhiều loại sinh viên, interface xuất dữ liệu, tìm kiếm và thống kê theo loại."
+      },
+      {
+        "title": "7. Sản phẩm nộp",
+        "text": "   Thư mục mã nguồn Lab3 có thể build và chạy.\n   Ảnh chụp kết quả từng bài tập hoặc tệp báo cáo ngắn.\n   Tệp README.txt mô tả cách chạy, dữ liệu thử và phần đã hoàn thành."
+      },
+      {
+        "title": "8. Đánh giá",
+        "text": "STT                                   Nội dung đánh giá                                  Điểm\n     1    Bài tập 1-5 (có hướng dẫn)                                                         5,0\n     2    Bài tập 6-10 (tự thực hiện)                                                        4,0\n     3    Mã nguồn, giao diện, đặt tên và xử lý lỗi                                          0,5\n     4    Báo cáo kết quả và nộp đúng quy định                                               0,5"
+      }
+    ]
+  },
+  {
+    "number": 4,
+    "title": "Thiết kế WinForms và điều khiển cơ bản",
+    "chapter": 3,
+    "sections": [
+      {
+        "title": "1. Mục tiêu cần đạt được",
+        "text": "     Tạo ứng dụng Windows Forms và cấu hình thuộc tính Form.\n     Sử dụng Label, TextBox, Button, ComboBox, DateTimePicker, CheckBox, RadioButton và PictureBox.\n     Đặt tên điều khiển theo quy ước và bố trí giao diện dễ sử dụng.\n     Đọc dữ liệu từ control và hiển thị kết quả."
+      },
+      {
+        "title": "2. Công cụ và dữ liệu chuẩn bị",
+        "text": "     Visual Studio 2022 - Windows Forms App (.NET Framework 4.8).\n     Project Lab04_WinFormsBasic.\n     Ảnh đại diện mẫu định dạng PNG/JPG."
+      },
+      {
+        "title": "3. Liên kết trong chuỗi bài lab",
+        "text": "Ngữ cảnh xuyên suốt: Chuyển mô hình SinhVien từ Console lên giao diện WinForms. Form nhập sinh viên sẽ\n    được mở rộng sự kiện, kiểm tra dữ liệu và đa Form ở Lab 5."
+      },
+      {
+        "title": "4. Chuẩn bị trước khi thực hành",
+        "text": "     Tạo project Windows Forms App (.NET Framework) Lab04_WinFormsBasic.\n     Thêm lớp SinhVien.cs từ Lab 2 vào project.\n     Tạo thư mục Images và chuẩn bị 2-3 ảnh mẫu."
+      },
+      {
+        "title": "5. Bài tập có hướng dẫn và code mẫu",
+        "text": "1. Tạo Form thông tin sinh viên\nYêu cầu: Thiết kế frmSinhVien gồm mã, họ tên, ngày sinh, giới tính, khoa và nút Hiển thị.\nGợi ý triển khai: Quy ước tên: txtMaSV, txtHoTen, dtpNgaySinh, cboKhoa, btnHienThi.\nCode mẫu\n    private void btnHienThi_Click(object sender, EventArgs e)\n    {\n      string gioiTinh = radNam.Checked ? \"Nam\" : \"Nữ\";\n      string thongTin = string.Format(\n         \"Mã: {0}\\nHọ tên: {1}\\nNgày sinh: {2:dd/MM/yyyy}\\nKhoa: {3}\\nGiới tính: {4}\",\n         txtMaSV.Text, txtHoTen.Text, dtpNgaySinh.Value,\n         cboKhoa.Text, gioiTinh);\n      MessageBox.Show(thongTin, \"Thông tin sinh viên\");\n    }\n\n2. Khởi tạo ComboBox và trạng thái Form\nYêu cầu: Nạp danh sách khoa khi Form Load; đặt khoa đầu tiên làm mặc định.\n\nGợi ý triển khai: Không nhập thủ công lại danh sách ở nhiều nơi.\nCode mẫu\n  private void frmSinhVien_Load(object sender, EventArgs e)\n  {\n    cboKhoa.Items.Add(\"Công nghệ thông tin\");\n    cboKhoa.Items.Add(\"Công nghệ kỹ thuật ô tô\");\n    cboKhoa.Items.Add(\"Kinh tế\");\n    cboKhoa.DropDownStyle = ComboBoxStyle.DropDownList;\n    if (cboKhoa.Items.Count > 0) cboKhoa.SelectedIndex = 0;\n    radNam.Checked = true;\n  }\n\n3. Tính tuổi từ DateTimePicker\nYêu cầu: Khi chọn ngày sinh, tính và hiển thị tuổi vào Label.\nGợi ý triển khai: Xử lý trường hợp chưa đến ngày sinh trong năm hiện tại.\nCode mẫu\n  private int TinhTuoi(DateTime ngaySinh)\n  {\n    int tuoi = DateTime.Today.Year - ngaySinh.Year;\n    if (ngaySinh.Date > DateTime.Today.AddYears(-tuoi)) tuoi--;\n    return tuoi;\n  }\n\n  private void dtpNgaySinh_ValueChanged(object sender, EventArgs e)\n  {\n    lblTuoi.Text = \"Tuổi: \" + TinhTuoi(dtpNgaySinh.Value);\n  }\n\n4. Sở thích bằng CheckBox\nYêu cầu: Dùng các CheckBox để chọn sở thích và hiển thị danh sách đã chọn.\nGợi ý triển khai: Chỉ thêm mục khi Checked bằng true.\nCode mẫu\n  private void btnSoThich_Click(object sender, EventArgs e)\n  {\n    List<string> ds = new List<string>();\n    if (chkDocSach.Checked) ds.Add(\"Đọc sách\");\n    if (chkTheThao.Checked) ds.Add(\"Thể thao\");\n    if (chkLapTrinh.Checked) ds.Add(\"Lập trình\");\n    lblSoThich.Text = ds.Count == 0 ? \"Chưa chọn\" : string.Join(\", \", ds);\n  }\n\n5. Chọn ảnh đại diện\nYêu cầu: Dùng OpenFileDialog chọn ảnh và hiển thị trong PictureBox ở chế độ Zoom.\nGợi ý triển khai: Kiểm tra đường dẫn tệp trước khi tải.\nCode mẫu\n  private void btnChonAnh_Click(object sender, EventArgs e)\n  {\n    using (OpenFileDialog dlg = new OpenFileDialog())\n    {\n      dlg.Filter = \"Image files|*.jpg;*.jpeg;*.png;*.bmp\";\n      if (dlg.ShowDialog() == DialogResult.OK)\n      {\n         picAnh.SizeMode = PictureBoxSizeMode.Zoom;\n         picAnh.ImageLocation = dlg.FileName;\n         txtDuongDanAnh.Text = dlg.FileName;\n      }\n    }\n  }"
+      },
+      {
+        "title": "6. Bài tập tự thực hiện - không có code gợi ý",
+        "text": "6. Máy tính bốn phép toán\nYêu cầu: Thiết kế Form nhập hai số và thực hiện cộng, trừ, nhân, chia; có nút Làm mới và Thoát.\n7. Form đăng nhập\nYêu cầu: Thiết kế giao diện tên đăng nhập, mật khẩu, ghi nhớ đăng nhập và hiển thị/ẩn mật khẩu.\n8. Tính chỉ số BMI\nYêu cầu: Nhập chiều cao, cân nặng; tính BMI và hiển thị phân loại bằng Label.\n9. Đăng ký học phần\nYêu cầu: Dùng CheckedListBox hoặc CheckBox để chọn môn; tính tổng số tín chỉ.\n10. Phiếu nhập sản phẩm\nYêu cầu: Thiết kế giao diện sản phẩm gồm mã, tên, loại, số lượng, đơn giá, ngày nhập và ảnh."
+      },
+      {
+        "title": "7. Sản phẩm nộp",
+        "text": "   Thư mục mã nguồn Lab4 có thể build và chạy.\n   Ảnh chụp kết quả từng bài tập hoặc tệp báo cáo ngắn.\n   Tệp README.txt mô tả cách chạy, dữ liệu thử và phần đã hoàn thành."
+      },
+      {
+        "title": "8. Đánh giá",
+        "text": "STT                                   Nội dung đánh giá                                  Điểm\n     1    Bài tập 1-5 (có hướng dẫn)                                                         5,0\n     2    Bài tập 6-10 (tự thực hiện)                                                        4,0\n     3    Mã nguồn, giao diện, đặt tên và xử lý lỗi                                          0,5\n     4    Báo cáo kết quả và nộp đúng quy định                                               0,5"
+      }
+    ]
+  },
+  {
+    "number": 5,
+    "title": "Xử lý sự kiện, kiểm tra dữ liệu và ứng dụng đa Form",
+    "chapter": 3,
+    "sections": [
+      {
+        "title": "1. Mục tiêu cần đạt được",
+        "text": "     Lập trình các sự kiện Click, TextChanged, KeyPress, SelectedIndexChanged và FormClosing.\n     Kiểm tra dữ liệu bằng ErrorProvider và các hàm dùng chung.\n     Truyền dữ liệu giữa các Form bằng constructor, thuộc tính hoặc delegate/event.\n     Tổ chức ứng dụng nhiều Form với MenuStrip."
+      },
+      {
+        "title": "2. Công cụ và dữ liệu chuẩn bị",
+        "text": "     Visual Studio 2022.\n     Project Lab05_MultiForm kế thừa giao diện Lab 4.\n     ErrorProvider, MenuStrip và StatusStrip."
+      },
+      {
+        "title": "3. Liên kết trong chuỗi bài lab",
+        "text": "Ngữ cảnh xuyên suốt: Hoàn thiện luồng nhập - xem chi tiết - danh sách sinh viên. Sang Lab 6, dữ liệu sẽ được\n    hiển thị bằng DataGridView và tổ chức theo mô hình 3 lớp trong bộ nhớ."
+      },
+      {
+        "title": "4. Chuẩn bị trước khi thực hành",
+        "text": "     Hoàn thiện frmSinhVien từ Lab 4.\n     Tạo thêm frmMain, frmChiTietSinhVien và frmGioiThieu.\n     Ôn các kiểu truyền dữ liệu giữa Form."
+      },
+      {
+        "title": "5. Bài tập có hướng dẫn và code mẫu",
+        "text": "1. Kiểm tra bắt buộc bằng ErrorProvider\nYêu cầu: Không cho lưu khi mã hoặc họ tên trống; hiển thị lỗi cạnh control.\nGợi ý triển khai: Tách kiểm tra thành phương thức ValidateInput().\nCode mẫu\n     private bool ValidateInput()\n     {\n       errorProvider1.Clear();\n       bool valid = true;\n       if (string.IsNullOrWhiteSpace(txtMaSV.Text))\n       {\n          errorProvider1.SetError(txtMaSV, \"Nhập mã sinh viên\");\n          valid = false;\n       }\n       if (string.IsNullOrWhiteSpace(txtHoTen.Text))\n       {\n          errorProvider1.SetError(txtHoTen, \"Nhập họ tên\");\n          valid = false;\n\n      }\n      return valid;\n  }\n\n2. Giới hạn ký tự nhập điểm\nYêu cầu: Chỉ cho phép nhập chữ số và một dấu thập phân vào txtDiemTB.\nGợi ý triển khai: Vẫn phải kiểm tra miền [0,10] khi lưu.\nCode mẫu\n  private void txtDiemTB_KeyPress(object sender, KeyPressEventArgs e)\n  {\n    if (char.IsControl(e.KeyChar)) return;\n    if (char.IsDigit(e.KeyChar)) return;\n    if (e.KeyChar == '.' && !txtDiemTB.Text.Contains(\".\")) return;\n    e.Handled = true;\n  }\n\n3. Cập nhật trạng thái theo thời gian thực\nYêu cầu: Khi họ tên hoặc điểm thay đổi, cập nhật Label xem trước và trạng thái hợp lệ.\nGợi ý triển khai: Dùng chung một handler cho nhiều TextBox.\nCode mẫu\n  private void Input_TextChanged(object sender, EventArgs e)\n  {\n    double diem;\n    bool hopLe = double.TryParse(txtDiemTB.Text, out diem)\n            && diem >= 0 && diem <= 10;\n    lblXemTruoc.Text = txtMaSV.Text + \" - \" + txtHoTen.Text;\n    lblTrangThai.Text = hopLe ? \"Dữ liệu điểm hợp lệ\" : \"Kiểm tra điểm\";\n  }\n\n4. Truyền dữ liệu sang Form chi tiết\nYêu cầu: Tạo frmChiTietSinhVien nhận đối tượng SinhVien qua constructor và hiển thị dữ liệu.\nGợi ý triển khai: Không truy cập trực tiếp control private của Form khác.\nCode mẫu\n  public partial class frmChiTietSinhVien : Form\n  {\n    private readonly SinhVien _sinhVien;\n\n      public frmChiTietSinhVien(SinhVien sinhVien)\n      {\n        InitializeComponent();\n        _sinhVien = sinhVien;\n      }\n\n      private void frmChiTietSinhVien_Load(object sender, EventArgs e)\n      {\n        lblMa.Text = _sinhVien.MaSV;\n        lblHoTen.Text = _sinhVien.HoTen;\n        lblDiem.Text = _sinhVien.DiemTB.ToString(\"N2\");\n      }\n  }\n\n5. MenuStrip mở các Form chức năng\nYêu cầu: Tạo frmMain có menu Danh mục, Nghiệp vụ, Hệ thống; mở Form con và tránh mở trùng.\nGợi ý triển khai: Có thể dùng MDI hoặc mở Form modal tùy chức năng.\nCode mẫu\n  private void OpenChildForm(Form child)\n  {\n    foreach (Form f in this.MdiChildren)\n    {\n      if (f.GetType() == child.GetType())\n\n          {\n              f.Activate();\n              child.Dispose();\n              return;\n          }\n        }\n        child.MdiParent = this;\n        child.Show();\n    }\n\n    private void mnuSinhVien_Click(object sender, EventArgs e)\n    {\n      OpenChildForm(new frmSinhVien());\n    }"
+      },
+      {
+        "title": "6. Bài tập tự thực hiện - không có code gợi ý",
+        "text": "6. Form đăng nhập có giới hạn lần thử\nYêu cầu: Sau 3 lần sai, khóa nút đăng nhập trong 30 giây hoặc đóng Form.\n7. Hộp thoại tìm kiếm\nYêu cầu: Tạo frmTimKiem nhận từ khóa và trả kết quả về Form gọi thông qua property hoặc DialogResult.\n8. Form chọn khoa\nYêu cầu: Truyền danh sách khoa sang Form chọn; trả về khoa được chọn mà không dùng biến toàn cục.\n9. Xác nhận đóng ứng dụng\nYêu cầu: Bắt FormClosing, hỏi xác nhận và không đóng nếu người dùng chọn No.\n10. Dashboard đa Form\nYêu cầu: Tạo Form chính có menu, thanh trạng thái, đồng hồ và các Form chức năng Sinh viên, Khoa, Giới\nthiệu."
+      },
+      {
+        "title": "7. Sản phẩm nộp",
+        "text": "       Thư mục mã nguồn Lab5 có thể build và chạy.\n       Ảnh chụp kết quả từng bài tập hoặc tệp báo cáo ngắn.\n       Tệp README.txt mô tả cách chạy, dữ liệu thử và phần đã hoàn thành."
+      },
+      {
+        "title": "8. Đánh giá",
+        "text": "STT                                   Nội dung đánh giá                                  Điểm\n     1    Bài tập 1-5 (có hướng dẫn)                                                         5,0\n     2    Bài tập 6-10 (tự thực hiện)                                                        4,0\n     3    Mã nguồn, giao diện, đặt tên và xử lý lỗi                                          0,5\n     4    Báo cáo kết quả và nộp đúng quy định                                               0,5"
+      }
+    ]
+  },
+  {
+    "number": 6,
+    "title": "DataGridView, ListView, TreeView và mô hình ba lớp trong bộ nhớ",
+    "chapter": 3,
+    "sections": [
+      {
+        "title": "1. Mục tiêu cần đạt được",
+        "text": "     Hiển thị và thao tác dữ liệu trên DataGridView, ListView và TreeView.\n     Sử dụng BindingList<T> hoặc BindingSource để liên kết dữ liệu trong bộ nhớ.\n     Tổ chức ứng dụng theo các lớp GUI, BUS và DAL giả lập.\n     Chuẩn bị kiến trúc để chuyển sang ADO.NET ở Lab 7."
+      },
+      {
+        "title": "2. Công cụ và dữ liệu chuẩn bị",
+        "text": "     Visual Studio 2022.\n     Project Lab06_ThreeLayerMemory.\n     Các lớp SinhVien và Khoa đã xây dựng."
+      },
+      {
+        "title": "3. Liên kết trong chuỗi bài lab",
+        "text": "Ngữ cảnh xuyên suốt: Xây dựng phiên bản quản lý sinh viên chạy hoàn toàn trong bộ nhớ. Sang Lab 7, lớp\n    DAL giả lập sẽ được thay bằng DAL kết nối SQL Server mà không thay đổi lớn giao diện."
+      },
+      {
+        "title": "4. Chuẩn bị trước khi thực hành",
+        "text": "     Sao chép mô hình SinhVien và các Form từ Lab 5.\n     Tạo các thư mục hoặc project GUI, BUS, DAL.\n     Chuẩn bị dữ liệu mẫu theo ít nhất 3 khoa, mỗi khoa 3 sinh viên."
+      },
+      {
+        "title": "5. Bài tập có hướng dẫn và code mẫu",
+        "text": "1. Hiển thị BindingList trên DataGridView\nYêu cầu: Tạo BindingList<SinhVien>, liên kết với DataGridView và cấu hình tiêu đề cột.\nGợi ý triển khai: Tắt AutoGenerateColumns nếu muốn kiểm soát cột.\nCode mẫu\n    private BindingList<SinhVien> _ds = new BindingList<SinhVien>();\n\n    private void frmDanhSach_Load(object sender, EventArgs e)\n    {\n      _ds.Add(new SinhVien(\"SV01\", \"Nguyễn An\", DateTime.Today, 8.2));\n      _ds.Add(new SinhVien(\"SV02\", \"Trần Bình\", DateTime.Today, 7.0));\n      dgvSinhVien.AutoGenerateColumns = true;\n      dgvSinhVien.DataSource = _ds;\n      dgvSinhVien.SelectionMode = DataGridViewSelectionMode.FullRowSelect;\n    }\n\n2. CRUD trong bộ nhớ\nYêu cầu: Thêm, sửa, xóa sinh viên trong BindingList và đồng bộ giao diện.\n\nGợi ý triển khai: Kiểm tra trùng mã trước khi thêm.\nCode mẫu\n  private void btnThem_Click(object sender, EventArgs e)\n  {\n    if (_ds.Any(x => x.MaSV == txtMaSV.Text.Trim()))\n    {\n       MessageBox.Show(\"Mã sinh viên đã tồn tại.\");\n       return;\n    }\n    _ds.Add(new SinhVien(txtMaSV.Text.Trim(), txtHoTen.Text.Trim(),\n       dtpNgaySinh.Value, double.Parse(txtDiemTB.Text)));\n  }\n\n  private void btnXoa_Click(object sender, EventArgs e)\n  {\n    SinhVien sv = dgvSinhVien.CurrentRow == null ? null\n       : dgvSinhVien.CurrentRow.DataBoundItem as SinhVien;\n    if (sv != null) _ds.Remove(sv);\n  }\n\n3. Danh sách chi tiết bằng ListView\nYêu cầu: Hiển thị mã, họ tên, khoa, điểm trong ListView dạng Details.\nGợi ý triển khai: Xóa Items trước khi nạp lại.\nCode mẫu\n  private void LoadListView(IEnumerable<SinhVien> data)\n  {\n    lvSinhVien.Items.Clear();\n    lvSinhVien.View = View.Details;\n    foreach (SinhVien sv in data)\n    {\n      ListViewItem item = new ListViewItem(sv.MaSV);\n      item.SubItems.Add(sv.HoTen);\n      item.SubItems.Add(sv.DiemTB.ToString(\"N2\"));\n      item.Tag = sv;\n      lvSinhVien.Items.Add(item);\n    }\n  }\n\n4. Cây Khoa - Sinh viên bằng TreeView\nYêu cầu: Tạo node gốc theo khoa và node con theo sinh viên; khi chọn node con hiển thị chi tiết.\nGợi ý triển khai: Lưu đối tượng trong thuộc tính Tag của TreeNode.\nCode mẫu\n  private void LoadTree(Dictionary<string, List<SinhVien>> data)\n  {\n    tvKhoa.Nodes.Clear();\n    foreach (var group in data)\n    {\n      TreeNode khoaNode = new TreeNode(group.Key);\n      foreach (SinhVien sv in group.Value)\n      {\n        TreeNode svNode = new TreeNode(sv.MaSV + \" - \" + sv.HoTen);\n        svNode.Tag = sv;\n        khoaNode.Nodes.Add(svNode);\n      }\n      tvKhoa.Nodes.Add(khoaNode);\n    }\n    tvKhoa.ExpandAll();\n  }\n\n5. Tách mô hình GUI - BUS - DAL giả lập\nYêu cầu: Tạo SinhVienDAL lưu danh sách và SinhVienBUS kiểm tra nghiệp vụ; Form chỉ gọi BUS.\n\nGợi ý triển khai: Không để Form trực tiếp thao tác kho dữ liệu.\nCode mẫu\n    public class SinhVienDAL\n    {\n      private readonly List<SinhVien> _data = new List<SinhVien>();\n      public List<SinhVien> GetAll() { return new List<SinhVien>(_data); }\n      public void Add(SinhVien sv) { _data.Add(sv); }\n    }\n\n    public class SinhVienBUS\n    {\n      private readonly SinhVienDAL _dal = new SinhVienDAL();\n      public List<SinhVien> GetAll() { return _dal.GetAll(); }\n      public void Add(SinhVien sv)\n      {\n        if (string.IsNullOrWhiteSpace(sv.MaSV))\n           throw new ArgumentException(\"Thiếu mã sinh viên\");\n        if (_dal.GetAll().Any(x => x.MaSV == sv.MaSV))\n           throw new InvalidOperationException(\"Trùng mã sinh viên\");\n        _dal.Add(sv);\n      }\n    }"
+      },
+      {
+        "title": "6. Bài tập tự thực hiện - không có code gợi ý",
+        "text": "6. Quản lý sản phẩm bằng DataGridView\nYêu cầu: Thêm, sửa, xóa, tìm kiếm, sắp xếp và tính tổng giá trị hàng tồn trong bộ nhớ.\n7. TreeView quản lý danh mục\nYêu cầu: Hiển thị danh mục - sản phẩm; hỗ trợ thêm, đổi tên, xóa node bằng ContextMenuStrip.\n8. ListView có biểu tượng\nYêu cầu: Dùng ImageList để hiển thị loại sinh viên hoặc trạng thái học tập.\n9. Xuất dữ liệu ra tệp văn bản\nYêu cầu: Từ tầng DAL giả lập, lưu danh sách sinh viên ra CSV và đọc lại khi khởi động.\n10. Hoàn thiện kiến trúc 3 lớp\nYêu cầu: Tách project hoặc namespace GUI, BUS, DAL; Form không chứa logic tính toán hay lưu dữ liệu."
+      },
+      {
+        "title": "7. Sản phẩm nộp",
+        "text": "     Thư mục mã nguồn Lab6 có thể build và chạy.\n     Ảnh chụp kết quả từng bài tập hoặc tệp báo cáo ngắn.\n     Tệp README.txt mô tả cách chạy, dữ liệu thử và phần đã hoàn thành."
+      },
+      {
+        "title": "8. Đánh giá",
+        "text": "STT                                   Nội dung đánh giá                                  Điểm\n     1    Bài tập 1-5 (có hướng dẫn)                                                         5,0\n     2    Bài tập 6-10 (tự thực hiện)                                                        4,0\n     3    Mã nguồn, giao diện, đặt tên và xử lý lỗi                                          0,5\n     4    Báo cáo kết quả và nộp đúng quy định                                               0,5"
+      }
+    ]
+  },
+  {
+    "number": 7,
+    "title": "Tạo CSDL SQL Server, tổng quan ADO.NET và kết nối",
+    "chapter": 4,
+    "sections": [
+      {
+        "title": "1. Mục tiêu cần đạt được",
+        "text": "     Tạo cơ sở dữ liệu quan hệ cho bài toán quản lý sinh viên.\n     Thiết lập khóa chính, khóa ngoại, ràng buộc và dữ liệu mẫu.\n     Hiểu vai trò của Connection trong ADO.NET.\n     Tạo lớp kết nối SQL Server và kiểm tra trạng thái kết nối."
+      },
+      {
+        "title": "2. Công cụ và dữ liệu chuẩn bị",
+        "text": "     SQL Server 2019/2022 hoặc SQL Server Express.\n     SQL Server Management Studio.\n     Visual Studio 2022 - System.Data.SqlClient.\n     Project Lab07_ADONET_Connection."
+      },
+      {
+        "title": "3. Liên kết trong chuỗi bài lab",
+        "text": "Ngữ cảnh xuyên suốt: Thay lớp DAL lưu trong bộ nhớ ở Lab 6 bằng SQL Server. Cơ sở dữ liệu QLSinhVien\n    được sử dụng liên tục từ Lab 7 đến Lab 16."
+      },
+      {
+        "title": "4. Chuẩn bị trước khi thực hành",
+        "text": "     Cài SQL Server và SSMS; xác định tên instance.\n     Bật quyền kết nối phù hợp và tạo database thử.\n     Tạo project Lab07_ADONET_Connection, tham chiếu System.Configuration nếu dùng App.config."
+      },
+      {
+        "title": "5. Bài tập có hướng dẫn và code mẫu",
+        "text": "1. Tạo cơ sở dữ liệu QLSinhVien\nYêu cầu: Tạo database và chuyển ngữ cảnh sử dụng sang QLSinhVien.\nGợi ý triển khai: Chạy từng khối lệnh và ghi nhận kết quả trong SSMS.\nCode mẫu\n    IF DB_ID(N'QLSinhVien') IS NULL\n      CREATE DATABASE QLSinhVien;\n    GO\n    USE QLSinhVien;\n    GO\n\n2. Tạo bảng Khoa và SinhVien\nYêu cầu: Tạo bảng có khóa chính, khóa ngoại và CHECK điểm thuộc [0,10].\nGợi ý triển khai: Dùng kiểu NVARCHAR cho dữ liệu tiếng Việt.\nCode mẫu\n    CREATE TABLE Khoa\n\n  (\n       MaKhoa VARCHAR(10) PRIMARY KEY,\n       TenKhoa NVARCHAR(100) NOT NULL UNIQUE\n  );\n\n  CREATE TABLE SinhVien\n  (\n     MaSV VARCHAR(15) PRIMARY KEY,\n     HoTen NVARCHAR(100) NOT NULL,\n     NgaySinh DATE NOT NULL,\n     GioiTinh BIT NOT NULL,\n     MaKhoa VARCHAR(10) NOT NULL,\n     DiemTB DECIMAL(4,2) NOT NULL DEFAULT 0,\n     Email VARCHAR(100) NULL,\n     CONSTRAINT CK_SinhVien_Diem CHECK (DiemTB BETWEEN 0 AND 10),\n     CONSTRAINT FK_SinhVien_Khoa FOREIGN KEY (MaKhoa) REFERENCES Khoa(MaKhoa)\n  );\n\n3. Tạo bảng HocPhan và DangKy\nYêu cầu: Mô hình hóa quan hệ nhiều-nhiều giữa SinhVien và HocPhan.\nGợi ý triển khai: Khóa chính của DangKy gồm MaSV và MaHP.\nCode mẫu\n  CREATE TABLE HocPhan\n  (\n     MaHP VARCHAR(10) PRIMARY KEY,\n     TenHP NVARCHAR(120) NOT NULL,\n     SoTinChi INT NOT NULL CHECK (SoTinChi BETWEEN 1 AND 6)\n  );\n\n  CREATE TABLE DangKy\n  (\n     MaSV VARCHAR(15) NOT NULL,\n     MaHP VARCHAR(10) NOT NULL,\n     HocKy INT NOT NULL CHECK (HocKy BETWEEN 1 AND 3),\n     Diem DECIMAL(4,2) NULL CHECK (Diem BETWEEN 0 AND 10),\n     PRIMARY KEY (MaSV, MaHP),\n     FOREIGN KEY (MaSV) REFERENCES SinhVien(MaSV),\n     FOREIGN KEY (MaHP) REFERENCES HocPhan(MaHP)\n  );\n\n4. Thêm dữ liệu mẫu\nYêu cầu: Thêm tối thiểu 3 khoa, 10 sinh viên, 5 học phần và dữ liệu đăng ký.\nGợi ý triển khai: Dùng tiền tố N trước chuỗi Unicode.\nCode mẫu\n  INSERT INTO Khoa(MaKhoa, TenKhoa) VALUES\n  ('CNTT', N'Công nghệ thông tin'),\n  ('OTO', N'Công nghệ kỹ thuật ô tô'),\n  ('KT', N'Kinh tế');\n\n  INSERT INTO SinhVien(MaSV, HoTen, NgaySinh, GioiTinh, MaKhoa, DiemTB, Email) VALUES\n  ('SV001', N'Nguyễn Văn An', '2005-02-15', 1, 'CNTT', 8.20, 'an@example.invalid'),\n  ('SV002', N'Trần Thị Bình', '2005-07-21', 0, 'CNTT', 7.40, 'binh@example.invalid'),\n  ('SV003', N'Lê Văn Cường', '2004-12-03', 1, 'OTO', 6.80, NULL);\n\n5. Tạo lớp kết nối SQL Server\nYêu cầu: Viết lớp DbConnectionFactory và nút Kiểm tra kết nối trên Form.\nGợi ý triển khai: Thay tên máy chủ theo môi trường thực tế; luôn đóng kết nối.\nCode mẫu\n  using System.Data.SqlClient;\n\n  public static class DbConnectionFactory\n\n    {\n        private const string ConnectionString =\n          @\"Data Source=.;Initial Catalog=QLSinhVien;Integrated Security=True\";\n\n        public static SqlConnection Create()\n        {\n          return new SqlConnection(ConnectionString);\n        }\n    }\n\n    private void btnKiemTra_Click(object sender, EventArgs e)\n    {\n      try\n      {\n        using (SqlConnection conn = DbConnectionFactory.Create())\n        {\n          conn.Open();\n          MessageBox.Show(\"Kết nối thành công: \" + conn.Database);\n        }\n      }\n      catch (SqlException ex)\n      {\n        MessageBox.Show(\"Lỗi kết nối: \" + ex.Message);\n      }\n    }"
+      },
+      {
+        "title": "6. Bài tập tự thực hiện - không có code gợi ý",
+        "text": "6. Bổ sung ràng buộc dữ liệu\nYêu cầu: Thêm UNIQUE Email, DEFAULT ngày đăng ký và CHECK học kỳ; thử dữ liệu vi phạm.\n7. Chuỗi kết nối SQL Authentication\nYêu cầu: Tạo tài khoản SQL riêng cho ứng dụng, cấp quyền tối thiểu và kiểm tra kết nối.\n8. Đọc chuỗi kết nối từ App.config\nYêu cầu: Không hard-code chuỗi kết nối trong mã nguồn; sử dụng ConfigurationManager.\n9. Trang trạng thái kết nối\nYêu cầu: Hiển thị DataSource, Database, ServerVersion, State và thời gian kết nối.\n10. Sao lưu và phục hồi CSDL\nYêu cầu: Thực hiện backup QLSinhVien, xóa một bản ghi thử và restore để kiểm chứng."
+      },
+      {
+        "title": "7. Sản phẩm nộp",
+        "text": "       Tệp Lab07_QLSinhVien.sql có thể chạy từ đầu trên database mới.\n       Project WinForms có chức năng kiểm tra kết nối.\n       Ảnh sơ đồ quan hệ CSDL và kết quả truy vấn dữ liệu mẫu.\n       README ghi tên instance và cách thay chuỗi kết nối."
+      },
+      {
+        "title": "8. Đánh giá",
+        "text": "STT                                   Nội dung đánh giá                                  Điểm\n     1    Bài tập 1-5 (có hướng dẫn)                                                         5,0\n     2    Bài tập 6-10 (tự thực hiện)                                                        4,0\n     3    Mã nguồn, giao diện, đặt tên và xử lý lỗi                                          0,5\n     4    Báo cáo kết quả và nộp đúng quy định                                               0,5"
+      }
+    ]
+  },
+  {
+    "number": 8,
+    "title": "SqlCommand, SqlParameter và các phương thức thực thi",
+    "chapter": 4,
+    "sections": [
+      {
+        "title": "1. Mục tiêu cần đạt được",
+        "text": "     Tạo và cấu hình SqlCommand.\n     Phân biệt ExecuteReader, ExecuteScalar và ExecuteNonQuery.\n     Sử dụng SqlParameter để tránh nối chuỗi SQL.\n     Gọi Stored Procedure có tham số."
+      },
+      {
+        "title": "2. Công cụ và dữ liệu chuẩn bị",
+        "text": "     SQL Server và CSDL QLSinhVien từ Lab 7.\n     Visual Studio 2022.\n     System.Data và System.Data.SqlClient."
+      },
+      {
+        "title": "3. Liên kết trong chuỗi bài lab",
+        "text": "Ngữ cảnh xuyên suốt: Thực hành thao tác trực tiếp với cơ sở dữ liệu theo mô hình kết nối. Các kỹ thuật này là\n    nền tảng cho chức năng đọc, tìm kiếm ở Lab 9 và CRUD ở Lab 11."
+      },
+      {
+        "title": "4. Chuẩn bị trước khi thực hành",
+        "text": "     Chạy lại script CSDL Lab 7.\n     Bổ sung ít nhất 10 sinh viên để thử lọc và thống kê.\n     Ôn kiểu dữ liệu SqlDbType và DBNull.Value."
+      },
+      {
+        "title": "5. Bài tập có hướng dẫn và code mẫu",
+        "text": "1. Đếm số sinh viên bằng ExecuteScalar\nYêu cầu: Lấy số lượng sinh viên và hiển thị trên Label.\nGợi ý triển khai: Chuyển giá trị object trả về sang int an toàn.\nCode mẫu\n     private int CountStudents()\n     {\n       using (SqlConnection conn = DbConnectionFactory.Create())\n       using (SqlCommand cmd = new SqlCommand(\"SELECT COUNT(*) FROM SinhVien\", conn))\n       {\n         conn.Open();\n         return Convert.ToInt32(cmd.ExecuteScalar());\n       }\n     }\n\n2. Đọc danh sách bằng ExecuteReader\nYêu cầu: Đọc MaSV, HoTen, DiemTB và hiển thị trong ListBox.\n\nGợi ý triển khai: SqlDataReader là forward-only, read-only.\nCode mẫu\n  using (SqlConnection conn = DbConnectionFactory.Create())\n  using (SqlCommand cmd = new SqlCommand(\n    \"SELECT MaSV, HoTen, DiemTB FROM SinhVien ORDER BY HoTen\", conn))\n  {\n    conn.Open();\n    using (SqlDataReader reader = cmd.ExecuteReader())\n    {\n      lstSinhVien.Items.Clear();\n      while (reader.Read())\n      {\n         string line = string.Format(\"{0} - {1} - {2:N2}\",\n            reader[\"MaSV\"], reader[\"HoTen\"], reader[\"DiemTB\"]);\n         lstSinhVien.Items.Add(line);\n      }\n    }\n  }\n\n3. Thêm sinh viên bằng ExecuteNonQuery\nYêu cầu: Thêm bản ghi bằng câu SQL tham số hóa và thông báo số dòng ảnh hưởng.\nGợi ý triển khai: Khai báo đúng kiểu và độ dài tham số.\nCode mẫu\n  string sql = @\"INSERT INTO SinhVien\n  (MaSV, HoTen, NgaySinh, GioiTinh, MaKhoa, DiemTB, Email)\n  VALUES (@MaSV, @HoTen, @NgaySinh, @GioiTinh, @MaKhoa, @DiemTB, @Email)\";\n  using (SqlConnection conn = DbConnectionFactory.Create())\n  using (SqlCommand cmd = new SqlCommand(sql, conn))\n  {\n     cmd.Parameters.Add(\"@MaSV\", SqlDbType.VarChar, 15).Value = txtMaSV.Text.Trim();\n     cmd.Parameters.Add(\"@HoTen\", SqlDbType.NVarChar, 100).Value = txtHoTen.Text.Trim();\n     cmd.Parameters.Add(\"@NgaySinh\", SqlDbType.Date).Value = dtpNgaySinh.Value.Date;\n     cmd.Parameters.Add(\"@GioiTinh\", SqlDbType.Bit).Value = radNam.Checked;\n     cmd.Parameters.Add(\"@MaKhoa\", SqlDbType.VarChar, 10).Value = cboKhoa.SelectedValue;\n     cmd.Parameters.Add(\"@DiemTB\", SqlDbType.Decimal).Value = decimal.Parse(txtDiemTB.Text);\n     cmd.Parameters.Add(\"@Email\", SqlDbType.VarChar, 100).Value =\n       string.IsNullOrWhiteSpace(txtEmail.Text) ? (object)DBNull.Value : txtEmail.Text;\n     conn.Open();\n     int rows = cmd.ExecuteNonQuery();\n     MessageBox.Show(\"Đã thêm \" + rows + \" bản ghi.\");\n  }\n\n4. Cập nhật điểm bằng tham số\nYêu cầu: Cập nhật DiemTB theo MaSV; báo không tìm thấy khi rows = 0.\nGợi ý triển khai: Không ghép mã sinh viên trực tiếp vào câu SQL.\nCode mẫu\n  string sql = \"UPDATE SinhVien SET DiemTB=@DiemTB WHERE MaSV=@MaSV\";\n  using (SqlConnection conn = DbConnectionFactory.Create())\n  using (SqlCommand cmd = new SqlCommand(sql, conn))\n  {\n     SqlParameter pDiem = cmd.Parameters.Add(\"@DiemTB\", SqlDbType.Decimal);\n     pDiem.Precision = 4; pDiem.Scale = 2;\n     pDiem.Value = decimal.Parse(txtDiemTB.Text);\n     cmd.Parameters.Add(\"@MaSV\", SqlDbType.VarChar, 15).Value = txtMaSV.Text.Trim();\n     conn.Open();\n     int rows = cmd.ExecuteNonQuery();\n     MessageBox.Show(rows == 1 ? \"Cập nhật thành công\" : \"Không tìm thấy mã\");\n  }\n\n5. Gọi Stored Procedure tìm sinh viên theo khoa\nYêu cầu: Tạo sp_SinhVien_TheoKhoa và gọi bằng CommandType.StoredProcedure.\n\nGợi ý triển khai: Tên tham số trong C# phải khớp thủ tục.\nCode mẫu\n    CREATE OR ALTER PROCEDURE sp_SinhVien_TheoKhoa\n      @MaKhoa VARCHAR(10)\n    AS\n    BEGIN\n      SET NOCOUNT ON;\n      SELECT MaSV, HoTen, NgaySinh, DiemTB\n      FROM SinhVien\n      WHERE MaKhoa = @MaKhoa\n      ORDER BY HoTen;\n    END;\n    GO\n\n    using (SqlCommand cmd = new SqlCommand(\"sp_SinhVien_TheoKhoa\", conn))\n    {\n      cmd.CommandType = CommandType.StoredProcedure;\n      cmd.Parameters.Add(\"@MaKhoa\", SqlDbType.VarChar, 10).Value = maKhoa;\n      conn.Open();\n      using (SqlDataReader reader = cmd.ExecuteReader()) { /* đọc dữ liệu */ }\n    }"
+      },
+      {
+        "title": "6. Bài tập tự thực hiện - không có code gợi ý",
+        "text": "6. Tìm sinh viên theo mã\nYêu cầu: Dùng ExecuteReader và SqlParameter; hiển thị chi tiết hoặc thông báo không tìm thấy.\n7. Thống kê điểm cao nhất\nYêu cầu: Dùng ExecuteScalar lấy MAX(DiemTB) theo khoa; xử lý trường hợp NULL.\n8. Xóa có xác nhận\nYêu cầu: Xóa sinh viên theo mã bằng ExecuteNonQuery; xử lý lỗi do khóa ngoại.\n9. Tham số đầu ra\nYêu cầu: Tạo Stored Procedure thêm sinh viên và trả số lượng sinh viên hiện tại qua OUTPUT parameter.\n10. Lớp SqlHelper tối giản\nYêu cầu: Đóng gói các thao tác ExecuteScalar, ExecuteNonQuery và ExecuteReader phù hợp, bảo đảm giải\nphóng tài nguyên."
+      },
+      {
+        "title": "7. Sản phẩm nộp",
+        "text": "    Thư mục mã nguồn Lab8 có thể build và chạy.\n    Ảnh chụp kết quả từng bài tập hoặc tệp báo cáo ngắn.\n    Tệp README.txt mô tả cách chạy, dữ liệu thử và phần đã hoàn thành."
+      },
+      {
+        "title": "8. Đánh giá",
+        "text": "STT                                   Nội dung đánh giá                                  Điểm\n     1    Bài tập 1-5 (có hướng dẫn)                                                         5,0\n     2    Bài tập 6-10 (tự thực hiện)                                                        4,0\n     3    Mã nguồn, giao diện, đặt tên và xử lý lỗi                                          0,5\n     4    Báo cáo kết quả và nộp đúng quy định                                               0,5"
+      }
+    ]
+  },
+  {
+    "number": 9,
+    "title": "Đọc, tìm kiếm và lọc dữ liệu bằng SqlDataReader",
+    "chapter": 4,
+    "sections": [
+      {
+        "title": "1. Mục tiêu cần đạt được",
+        "text": "     Đọc dữ liệu theo mô hình kết nối bằng SqlDataReader.\n     Hiển thị dữ liệu lên DataGridView bằng DataTable hoặc nạp thủ công.\n     Xây dựng tìm kiếm, lọc, sắp xếp và phân trang bằng SQL tham số hóa.\n     Đồng bộ dòng chọn với vùng thông tin chi tiết."
+      },
+      {
+        "title": "2. Công cụ và dữ liệu chuẩn bị",
+        "text": "     CSDL QLSinhVien.\n     Project Lab09_DataReaderSearch.\n     DataGridView, ComboBox, BindingSource."
+      },
+      {
+        "title": "3. Liên kết trong chuỗi bài lab",
+        "text": "Ngữ cảnh xuyên suốt: Tập trung chức năng tra cứu dữ liệu. Lab 10 sẽ triển khai mô hình ngắt kết nối bằng\n    DataAdapter, DataTable và DataSet."
+      },
+      {
+        "title": "4. Chuẩn bị trước khi thực hành",
+        "text": "     Bổ sung dữ liệu đủ lớn để có ít nhất 3 trang.\n     Tạo Form có vùng bộ lọc, DataGridView, vùng chi tiết và thanh trạng thái.\n     Ôn JOIN, LIKE, BETWEEN, ORDER BY và OFFSET-FETCH."
+      },
+      {
+        "title": "5. Bài tập có hướng dẫn và code mẫu",
+        "text": "1. Nạp SqlDataReader vào DataTable\nYêu cầu: Đọc danh sách sinh viên kèm tên khoa và hiển thị trên DataGridView.\nGợi ý triển khai: DataTable.Load(reader) giúp chuyển dữ liệu reader sang bảng bộ nhớ.\nCode mẫu\n    private DataTable LoadStudents()\n    {\n      string sql = @\"SELECT sv.MaSV, sv.HoTen, sv.NgaySinh,\n                   CASE sv.GioiTinh WHEN 1 THEN N'Nam' ELSE N'Nữ' END AS GioiTinh,\n                   k.TenKhoa, sv.DiemTB, sv.Email\n               FROM SinhVien sv JOIN Khoa k ON sv.MaKhoa=k.MaKhoa\";\n      DataTable table = new DataTable();\n      using (SqlConnection conn = DbConnectionFactory.Create())\n      using (SqlCommand cmd = new SqlCommand(sql, conn))\n      {\n         conn.Open();\n         using (SqlDataReader reader = cmd.ExecuteReader()) table.Load(reader);\n      }\n\n      return table;\n  }\n\n2. Tìm kiếm gần đúng theo họ tên\nYêu cầu: Tìm sinh viên có họ tên chứa từ khóa, không nối chuỗi SQL.\nGợi ý triển khai: Thêm ký tự % vào giá trị tham số.\nCode mẫu\n  private DataTable SearchByName(string keyword)\n  {\n    string sql = @\"SELECT MaSV, HoTen, MaKhoa, DiemTB\n             FROM SinhVien\n             WHERE HoTen LIKE @Keyword\n             ORDER BY HoTen\";\n    DataTable table = new DataTable();\n    using (SqlConnection conn = DbConnectionFactory.Create())\n    using (SqlCommand cmd = new SqlCommand(sql, conn))\n    {\n       cmd.Parameters.Add(\"@Keyword\", SqlDbType.NVarChar, 100).Value =\n         \"%\" + keyword.Trim() + \"%\";\n       conn.Open();\n       table.Load(cmd.ExecuteReader());\n    }\n    return table;\n  }\n\n3. Lọc theo khoa và khoảng điểm\nYêu cầu: Cho phép chọn khoa hoặc Tất cả, nhập điểm tối thiểu và tối đa.\nGợi ý triển khai: Xây câu SQL theo các bộ lọc nhưng mọi giá trị phải là parameter.\nCode mẫu\n  string sql = @\"SELECT MaSV, HoTen, MaKhoa, DiemTB\n             FROM SinhVien\n             WHERE DiemTB BETWEEN @Min AND @Max\";\n  if (!string.IsNullOrEmpty(maKhoa)) sql += \" AND MaKhoa=@MaKhoa\";\n  using (SqlCommand cmd = new SqlCommand(sql, conn))\n  {\n     cmd.Parameters.Add(\"@Min\", SqlDbType.Decimal).Value = min;\n     cmd.Parameters.Add(\"@Max\", SqlDbType.Decimal).Value = max;\n     if (!string.IsNullOrEmpty(maKhoa))\n        cmd.Parameters.Add(\"@MaKhoa\", SqlDbType.VarChar, 10).Value = maKhoa;\n     // Mở kết nối và đọc dữ liệu\n  }\n\n4. Phân trang bằng OFFSET-FETCH\nYêu cầu: Hiển thị mỗi trang 10 sinh viên; có nút Trước và Sau.\nGợi ý triển khai: ORDER BY là bắt buộc khi dùng OFFSET.\nCode mẫu\n  string sql = @\"SELECT MaSV, HoTen, MaKhoa, DiemTB\n           FROM SinhVien\n           ORDER BY MaSV\n           OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY\";\n  cmd.Parameters.Add(\"@Offset\", SqlDbType.Int).Value = (pageIndex - 1) * pageSize;\n  cmd.Parameters.Add(\"@PageSize\", SqlDbType.Int).Value = pageSize;\n\n5. Hiển thị chi tiết dòng được chọn\nYêu cầu: Khi chọn một dòng DataGridView, đưa dữ liệu lên các control chi tiết.\nGợi ý triển khai: Kiểm tra CurrentRow và giá trị DBNull.\nCode mẫu\n  private void dgvSinhVien_SelectionChanged(object sender, EventArgs e)\n  {\n    if (dgvSinhVien.CurrentRow == null) return;\n\n        DataGridViewRow row = dgvSinhVien.CurrentRow;\n        txtMaSV.Text = Convert.ToString(row.Cells[\"MaSV\"].Value);\n        txtHoTen.Text = Convert.ToString(row.Cells[\"HoTen\"].Value);\n        txtDiemTB.Text = Convert.ToString(row.Cells[\"DiemTB\"].Value);\n        lblTrangThai.Text = \"Đang chọn: \" + txtMaSV.Text;\n    }"
+      },
+      {
+        "title": "6. Bài tập tự thực hiện - không có code gợi ý",
+        "text": "6. Tìm kiếm đa tiêu chí\nYêu cầu: Kết hợp mã, họ tên, khoa, giới tính và khoảng điểm; cho phép bỏ trống từng tiêu chí.\n7. Sắp xếp theo lựa chọn\nYêu cầu: Cho phép chọn cột và chiều tăng/giảm; chỉ sử dụng danh sách cột hợp lệ, không truyền tên cột bằng\nSqlParameter.\n8. Lọc theo tuổi\nYêu cầu: Tìm sinh viên trong khoảng tuổi; xử lý ngày sinh chính xác.\n9. Định dạng DataGridView\nYêu cầu: Định dạng ngày, điểm, tiêu đề; tô màu sinh viên có điểm dưới 5 và từ 8 trở lên.\n10. Xuất kết quả tìm kiếm\nYêu cầu: Xuất đúng tập dữ liệu đang hiển thị ra CSV, hỗ trợ tiếng Việt UTF-8."
+      },
+      {
+        "title": "7. Sản phẩm nộp",
+        "text": "       Thư mục mã nguồn Lab9 có thể build và chạy.\n       Ảnh chụp kết quả từng bài tập hoặc tệp báo cáo ngắn.\n       Tệp README.txt mô tả cách chạy, dữ liệu thử và phần đã hoàn thành."
+      },
+      {
+        "title": "8. Đánh giá",
+        "text": "STT                                   Nội dung đánh giá                                  Điểm\n     1    Bài tập 1-5 (có hướng dẫn)                                                         5,0\n     2    Bài tập 6-10 (tự thực hiện)                                                        4,0\n     3    Mã nguồn, giao diện, đặt tên và xử lý lỗi                                          0,5\n     4    Báo cáo kết quả và nộp đúng quy định                                               0,5"
+      }
+    ]
+  },
+  {
+    "number": 10,
+    "title": "DataAdapter, DataTable, DataSet và dữ liệu ngắt kết nối",
+    "chapter": 4,
+    "sections": [
+      {
+        "title": "1. Mục tiêu cần đạt được",
+        "text": "     Sử dụng SqlDataAdapter để Fill DataTable và DataSet.\n     Tạo và thao tác DataTable, DataRow, DataColumn trong bộ nhớ.\n     Thiết lập DataRelation giữa các bảng.\n     Lọc, sắp xếp bằng DataView và cập nhật dữ liệu qua DataAdapter."
+      },
+      {
+        "title": "2. Công cụ và dữ liệu chuẩn bị",
+        "text": "     CSDL QLSinhVien.\n     Project Lab10_DisconnectedData.\n     System.Data, SqlDataAdapter và SqlCommandBuilder."
+      },
+      {
+        "title": "3. Liên kết trong chuỗi bài lab",
+        "text": "Ngữ cảnh xuyên suốt: Chuyển từ đọc tuần tự bằng DataReader sang mô hình ngắt kết nối. DataSet nhiều bảng\n    sẽ được dùng cho master-detail và báo cáo ở các lab tiếp theo."
+      },
+      {
+        "title": "4. Chuẩn bị trước khi thực hành",
+        "text": "     Ôn mô hình connected và disconnected ADO.NET.\n     Tạo Form có hai DataGridView Khoa và SinhVien.\n     Sao lưu database trước khi thử cập nhật trực tiếp."
+      },
+      {
+        "title": "5. Bài tập có hướng dẫn và code mẫu",
+        "text": "1. Fill DataTable bằng SqlDataAdapter\nYêu cầu: Nạp bảng SinhVien vào DataTable và gán DataGridView.\nGợi ý triển khai: Adapter tự mở và đóng kết nối khi Fill nếu kết nối đang đóng.\nCode mẫu\n    private DataTable GetStudentTable()\n    {\n      DataTable table = new DataTable(\"SinhVien\");\n      using (SqlConnection conn = DbConnectionFactory.Create())\n      using (SqlDataAdapter adapter = new SqlDataAdapter(\n        \"SELECT * FROM SinhVien ORDER BY MaSV\", conn))\n      {\n        adapter.Fill(table);\n      }\n      return table;\n    }\n\n2. DataSet chứa nhiều bảng\nYêu cầu: Nạp Khoa và SinhVien vào cùng DataSet với tên bảng rõ ràng.\nGợi ý triển khai: Tên bảng giúp truy cập ổn định hơn chỉ số 0,1.\nCode mẫu\n  DataSet ds = new DataSet(\"QLSinhVien\");\n  using (SqlConnection conn = DbConnectionFactory.Create())\n  {\n    new SqlDataAdapter(\"SELECT * FROM Khoa\", conn).Fill(ds, \"Khoa\");\n    new SqlDataAdapter(\"SELECT * FROM SinhVien\", conn).Fill(ds, \"SinhVien\");\n  }\n  dgvKhoa.DataSource = ds.Tables[\"Khoa\"];\n  dgvSinhVien.DataSource = ds.Tables[\"SinhVien\"];\n\n3. Thiết lập DataRelation Khoa - SinhVien\nYêu cầu: Tạo quan hệ giữa MaKhoa của hai DataTable và lấy các dòng con.\nGợi ý triển khai: Dữ liệu phải bảo đảm toàn vẹn khóa trước khi tạo quan hệ.\nCode mẫu\n  DataRelation relation = new DataRelation(\n    \"FK_Khoa_SinhVien\",\n    ds.Tables[\"Khoa\"].Columns[\"MaKhoa\"],\n    ds.Tables[\"SinhVien\"].Columns[\"MaKhoa\"]);\n  ds.Relations.Add(relation);\n\n  DataRow khoa = ds.Tables[\"Khoa\"].Rows[0];\n  DataRow[] sinhVien = khoa.GetChildRows(\"FK_Khoa_SinhVien\");\n  foreach (DataRow row in sinhVien)\n    Console.WriteLine(row[\"HoTen\"]);\n\n4. Lọc và sắp xếp bằng DataView\nYêu cầu: Lọc sinh viên theo khoa và điểm tối thiểu mà không truy vấn lại CSDL.\nGợi ý triển khai: Escape dấu nháy trong giá trị chuỗi khi tạo RowFilter.\nCode mẫu\n  DataView view = new DataView(ds.Tables[\"SinhVien\"]);\n  string maKhoa = cboKhoa.SelectedValue.ToString().Replace(\"'\", \"''\");\n  view.RowFilter = string.Format(\"MaKhoa = '{0}' AND DiemTB >= {1}\",\n     maKhoa, numMinDiem.Value.ToString(System.Globalization.CultureInfo.InvariantCulture));\n  view.Sort = \"DiemTB DESC, HoTen ASC\";\n  dgvSinhVien.DataSource = view;\n\n5. Cập nhật bằng SqlCommandBuilder\nYêu cầu: Cho phép sửa dữ liệu trực tiếp trên DataGridView và gửi thay đổi về CSDL.\nGợi ý triển khai: Câu SELECT phải trả khóa chính; dùng command builder cho bài tập cơ bản.\nCode mẫu\n  private SqlDataAdapter _adapter;\n  private DataTable _table;\n\n  private void LoadData()\n  {\n    SqlConnection conn = DbConnectionFactory.Create();\n    _adapter = new SqlDataAdapter(\"SELECT * FROM SinhVien\", conn);\n    new SqlCommandBuilder(_adapter);\n    _table = new DataTable();\n    _adapter.Fill(_table);\n    dgvSinhVien.DataSource = _table;\n  }\n\n  private void btnLuu_Click(object sender, EventArgs e)\n  {\n    dgvSinhVien.EndEdit();\n\n        int rows = _adapter.Update(_table);\n        MessageBox.Show(\"Đã cập nhật \" + rows + \" thay đổi.\");\n    }"
+      },
+      {
+        "title": "6. Bài tập tự thực hiện - không có code gợi ý",
+        "text": "6. Tạo DataTable thủ công\nYêu cầu: Tạo bảng điểm gồm cột mã, họ tên, điểm; thêm cột tính XếpLoai bằng biểu thức hoặc code.\n7. Theo dõi RowState\nYêu cầu: Hiển thị các dòng Added, Modified, Deleted trước khi gọi Update; dùng GetChanges().\n8. AcceptChanges và RejectChanges\nYêu cầu: Tạo nút Chấp nhận thay đổi cục bộ và Hoàn tác; giải thích ảnh hưởng tới Update.\n9. Lưu và đọc DataSet XML\nYêu cầu: Ghi DataSet ra XML kèm schema, đóng ứng dụng và đọc lại không cần kết nối CSDL.\n10. Hợp nhất dữ liệu\nYêu cầu: Tạo hai DataTable sinh viên từ hai nguồn và dùng Merge, xử lý trùng khóa."
+      },
+      {
+        "title": "7. Sản phẩm nộp",
+        "text": "       Thư mục mã nguồn Lab10 có thể build và chạy.\n       Ảnh chụp kết quả từng bài tập hoặc tệp báo cáo ngắn.\n       Tệp README.txt mô tả cách chạy, dữ liệu thử và phần đã hoàn thành."
+      },
+      {
+        "title": "8. Đánh giá",
+        "text": "STT                                   Nội dung đánh giá                                  Điểm\n     1    Bài tập 1-5 (có hướng dẫn)                                                         5,0\n     2    Bài tập 6-10 (tự thực hiện)                                                        4,0\n     3    Mã nguồn, giao diện, đặt tên và xử lý lỗi                                          0,5\n     4    Báo cáo kết quả và nộp đúng quy định                                               0,5"
+      }
+    ]
+  },
+  {
+    "number": 11,
+    "title": "CRUD tham số hóa và stored procedure",
+    "chapter": 4,
+    "sections": [
+      {
+        "title": "1. Mục tiêu cần đạt được",
+        "text": "     Xây dựng đầy đủ các Stored Procedure CRUD.\n     Cài đặt tầng DAL bằng SqlCommand và tham số hóa.\n     Kiểm tra nghiệp vụ ở tầng BUS.\n     Kết nối chức năng Thêm - Sửa - Xóa - Làm mới trên WinForms."
+      },
+      {
+        "title": "2. Công cụ và dữ liệu chuẩn bị",
+        "text": "     CSDL QLSinhVien.\n     Project Lab11_CRUD_StoredProcedure theo kiến trúc GUI-BUS-DAL.\n     SQL Server Management Studio."
+      },
+      {
+        "title": "3. Liên kết trong chuỗi bài lab",
+        "text": "Ngữ cảnh xuyên suốt: Hoàn thiện CRUD sinh viên theo mô hình 3 lớp. Lab 12 sẽ mở rộng quan hệ master-\n    detail và các giao dịch nhiều bước."
+      },
+      {
+        "title": "4. Chuẩn bị trước khi thực hành",
+        "text": "     Tổ chức solution thành DTO, DAL, BUS và GUI hoặc namespace tương ứng.\n     Tạo lớp SinhVienDTO không tham chiếu WinForms.\n     Sao lưu database trước khi tạo và sửa Stored Procedure."
+      },
+      {
+        "title": "5. Bài tập có hướng dẫn và code mẫu",
+        "text": "1. Tạo Stored Procedure thêm sinh viên\nYêu cầu: Tạo sp_SinhVien_Insert có kiểm tra trùng mã và trả mã lỗi phù hợp.\nGợi ý triển khai: Dùng THROW để truyền lỗi nghiệp vụ về ứng dụng.\nCode mẫu\n    CREATE OR ALTER PROCEDURE sp_SinhVien_Insert\n      @MaSV VARCHAR(15), @HoTen NVARCHAR(100), @NgaySinh DATE,\n      @GioiTinh BIT, @MaKhoa VARCHAR(10), @DiemTB DECIMAL(4,2),\n      @Email VARCHAR(100) = NULL\n    AS\n    BEGIN\n      SET NOCOUNT ON;\n      IF EXISTS (SELECT 1 FROM SinhVien WHERE MaSV=@MaSV)\n        THROW 50001, N'Mã sinh viên đã tồn tại.', 1;\n\n      INSERT INTO SinhVien(MaSV,HoTen,NgaySinh,GioiTinh,MaKhoa,DiemTB,Email)\n      VALUES(@MaSV,@HoTen,@NgaySinh,@GioiTinh,@MaKhoa,@DiemTB,@Email);\n    END;\n\n  GO\n\n2. Stored Procedure cập nhật và xóa\nYêu cầu: Tạo sp_SinhVien_Update, sp_SinhVien_Delete; báo lỗi khi mã không tồn tại.\nGợi ý triển khai: Không thay đổi khóa chính trong thủ tục cập nhật.\nCode mẫu\n  CREATE OR ALTER PROCEDURE sp_SinhVien_Update\n    @MaSV VARCHAR(15), @HoTen NVARCHAR(100), @NgaySinh DATE,\n    @GioiTinh BIT, @MaKhoa VARCHAR(10), @DiemTB DECIMAL(4,2),\n    @Email VARCHAR(100) = NULL\n  AS\n  BEGIN\n    UPDATE SinhVien SET HoTen=@HoTen, NgaySinh=@NgaySinh,\n      GioiTinh=@GioiTinh, MaKhoa=@MaKhoa, DiemTB=@DiemTB, Email=@Email\n    WHERE MaSV=@MaSV;\n    IF @@ROWCOUNT=0 THROW 50002, N'Không tìm thấy sinh viên.', 1;\n  END;\n  GO\n\n  CREATE OR ALTER PROCEDURE sp_SinhVien_Delete @MaSV VARCHAR(15)\n  AS\n  BEGIN\n    DELETE FROM SinhVien WHERE MaSV=@MaSV;\n    IF @@ROWCOUNT=0 THROW 50002, N'Không tìm thấy sinh viên.', 1;\n  END;\n  GO\n\n3. Tầng DAL gọi Stored Procedure\nYêu cầu: Viết Insert(SinhVienDTO dto) và trả số dòng ảnh hưởng.\nGợi ý triển khai: Dùng CommandType.StoredProcedure và using cho tài nguyên.\nCode mẫu\n  public int Insert(SinhVienDTO dto)\n  {\n    using (SqlConnection conn = DbConnectionFactory.Create())\n    using (SqlCommand cmd = new SqlCommand(\"sp_SinhVien_Insert\", conn))\n    {\n      cmd.CommandType = CommandType.StoredProcedure;\n      cmd.Parameters.Add(\"@MaSV\", SqlDbType.VarChar, 15).Value = dto.MaSV;\n      cmd.Parameters.Add(\"@HoTen\", SqlDbType.NVarChar, 100).Value = dto.HoTen;\n      cmd.Parameters.Add(\"@NgaySinh\", SqlDbType.Date).Value = dto.NgaySinh;\n      cmd.Parameters.Add(\"@GioiTinh\", SqlDbType.Bit).Value = dto.GioiTinh;\n      cmd.Parameters.Add(\"@MaKhoa\", SqlDbType.VarChar, 10).Value = dto.MaKhoa;\n      cmd.Parameters.Add(\"@DiemTB\", SqlDbType.Decimal).Value = dto.DiemTB;\n      cmd.Parameters.Add(\"@Email\", SqlDbType.VarChar, 100).Value =\n         string.IsNullOrWhiteSpace(dto.Email) ? (object)DBNull.Value : dto.Email;\n      conn.Open();\n      return cmd.ExecuteNonQuery();\n    }\n  }\n\n4. Tầng BUS kiểm tra nghiệp vụ\nYêu cầu: Kiểm tra mã, họ tên, tuổi, điểm và email trước khi gọi DAL.\nGợi ý triển khai: BUS trả thông báo rõ ràng, không phụ thuộc control WinForms.\nCode mẫu\n  public void Add(SinhVienDTO dto)\n  {\n    if (string.IsNullOrWhiteSpace(dto.MaSV))\n       throw new ArgumentException(\"Mã sinh viên không được rỗng.\");\n    if (string.IsNullOrWhiteSpace(dto.HoTen))\n       throw new ArgumentException(\"Họ tên không được rỗng.\");\n    if (dto.NgaySinh > DateTime.Today.AddYears(-15))\n\n           throw new ArgumentException(\"Tuổi sinh viên chưa hợp lệ.\");\n        if (dto.DiemTB < 0 || dto.DiemTB > 10)\n           throw new ArgumentException(\"Điểm phải thuộc [0,10].\");\n        _dal.Insert(dto);\n    }\n\n5. Kết nối CRUD trên Form\nYêu cầu: Nút Thêm lấy dữ liệu từ control, gọi BUS, tải lại DataGridView và xử lý lỗi.\nGợi ý triển khai: Không viết SQL trong Form.\nCode mẫu\n    private void btnThem_Click(object sender, EventArgs e)\n    {\n      try\n      {\n        SinhVienDTO dto = new SinhVienDTO\n        {\n           MaSV = txtMaSV.Text.Trim(),\n           HoTen = txtHoTen.Text.Trim(),\n           NgaySinh = dtpNgaySinh.Value.Date,\n           GioiTinh = radNam.Checked,\n           MaKhoa = cboKhoa.SelectedValue.ToString(),\n           DiemTB = decimal.Parse(txtDiemTB.Text),\n           Email = txtEmail.Text.Trim()\n        };\n        _bus.Add(dto);\n        LoadStudents();\n        MessageBox.Show(\"Thêm thành công.\");\n      }\n      catch (Exception ex)\n      {\n        MessageBox.Show(ex.Message, \"Lỗi\", MessageBoxButtons.OK, MessageBoxIcon.Error);\n      }\n    }"
+      },
+      {
+        "title": "6. Bài tập tự thực hiện - không có code gợi ý",
+        "text": "6. CRUD bảng Khoa\nYêu cầu: Tạo Stored Procedure và giao diện CRUD khoa; không cho xóa khoa đang có sinh viên.\n7. Tìm kiếm bằng Stored Procedure\nYêu cầu: Tạo thủ tục tìm theo từ khóa và khoa; trả tất cả khi tham số rỗng.\n8. Kiểm tra email duy nhất\nYêu cầu: Bổ sung nghiệp vụ và ràng buộc CSDL bảo đảm email không trùng.\n9. Xóa mềm sinh viên\nYêu cầu: Thêm cột IsActive; thay xóa vật lý bằng cập nhật trạng thái và lọc danh sách đang hoạt động.\n10. Chuẩn hóa xử lý lỗi\nYêu cầu: Phân biệt lỗi nghiệp vụ, lỗi SQL và lỗi nhập liệu; thông báo thân thiện, ghi chi tiết cho lập trình\nviên."
+      },
+      {
+        "title": "7. Sản phẩm nộp",
+        "text": "       Thư mục mã nguồn Lab11 có thể build và chạy.\n       Ảnh chụp kết quả từng bài tập hoặc tệp báo cáo ngắn.\n       Tệp README.txt mô tả cách chạy, dữ liệu thử và phần đã hoàn thành."
+      },
+      {
+        "title": "8. Đánh giá",
+        "text": "STT                                   Nội dung đánh giá                                  Điểm\n     1    Bài tập 1-5 (có hướng dẫn)                                                         5,0\n     2    Bài tập 6-10 (tự thực hiện)                                                        4,0\n     3    Mã nguồn, giao diện, đặt tên và xử lý lỗi                                          0,5\n     4    Báo cáo kết quả và nộp đúng quy định                                               0,5"
+      }
+    ]
+  },
+  {
+    "number": 12,
+    "title": "Master-detail, transaction và hoàn thiện mô hình ba lớp",
+    "chapter": 4,
+    "sections": [
+      {
+        "title": "1. Mục tiêu cần đạt được",
+        "text": "     Xây dựng giao diện master-detail giữa Khoa - SinhVien hoặc SinhVien - DangKy.\n     Thực hiện nhiều câu lệnh trong SqlTransaction.\n     Rollback khi một bước thất bại.\n     Hoàn thiện luồng GUI - BUS - DAL cho chức năng liên quan nhiều bảng."
+      },
+      {
+        "title": "2. Công cụ và dữ liệu chuẩn bị",
+        "text": "     CSDL QLSinhVien.\n     Project Lab12_MasterDetail_Transaction.\n     DataGridView, BindingSource, SqlTransaction."
+      },
+      {
+        "title": "3. Liên kết trong chuỗi bài lab",
+        "text": "Ngữ cảnh xuyên suốt: Đây là lab kết thúc Chương 4. Kết quả là ứng dụng quản lý dữ liệu nhiều bảng ổn định,\n    sẵn sàng cấp dữ liệu cho Crystal Report ở Lab 13."
+      },
+      {
+        "title": "4. Chuẩn bị trước khi thực hành",
+        "text": "     Hoàn thiện CRUD từ Lab 11.\n     Tạo thêm dữ liệu HocPhan và DangKy.\n     Sao lưu database để thử rollback và xung đột."
+      },
+      {
+        "title": "5. Bài tập có hướng dẫn và code mẫu",
+        "text": "1. Giao diện master-detail Khoa - SinhVien\nYêu cầu: Khi chọn một khoa ở lưới trên, lưới dưới chỉ hiển thị sinh viên thuộc khoa đó.\nGợi ý triển khai: Tải danh sách con bằng truy vấn tham số hoặc BindingSource quan hệ.\nCode mẫu\n     private void dgvKhoa_SelectionChanged(object sender, EventArgs e)\n     {\n       if (dgvKhoa.CurrentRow == null) return;\n       string maKhoa = Convert.ToString(dgvKhoa.CurrentRow.Cells[\"MaKhoa\"].Value);\n       dgvSinhVien.DataSource = _sinhVienBus.GetByDepartment(maKhoa);\n       lblChiTiet.Text = \"Sinh viên thuộc khoa: \" + maKhoa;\n     }\n\n2. Master-detail SinhVien - Đăng ký học phần\nYêu cầu: Hiển thị các học phần đã đăng ký khi chọn sinh viên; cho phép thêm đăng ký.\nGợi ý triển khai: Dùng JOIN để hiển thị tên học phần.\nCode mẫu\n\n  SELECT dk.MaSV, dk.MaHP, hp.TenHP, hp.SoTinChi, dk.HocKy, dk.Diem\n  FROM DangKy dk\n  JOIN HocPhan hp ON dk.MaHP = hp.MaHP\n  WHERE dk.MaSV = @MaSV\n  ORDER BY dk.HocKy, hp.TenHP;\n\n3. Transaction thêm sinh viên và đăng ký\nYêu cầu: Trong một giao dịch, thêm sinh viên rồi thêm danh sách học phần đăng ký ban đầu.\nGợi ý triển khai: Gán cùng Connection và Transaction cho mọi SqlCommand.\nCode mẫu\n  using (SqlConnection conn = DbConnectionFactory.Create())\n  {\n    conn.Open();\n    SqlTransaction tx = conn.BeginTransaction();\n    try\n    {\n      using (SqlCommand cmdSv = new SqlCommand(sqlInsertSinhVien, conn, tx))\n      {\n         // Thêm tham số sinh viên\n         cmdSv.ExecuteNonQuery();\n      }\n      foreach (DangKyDTO dk in danhSachDangKy)\n      {\n         using (SqlCommand cmdDk = new SqlCommand(sqlInsertDangKy, conn, tx))\n         {\n            cmdDk.Parameters.Add(\"@MaSV\", SqlDbType.VarChar, 15).Value = dto.MaSV;\n            cmdDk.Parameters.Add(\"@MaHP\", SqlDbType.VarChar, 10).Value = dk.MaHP;\n            cmdDk.Parameters.Add(\"@HocKy\", SqlDbType.Int).Value = dk.HocKy;\n            cmdDk.ExecuteNonQuery();\n         }\n      }\n      tx.Commit();\n    }\n    catch\n    {\n      tx.Rollback();\n      throw;\n    }\n  }\n\n4. Mô phỏng lỗi và kiểm chứng Rollback\nYêu cầu: Cố ý thêm một mã học phần không tồn tại trong bước thứ hai; xác nhận sinh viên cũng không được\nlưu.\nGợi ý triển khai: Ghi lại số bản ghi trước và sau khi chạy thử.\nCode mẫu\n  try\n  {\n     _bus.AddStudentWithEnrollments(dto, dsDangKyCoMotMaSai);\n  }\n  catch (SqlException ex)\n  {\n     MessageBox.Show(\"Giao dịch thất bại và đã hoàn tác.\\n\" + ex.Message);\n  }\n  // Sau đó SELECT lại SinhVien theo MaSV để chứng minh không có dữ liệu dở dang.\n\n5. Hoàn thiện lớp DAL dùng transaction\nYêu cầu: Cho phép các phương thức DAL nhận SqlConnection và SqlTransaction từ bên ngoài khi tham gia\ngiao dịch.\nGợi ý triển khai: BUS điều phối nghiệp vụ; DAL chỉ thực thi dữ liệu.\nCode mẫu\n\n    public void InsertEnrollment(DangKyDTO dto,\n      SqlConnection conn, SqlTransaction tx)\n    {\n      const string sql = @\"INSERT INTO DangKy(MaSV,MaHP,HocKy,Diem)\n                  VALUES(@MaSV,@MaHP,@HocKy,@Diem)\";\n      using (SqlCommand cmd = new SqlCommand(sql, conn, tx))\n      {\n        cmd.Parameters.Add(\"@MaSV\", SqlDbType.VarChar, 15).Value = dto.MaSV;\n        cmd.Parameters.Add(\"@MaHP\", SqlDbType.VarChar, 10).Value = dto.MaHP;\n        cmd.Parameters.Add(\"@HocKy\", SqlDbType.Int).Value = dto.HocKy;\n        cmd.Parameters.Add(\"@Diem\", SqlDbType.Decimal).Value =\n           dto.Diem.HasValue ? (object)dto.Diem.Value : DBNull.Value;\n        cmd.ExecuteNonQuery();\n      }\n    }"
+      },
+      {
+        "title": "6. Bài tập tự thực hiện - không có code gợi ý",
+        "text": "6. Chuyển sinh viên sang khoa khác\nYêu cầu: Dùng transaction cập nhật MaKhoa và ghi lịch sử chuyển khoa vào bảng LichSuChuyenKhoa.\n7. Xóa khoa an toàn\nYêu cầu: Trong transaction, chuyển hoặc xóa các dữ liệu liên quan theo chính sách đã xác định; không để dữ\nliệu mồ côi.\n8. Cập nhật điểm hàng loạt\nYêu cầu: Cập nhật điểm của nhiều đăng ký; nếu một điểm ngoài [0,10] thì rollback toàn bộ.\n9. Kiểm soát xung đột cập nhật\nYêu cầu: Thêm cột RowVersion và phát hiện khi bản ghi đã bị người khác sửa.\n10. Hoàn thiện chức năng CSDL\nYêu cầu: Kết hợp CRUD SinhVien, Khoa, HocPhan, DangKy; master-detail; tìm kiếm; transaction trong\nsolution 3 lớp."
+      },
+      {
+        "title": "7. Sản phẩm nộp",
+        "text": "    Thư mục mã nguồn Lab12 có thể build và chạy.\n    Ảnh chụp kết quả từng bài tập hoặc tệp báo cáo ngắn.\n    Tệp README.txt mô tả cách chạy, dữ liệu thử và phần đã hoàn thành."
+      },
+      {
+        "title": "8. Đánh giá",
+        "text": "STT                                   Nội dung đánh giá                                  Điểm\n     1    Bài tập 1-5 (có hướng dẫn)                                                         5,0\n     2    Bài tập 6-10 (tự thực hiện)                                                        4,0\n     3    Mã nguồn, giao diện, đặt tên và xử lý lỗi                                          0,5\n     4    Báo cáo kết quả và nộp đúng quy định                                               0,5"
+      }
+    ]
+  },
+  {
+    "number": 13,
+    "title": "Tạo báo cáo cơ bản bằng Crystal Reports",
+    "chapter": 5,
+    "sections": [
+      {
+        "title": "1. Mục tiêu cần đạt được",
+        "text": "     Cài đặt và cấu hình Crystal Reports cho Visual Studio.\n     Tạo nguồn dữ liệu DataSet cho báo cáo.\n     Thiết kế báo cáo danh sách sinh viên cơ bản.\n     Hiển thị báo cáo trong CrystalReportViewer và xuất PDF."
+      },
+      {
+        "title": "2. Công cụ và dữ liệu chuẩn bị",
+        "text": "     Visual Studio tương thích SAP Crystal Reports.\n     SAP Crystal Reports for Visual Studio và runtime phù hợp.\n     CSDL QLSinhVien và project Lab13_CrystalReport.\n     CrystalReportViewer."
+      },
+      {
+        "title": "3. Liên kết trong chuỗi bài lab",
+        "text": "Ngữ cảnh xuyên suốt: Sử dụng dữ liệu của ứng dụng quản lý sinh viên đã hoàn thiện ở Lab 12. Lab 14 sẽ bổ\n    sung tham số, nhóm, thống kê và xuất Excel."
+      },
+      {
+        "title": "4. Chuẩn bị trước khi thực hành",
+        "text": "     Cài Crystal Reports và runtime trước buổi học.\n     Kiểm tra project ở nền tảng x86 hoặc x64 phù hợp.\n     Chuẩn bị tiêu đề cá nhân HoangTN và dữ liệu tối thiểu 20 sinh viên."
+      },
+      {
+        "title": "5. Bài tập có hướng dẫn và code mẫu",
+        "text": "1. Kiểm tra môi trường Crystal Reports\nYêu cầu: Xác nhận project có mục Crystal Report và có thể kéo CrystalReportViewer lên Form.\nGợi ý triển khai: Chọn đúng kiến trúc x86/x64 tương thích runtime.\nCode mẫu\n    // Kiểm tra các namespace sau được nhận diện sau khi cài đặt:\n    using CrystalDecisions.CrystalReports.Engine;\n    using CrystalDecisions.Shared;\n    using CrystalDecisions.Windows.Forms;\n\n2. Tạo truy vấn nguồn báo cáo\nYêu cầu: Tạo view vw_BaoCaoSinhVien chứa sinh viên và tên khoa.\nGợi ý triển khai: View giúp báo cáo dùng nguồn dữ liệu ổn định.\nCode mẫu\n    CREATE OR ALTER VIEW vw_BaoCaoSinhVien\n    AS\n\n  SELECT sv.MaSV, sv.HoTen, sv.NgaySinh,\n     CASE sv.GioiTinh WHEN 1 THEN N'Nam' ELSE N'Nữ' END AS GioiTinh,\n     k.MaKhoa, k.TenKhoa, sv.DiemTB, sv.Email\n  FROM SinhVien sv\n  JOIN Khoa k ON sv.MaKhoa = k.MaKhoa;\n  GO\n\n3. Tạo DataTable cho báo cáo\nYêu cầu: Viết hàm lấy dữ liệu từ view để làm nguồn cho báo cáo.\nGợi ý triển khai: Tên cột phải khớp thiết kế Crystal Report.\nCode mẫu\n  public DataTable GetStudentReportData()\n  {\n    DataTable table = new DataTable(\"SinhVienReport\");\n    using (SqlConnection conn = DbConnectionFactory.Create())\n    using (SqlDataAdapter adapter = new SqlDataAdapter(\n      \"SELECT * FROM vw_BaoCaoSinhVien ORDER BY TenKhoa, HoTen\", conn))\n    {\n      adapter.Fill(table);\n    }\n    return table;\n  }\n\n4. Hiển thị báo cáo trên CrystalReportViewer\nYêu cầu: Nạp DataTable vào report .rpt và hiển thị trong frmBaoCaoSinhVien.\nGợi ý triển khai: Tên lớp report thay đổi theo tên tệp .rpt trong project.\nCode mẫu\n  private ReportDocument _report;\n\n  private void frmBaoCaoSinhVien_Load(object sender, EventArgs e)\n  {\n    DataTable data = new BaoCaoDAL().GetStudentReportData();\n    _report = new CrystalReportSinhVien();\n    _report.SetDataSource(data);\n    crystalReportViewer1.ReportSource = _report;\n    crystalReportViewer1.Refresh();\n  }\n\n  protected override void OnFormClosed(FormClosedEventArgs e)\n  {\n    if (_report != null) { _report.Close(); _report.Dispose(); }\n    base.OnFormClosed(e);\n  }\n\n5. Xuất báo cáo ra PDF\nYêu cầu: Cho phép người dùng chọn vị trí lưu và xuất báo cáo hiện tại sang PDF.\nGợi ý triển khai: Báo cáo phải được SetDataSource trước khi xuất.\nCode mẫu\n  private void btnXuatPdf_Click(object sender, EventArgs e)\n  {\n    using (SaveFileDialog dlg = new SaveFileDialog())\n    {\n      dlg.Filter = \"PDF file|*.pdf\";\n      dlg.FileName = \"DanhSachSinhVien.pdf\";\n      if (dlg.ShowDialog() == DialogResult.OK)\n      {\n         _report.ExportToDisk(ExportFormatType.PortableDocFormat, dlg.FileName);\n         MessageBox.Show(\"Đã xuất báo cáo.\");\n      }\n    }\n  }"
+      },
+      {
+        "title": "6. Bài tập tự thực hiện - không có code gợi ý",
+        "text": "6. Báo cáo danh sách khoa\nYêu cầu: Tạo report danh sách khoa kèm số lượng sinh viên.\n7. Định dạng báo cáo\nYêu cầu: Bổ sung tiêu đề, logo, ngày lập, số trang, đường kẻ và định dạng ngày/điểm.\n8. Báo cáo danh sách học phần\nYêu cầu: Tạo report học phần gồm mã, tên, số tín chỉ; sắp xếp theo tên.\n9. Tích hợp menu Báo cáo\nYêu cầu: Từ frmMain mở các Form báo cáo, tránh mở trùng và giải phóng ReportDocument đúng cách.\n10. Kiểm thử in và xuất\nYêu cầu: Kiểm tra xem trước, in, xuất PDF trên máy khác hoặc cấu hình runtime khác."
+      },
+      {
+        "title": "7. Sản phẩm nộp",
+        "text": "   Project có tệp .rpt và Form CrystalReportViewer chạy được.\n   Tệp PDF mẫu xuất từ báo cáo.\n   Ảnh chụp thiết kế report và báo cáo khi chạy.\n   README ghi phiên bản Crystal Reports/runtime đã sử dụng."
+      },
+      {
+        "title": "8. Đánh giá",
+        "text": "STT                                   Nội dung đánh giá                                  Điểm\n     1    Bài tập 1-5 (có hướng dẫn)                                                         5,0\n     2    Bài tập 6-10 (tự thực hiện)                                                        4,0\n     3    Mã nguồn, giao diện, đặt tên và xử lý lỗi                                          0,5\n     4    Báo cáo kết quả và nộp đúng quy định                                               0,5"
+      }
+    ]
+  },
+  {
+    "number": 14,
+    "title": "Báo cáo tham số, nhóm, thống kê và xuất Excel",
+    "chapter": 5,
+    "sections": [
+      {
+        "title": "1. Mục tiêu cần đạt được",
+        "text": "     Truyền tham số vào Crystal Report.\n     Nhóm dữ liệu, tạo tổng hợp và công thức trên báo cáo.\n     Thiết kế báo cáo theo khoa, khoảng điểm hoặc học kỳ.\n     Xuất báo cáo và dữ liệu sang Excel."
+      },
+      {
+        "title": "2. Công cụ và dữ liệu chuẩn bị",
+        "text": "     Crystal Reports và runtime.\n     CSDL QLSinhVien.\n     Project Lab14_AdvancedReport.\n     Microsoft Excel hoặc phần mềm đọc XLS/XLSX."
+      },
+      {
+        "title": "3. Liên kết trong chuỗi bài lab",
+        "text": "Ngữ cảnh xuyên suốt: Nâng cấp báo cáo cơ bản ở Lab 13 thành báo cáo phục vụ quản lý. Kết quả được tích\n    hợp vào ứng dụng tổng hợp ở Lab 16."
+      },
+      {
+        "title": "4. Chuẩn bị trước khi thực hành",
+        "text": "     Hoàn thiện report cơ bản Lab 13.\n     Tạo Parameter Fields pTenKhoa, pNgayLap hoặc các tham số tương ứng.\n     Ôn Group Header/Footer, Summary và Formula Workshop."
+      },
+      {
+        "title": "5. Bài tập có hướng dẫn và code mẫu",
+        "text": "1. Báo cáo theo tham số khoa\nYêu cầu: Chọn khoa trên Form, lấy dữ liệu theo khoa và truyền tên khoa vào tiêu đề báo cáo.\nGợi ý triển khai: Có thể lọc tại SQL hoặc RecordSelectionFormula; ưu tiên truy vấn tham số hóa.\nCode mẫu\n    DataTable data = _dal.GetStudentsByDepartment(maKhoa);\n    ReportDocument report = new CrystalReportSinhVienTheoKhoa();\n    report.SetDataSource(data);\n    report.SetParameterValue(\"pTenKhoa\", cboKhoa.Text);\n    report.SetParameterValue(\"pNgayLap\", DateTime.Now);\n    crystalReportViewer1.ReportSource = report;\n\n2. Nhóm dữ liệu theo khoa\nYêu cầu: Trong Report Designer, Group theo TenKhoa; hiển thị tiêu đề nhóm và số sinh viên mỗi nhóm.\nGợi ý triển khai: Dùng Insert Group và Summary Count(MaSV).\nCode mẫu\n\n  // Công thức gợi ý trong Crystal Formula Workshop:\n  // @SoLuongSinhVien\n  Count({SinhVienReport.MaSV}, {SinhVienReport.TenKhoa})\n\n  // @TieuDeNhom\n  \"Khoa: \" & {SinhVienReport.TenKhoa}\n\n3. Thống kê điểm trung bình và xếp loại\nYêu cầu: Hiển thị Average(DiemTB), Max, Min theo khoa; tạo công thức xếp loại.\nGợi ý triển khai: Định dạng số với 2 chữ số thập phân.\nCode mẫu\n  // Formula @XepLoai\n  If {SinhVienReport.DiemTB} >= 9 Then \"Xuất sắc\"\n  Else If {SinhVienReport.DiemTB} >= 8 Then \"Giỏi\"\n  Else If {SinhVienReport.DiemTB} >= 6.5 Then \"Khá\"\n  Else If {SinhVienReport.DiemTB} >= 5 Then \"Trung bình\"\n  Else \"Yếu\"\n\n4. Báo cáo theo khoảng điểm\nYêu cầu: Nhập điểm min/max trên Form, lọc dữ liệu và truyền khoảng điểm vào phần tiêu đề.\nGợi ý triển khai: Kiểm tra min <= max và đều thuộc [0,10].\nCode mẫu\n  public DataTable GetByScoreRange(decimal min, decimal max)\n  {\n    const string sql = @\"SELECT * FROM vw_BaoCaoSinhVien\n                  WHERE DiemTB BETWEEN @Min AND @Max\n                  ORDER BY DiemTB DESC\";\n    using (SqlConnection conn = DbConnectionFactory.Create())\n    using (SqlDataAdapter ad = new SqlDataAdapter(sql, conn))\n    {\n      ad.SelectCommand.Parameters.Add(\"@Min\", SqlDbType.Decimal).Value = min;\n      ad.SelectCommand.Parameters.Add(\"@Max\", SqlDbType.Decimal).Value = max;\n      DataTable t = new DataTable(\"SinhVienReport\");\n      ad.Fill(t); return t;\n    }\n  }\n\n5. Xuất Crystal Report sang Excel\nYêu cầu: Xuất báo cáo hiện tại sang định dạng Excel Workbook.\nGợi ý triển khai: Kiểm tra tệp không đang mở trong Excel.\nCode mẫu\n  private void btnXuatExcel_Click(object sender, EventArgs e)\n  {\n    using (SaveFileDialog dlg = new SaveFileDialog())\n    {\n      dlg.Filter = \"Excel Workbook|*.xls\";\n      dlg.FileName = \"BaoCaoSinhVien.xls\";\n      if (dlg.ShowDialog() == DialogResult.OK)\n      {\n         _report.ExportToDisk(ExportFormatType.ExcelWorkbook, dlg.FileName);\n         MessageBox.Show(\"Đã xuất Excel.\");\n      }\n    }\n  }"
+      },
+      {
+        "title": "6. Bài tập tự thực hiện - không có code gợi ý",
+        "text": "6. Báo cáo top sinh viên\nYêu cầu: Tạo báo cáo Top N theo điểm, cho phép nhập N và chọn khoa.\n\n7. Báo cáo đăng ký theo học kỳ\nYêu cầu: Nhóm theo học kỳ và học phần; thống kê số lượt đăng ký, điểm trung bình.\n8. Báo cáo có biểu đồ\nYêu cầu: Thêm biểu đồ số lượng sinh viên theo khoa hoặc phân bố xếp loại.\n9. Xuất DataGridView sang Excel\nYêu cầu: Xuất tập dữ liệu đang lọc; giữ tiêu đề cột, định dạng ngày và số.\n10. Trung tâm báo cáo\nYêu cầu: Tạo một Form cho phép chọn loại báo cáo, tham số, xem trước và xuất PDF/Excel."
+      },
+      {
+        "title": "7. Sản phẩm nộp",
+        "text": "   Thư mục mã nguồn Lab14 có thể build và chạy.\n   Ảnh chụp kết quả từng bài tập hoặc tệp báo cáo ngắn.\n   Tệp README.txt mô tả cách chạy, dữ liệu thử và phần đã hoàn thành."
+      },
+      {
+        "title": "8. Đánh giá",
+        "text": "STT                                   Nội dung đánh giá                                  Điểm\n     1    Bài tập 1-5 (có hướng dẫn)                                                         5,0\n     2    Bài tập 6-10 (tự thực hiện)                                                        4,0\n     3    Mã nguồn, giao diện, đặt tên và xử lý lỗi                                          0,5\n     4    Báo cáo kết quả và nộp đúng quy định                                               0,5"
+      }
+    ]
+  },
+  {
+    "number": 15,
+    "title": "Xử lý lỗi, logging, cấu hình và đóng gói ứng dụng",
+    "chapter": 6,
+    "sections": [
+      {
+        "title": "1. Mục tiêu cần đạt được",
+        "text": "     Thiết kế chiến lược xử lý lỗi theo tầng.\n     Kiểm tra an toàn dữ liệu và tạo ngoại lệ nghiệp vụ.\n     Ghi log có cấu trúc vào tệp.\n     Đọc cấu hình từ App.config và bảo vệ thông tin nhạy cảm ở mức phù hợp.\n     Đóng gói và kiểm thử ứng dụng trên máy đích."
+      },
+      {
+        "title": "2. Công cụ và dữ liệu chuẩn bị",
+        "text": "     Visual Studio 2022.\n     Ứng dụng quản lý sinh viên từ Lab 12-14.\n     App.config, thư mục Logs và công cụ Publish/Setup phù hợp."
+      },
+      {
+        "title": "3. Liên kết trong chuỗi bài lab",
+        "text": "Ngữ cảnh xuyên suốt: Gia cố chất lượng phần mềm trước khi tích hợp cuối khóa. Lab 16 yêu cầu ứng dụng có\n    logging, cấu hình, xử lý lỗi và gói cài đặt sử dụng được."
+      },
+      {
+        "title": "4. Chuẩn bị trước khi thực hành",
+        "text": "     Tạo bản sao ổn định của ứng dụng trước khi chỉnh sửa.\n     Tạo thư mục Logs và kiểm thử quyền ghi.\n     Chuẩn bị một máy ảo/máy khác để thử cài đặt."
+      },
+      {
+        "title": "5. Bài tập có hướng dẫn và code mẫu",
+        "text": "1. Ngoại lệ nghiệp vụ tùy biến\nYêu cầu: Tạo BusinessException và sử dụng khi dữ liệu vi phạm quy tắc nghiệp vụ.\nGợi ý triển khai: Không dùng exception để thay mọi câu lệnh điều kiện; chỉ ném khi không thể tiếp tục luồng.\nCode mẫu\n    [Serializable]\n    public class BusinessException : Exception\n    {\n      public BusinessException() { }\n      public BusinessException(string message) : base(message) { }\n      public BusinessException(string message, Exception inner) : base(message, inner) { }\n    }\n\n    if (dto.DiemTB < 0 || dto.DiemTB > 10)\n       throw new BusinessException(\"Điểm trung bình phải thuộc [0,10].\");\n\n2. Dịch vụ kiểm tra dữ liệu dùng chung\nYêu cầu: Tạo ValidationResult và phương thức kiểm tra SinhVienDTO trả nhiều lỗi cùng lúc.\nGợi ý triển khai: BUS dùng kết quả này trước khi gọi DAL.\nCode mẫu\n  public class ValidationResult\n  {\n    public bool IsValid { get { return Errors.Count == 0; } }\n    public List<string> Errors { get; } = new List<string>();\n  }\n\n  public static ValidationResult Validate(SinhVienDTO dto)\n  {\n    ValidationResult result = new ValidationResult();\n    if (string.IsNullOrWhiteSpace(dto.MaSV)) result.Errors.Add(\"Thiếu mã sinh viên.\");\n    if (string.IsNullOrWhiteSpace(dto.HoTen)) result.Errors.Add(\"Thiếu họ tên.\");\n    if (dto.DiemTB < 0 || dto.DiemTB > 10) result.Errors.Add(\"Điểm không hợp lệ.\");\n    return result;\n  }\n\n3. Ghi log vào tệp\nYêu cầu: Tạo Logger ghi thời gian, mức độ, thông điệp và chi tiết exception vào thư mục Logs.\nGợi ý triển khai: Tự tạo thư mục, không làm ứng dụng lỗi thêm khi ghi log thất bại.\nCode mẫu\n  public static class Logger\n  {\n    private static readonly object Sync = new object();\n\n      public static void Error(string message, Exception ex)\n      {\n        try\n        {\n          string dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, \"Logs\");\n          Directory.CreateDirectory(dir);\n          string file = Path.Combine(dir, DateTime.Now.ToString(\"yyyyMMdd\") + \".log\");\n          string line = string.Format(\"{0:O} | ERROR | {1}\\r\\n{2}\\r\\n\",\n             DateTime.Now, message, ex);\n          lock (Sync) File.AppendAllText(file, line, Encoding.UTF8);\n        }\n        catch { /* Không để lỗi log làm dừng ứng dụng */ }\n      }\n  }\n\n4. Xử lý lỗi tập trung ở giao diện\nYêu cầu: Phân biệt BusinessException, SqlException và lỗi không xác định; log chi tiết nhưng chỉ hiện thông\nbáo phù hợp.\nGợi ý triển khai: Không hiển thị connection string hoặc stack trace cho người dùng.\nCode mẫu\n  try\n  {\n    _bus.Add(dto);\n  }\n  catch (BusinessException ex)\n  {\n    MessageBox.Show(ex.Message, \"Dữ liệu chưa hợp lệ\");\n  }\n  catch (SqlException ex)\n  {\n    Logger.Error(\"Lỗi CSDL khi thêm sinh viên\", ex);\n    MessageBox.Show(\"Không thể cập nhật dữ liệu. Vui lòng thử lại.\");\n  }\n\n    catch (Exception ex)\n    {\n      Logger.Error(\"Lỗi không xác định\", ex);\n      MessageBox.Show(\"Ứng dụng gặp lỗi. Mã lỗi đã được ghi nhận.\");\n    }\n\n5. Đọc cấu hình từ App.config\nYêu cầu: Đưa connection string và thư mục xuất báo cáo vào cấu hình.\nGợi ý triển khai: Tham chiếu System.Configuration cho .NET Framework.\nCode mẫu\n    <configuration>\n     <connectionStrings>\n      <add name=\"QLSinhVien\"\n         connectionString=\"Data Source=.;Initial Catalog=QLSinhVien;Integrated Security=True\"\n         providerName=\"System.Data.SqlClient\" />\n     </connectionStrings>\n     <appSettings>\n      <add key=\"ReportFolder\" value=\"Reports\" />\n     </appSettings>\n    </configuration>\n\n    string cs = ConfigurationManager.ConnectionStrings[\"QLSinhVien\"].ConnectionString;\n    string folder = ConfigurationManager.AppSettings[\"ReportFolder\"];"
+      },
+      {
+        "title": "6. Bài tập tự thực hiện - không có code gợi ý",
+        "text": "6. Global exception handler\nYêu cầu: Đăng ký Application.ThreadException và AppDomain.UnhandledException; ghi log và đóng an\ntoàn.\n7. Log xoay vòng\nYêu cầu: Giới hạn kích thước hoặc số ngày lưu log; tự động lưu trữ/xóa tệp cũ.\n8. Mã hóa connection string\nYêu cầu: Tìm hiểu và áp dụng ProtectedConfiguration cho phần connectionStrings trên máy triển khai.\n9. Kiểm tra trước khi chạy\nYêu cầu: Tạo màn hình kiểm tra SQL Server, database, thư mục ghi log, Crystal runtime và quyền ghi tệp.\n10. Đóng gói ứng dụng\nYêu cầu: Publish hoặc tạo bộ cài; triển khai trên máy sạch, ghi lại các phụ thuộc và lỗi phát sinh."
+      },
+      {
+        "title": "7. Sản phẩm nộp",
+        "text": "    Mã nguồn có xử lý lỗi và logging theo tầng.\n    Tệp cấu hình mẫu không chứa mật khẩu thật.\n    Bộ cài hoặc thư mục Publish chạy trên máy đích.\n    Biên bản kiểm thử triển khai: môi trường, bước cài, kết quả, lỗi và cách khắc phục."
+      },
+      {
+        "title": "8. Đánh giá",
+        "text": "STT                                   Nội dung đánh giá                                  Điểm\n     1    Bài tập 1-5 (có hướng dẫn)                                                         5,0\n     2    Bài tập 6-10 (tự thực hiện)                                                        4,0\n     3    Mã nguồn, giao diện, đặt tên và xử lý lỗi                                          0,5\n     4    Báo cáo kết quả và nộp đúng quy định                                               0,5"
+      }
+    ]
+  },
+  {
+    "number": 16,
+    "title": "Xây dựng ứng dụng WinForms quản lý hoàn chỉnh",
+    "chapter": 6,
+    "sections": [
+      {
+        "title": "1. Mục tiêu cần đạt được",
+        "text": "     Tích hợp mô hình 3 lớp, ADO.NET, CRUD, Stored Procedure và Transaction.\n     Xây dựng giao diện đa Form, master-detail, tìm kiếm và báo cáo.\n     Áp dụng kiểm tra dữ liệu, logging, cấu hình và đóng gói.\n     Hoàn thiện sản phẩm có thể trình diễn, cài đặt và bàn giao."
+      },
+      {
+        "title": "2. Công cụ và dữ liệu chuẩn bị",
+        "text": "     Visual Studio 2022.\n     SQL Server/SSMS.\n     Crystal Reports runtime.\n     Git hoặc cơ chế quản lý phiên bản.\n     Tài liệu và mã nguồn từ Lab 1-15."
+      },
+      {
+        "title": "3. Liên kết trong chuỗi bài lab",
+        "text": "Ngữ cảnh xuyên suốt: Lab tổng hợp kết nối toàn bộ kiến thức. Nhóm có thể chọn Quản lý sinh viên hoặc một\n    nghiệp vụ quản lý tương đương, nhưng phải đáp ứng đầy đủ chuẩn kỹ thuật trong rubric."
+      },
+      {
+        "title": "4. Chuẩn bị trước khi thực hành",
+        "text": "     Chọn nghiệp vụ và chốt phạm vi chức năng trước buổi lab.\n     Tạo repository Git hoặc cơ chế sao lưu theo phiên bản.\n     Phân công nhiệm vụ nếu làm theo nhóm; thống nhất quy ước mã nguồn."
+      },
+      {
+        "title": "5. Bài tập có hướng dẫn và code mẫu",
+        "text": "1. Khởi tạo Solution và kiến trúc\nYêu cầu: Tạo solution gồm GUI, BUS, DAL và DTO; cấu hình tham chiếu đúng chiều.\nGợi ý triển khai: GUI -> BUS -> DAL; DTO được dùng chung. DAL không tham chiếu GUI.\nCode mẫu\n    QLSinhVien.sln\n    |-- QLSinhVien.DTO       // SinhVienDTO, KhoaDTO, HocPhanDTO, DangKyDTO\n    |-- QLSinhVien.DAL       // Connection, repository, transaction\n    |-- QLSinhVien.BUS      // Validation và nghiệp vụ\n    |-- QLSinhVien.GUI      // WinForms, Crystal Report, App.config\n    |-- Database       // SQL script và Stored Procedure\n    |-- Docs        // Hướng dẫn cài đặt, tài khoản thử, kiểm thử\n\n2. Khởi tạo CSDL và Stored Procedure\nYêu cầu: Tạo script chạy từ đầu gồm bảng, khóa, dữ liệu mẫu, view, Stored Procedure CRUD và báo cáo.\n\nGợi ý triển khai: Script phải idempotent ở mức hợp lý hoặc có hướng dẫn chạy mới rõ ràng.\nCode mẫu\n  -- Thứ tự khuyến nghị\n  -- 1. CREATE DATABASE / USE\n  -- 2. CREATE TABLE Khoa, SinhVien, HocPhan, DangKy\n  -- 3. CREATE INDEX và CONSTRAINT\n  -- 4. CREATE VIEW báo cáo\n  -- 5. CREATE OR ALTER PROCEDURE CRUD, tìm kiếm, thống kê\n  -- 6. INSERT dữ liệu mẫu\n  -- 7. Các câu lệnh kiểm thử nhanh\n\n3. Hoàn thiện CRUD và tìm kiếm\nYêu cầu: Thực hiện CRUD cho ít nhất 3 danh mục; tìm kiếm đa tiêu chí, phân trang hoặc sắp xếp.\nGợi ý triển khai: Tất cả câu lệnh phải tham số hóa hoặc dùng Stored Procedure.\nCode mẫu\n  // Luồng chuẩn của nút Lưu trên GUI\n  SinhVienDTO dto = ReadStudentFromForm();\n  ValidationResult validation = SinhVienValidator.Validate(dto);\n  if (!validation.IsValid)\n  {\n     MessageBox.Show(string.Join(Environment.NewLine, validation.Errors));\n     return;\n  }\n  _sinhVienBus.Save(dto, _editMode);\n  ReloadGrid();\n  ClearForm();\n\n4. Nghiệp vụ nhiều bảng và Transaction\nYêu cầu: Cài đặt ít nhất một chức năng transaction: thêm sinh viên kèm đăng ký, chuyển khoa, lập phiếu\nhoặc cập nhật hàng loạt.\nGợi ý triển khai: Có kịch bản thử Commit và Rollback.\nCode mẫu\n  public void RegisterStudent(SinhVienDTO student, List<DangKyDTO> courses)\n  {\n    using (SqlConnection conn = DbConnectionFactory.Create())\n    {\n      conn.Open();\n      SqlTransaction tx = conn.BeginTransaction();\n      try\n      {\n         _studentDal.Insert(student, conn, tx);\n         foreach (DangKyDTO item in courses)\n           _enrollmentDal.Insert(item, conn, tx);\n         tx.Commit();\n      }\n      catch\n      {\n         tx.Rollback();\n         throw;\n      }\n    }\n  }\n\n5. Báo cáo, logging và đóng gói\nYêu cầu: Tích hợp ít nhất 2 báo cáo, xuất PDF/Excel; ghi log lỗi; đọc cấu hình; tạo bộ cài.\nGợi ý triển khai: Kiểm thử trên máy không có Visual Studio.\nCode mẫu\n  // Checklist trước khi bàn giao\n  // [ ] Chuỗi kết nối đọc từ cấu hình\n  // [ ] Crystal runtime đúng kiến trúc\n\n    // [ ] Logs ghi được và không chứa mật khẩu\n    // [ ] SQL script chạy được trên database mới\n    // [ ] Có tài khoản/dữ liệu demo\n    // [ ] Báo cáo xem trước và xuất tệp\n    // [ ] Bộ cài/PUBLISH chạy trên máy đích\n    // [ ] README và hướng dẫn sử dụng đầy đủ"
+      },
+      {
+        "title": "6. Bài tập tự thực hiện - không có code gợi ý",
+        "text": "6. Phân quyền người dùng\nYêu cầu: Bổ sung đăng nhập và ít nhất hai vai trò; ẩn/khóa chức năng theo quyền.\n7. Nhật ký thao tác\nYêu cầu: Ghi người dùng, thời gian, thao tác, đối tượng và dữ liệu chính vào bảng AuditLog.\n8. Nhập/xuất Excel\nYêu cầu: Nhập danh sách từ Excel có kiểm tra lỗi từng dòng; xuất dữ liệu đang lọc.\n9. Dashboard thống kê\nYêu cầu: Hiển thị số lượng theo khoa, phân bố xếp loại, top sinh viên và biểu đồ.\n10. Sao lưu và phục hồi\nYêu cầu: Tạo chức năng hoặc quy trình backup/restore; kiểm tra quyền và xác nhận an toàn."
+      },
+      {
+        "title": "7. Sản phẩm nộp",
+        "text": "     Mã nguồn đầy đủ, build không lỗi và có lịch sử phiên bản.\n     Tệp SQL tạo CSDL, Stored Procedure, view và dữ liệu mẫu.\n     Bộ cài hoặc thư mục Publish đã kiểm thử trên máy đích.\n     Tối thiểu 2 báo cáo và tệp xuất mẫu PDF/Excel.\n     Tài liệu hướng dẫn cài đặt, sử dụng, tài khoản thử và kịch bản demo.\n     Báo cáo kiểm thử gồm các chức năng chính, transaction, lỗi dữ liệu và triển khai."
+      },
+      {
+        "title": "8. Đánh giá",
+        "text": "STT                                   Nội dung đánh giá                                  Điểm\n     1    Kiến trúc, tổ chức mã nguồn và mô hình 3 lớp                                        1,5\n     2    Thiết kế CSDL, ADO.NET, CRUD và Stored Procedure                                    2,0\n     3    Nghiệp vụ nhiều bảng, master-detail và Transaction                                  1,5\n     4    Giao diện, kiểm tra dữ liệu, tìm kiếm và trải nghiệm sử dụng                        1,5\n     5    Crystal Report, xuất PDF/Excel                                                      1,0\n     6    Xử lý lỗi, logging, cấu hình và an toàn dữ liệu                                     1,0\n     7    Đóng gói, tài liệu, kiểm thử và trình diễn                                          1,0\n     8    Chức năng mở rộng và chất lượng hoàn thiện                                          0,5"
+      }
+    ]
+  }
+]

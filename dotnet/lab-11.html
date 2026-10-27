@@ -1,0 +1,85 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lab 11. CRUD tham số hóa và stored procedure | HoangTN</title><meta name="author" content="Trần Nguyên Hoàng"><meta name="description" content="Bài thực hành 11: CRUD tham số hóa và stored procedure"><meta property="og:title" content="Lab 11. CRUD tham số hóa và stored procedure | HoangTN"><meta property="og:description" content="Bài thực hành 11: CRUD tham số hóa và stored procedure"><meta property="og:type" content="article"><link rel="canonical" href="https://hoangtnedu.github.io/dotnet/lab-11.html"><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/css/site.css"><link rel="stylesheet" href="../assets/css/dotnet.css"><script defer src="../assets/js/site.js"></script><script defer src="../assets/js/dotnet.js"></script></head><body class="dotnet"><a class="skip" href="#noi-dung">Đến nội dung</a><header class="top"><a class="brand" href="../index.html">HoangTN<span>Nghiên cứu và lập trình</span></a><nav aria-label="Điều hướng chính"><a href="../index.html">Bài viết</a><a href="../2026/10/27/floodai-mo-hinh-hoc-sau.html">FloodAI</a><a href="index.html" aria-current="page">Lập trình .NET</a><button class="mobile-nav" type="button" aria-controls="navigation" aria-expanded="false">Mục lục</button></nav></header><div class="progress" aria-hidden="true"></div><div class="layout"><aside class="sidebar" id="navigation" aria-label="Lộ trình .NET"><div class="profile"><strong>Trần Nguyên Hoàng</strong><p>Ghi chép lập trình · HoangTN</p><a href="../index.html">← Trang chủ</a></div><h2>Lập trình .NET</h2><label class="tiny" for="toc-search">Tìm chương hoặc lab</label><input type="search" id="toc-search" placeholder="ADO.NET, báo cáo, transaction…"><ul class="toc-list"><li data-search="tong quan lo trinh"><a class="" href="index.html">Tổng quan lộ trình</a></li><li data-search="chuong 1. nen tang .net va c#"><a class="" href="chuong-1.html">Chương 1. Nền tảng .NET và C#</a></li><li data-search="chuong 2. lap trinh huong doi tuong voi c#"><a class="" href="chuong-2.html">Chương 2. Lập trình hướng đối tượng với C#</a></li><li data-search="chuong 3. winforms va kien truc ba lop"><a class="" href="chuong-3.html">Chương 3. WinForms và kiến trúc ba lớp</a></li><li data-search="chuong 4. truy cap du lieu voi ado.net"><a class="" href="chuong-4.html">Chương 4. Truy cập dữ liệu với ADO.NET</a></li><li data-search="chuong 5. bao cao crystal reports va excel"><a class="" href="chuong-5.html">Chương 5. Báo cáo Crystal Reports và Excel</a></li><li data-search="chuong 6. xu ly loi, kiem thu va dong goi"><a class="" href="chuong-6.html">Chương 6. Xử lý lỗi, kiểm thử và đóng gói</a></li><li data-search="bo 16 bai thuc hanh"><a class="" href="bai-tap.html">Bộ 16 bài thực hành</a></li><li data-search="mo rong: web, ef core, ai, azure"><a class="" href="mo-rong-web.html">Mở rộng: Web, EF Core, AI, Azure</a></li><li data-search="tai lieu tham khao"><a class="" href="tai-lieu.html">Tài liệu tham khảo</a></li></ul><h2>Thực hành</h2><ul class="toc-list"><li data-search="lam quen visual studio va lap trinh console"><a href="lab-01.html">Lab 1: Làm quen Visual Studio và lập trình Console</a></li><li data-search="lop, doi tuong, constructor va dong goi"><a href="lab-02.html">Lab 2: Lớp, đối tượng, constructor và đóng gói</a></li><li data-search="ke thua, da hinh, lop truu tuong va interface"><a href="lab-03.html">Lab 3: Kế thừa, đa hình, lớp trừu tượng và interface</a></li><li data-search="thiet ke winforms va dieu khien co ban"><a href="lab-04.html">Lab 4: Thiết kế WinForms và điều khiển cơ bản</a></li><li data-search="xu ly su kien, kiem tra du lieu va ung dung da form"><a href="lab-05.html">Lab 5: Xử lý sự kiện, kiểm tra dữ liệu và ứng dụng đa Form</a></li><li data-search="datagridview, listview, treeview va mo hinh ba lop trong bo nho"><a href="lab-06.html">Lab 6: DataGridView, ListView, TreeView và mô hình ba lớp trong bộ nhớ</a></li><li data-search="tao csdl sql server, tong quan ado.net va ket noi"><a href="lab-07.html">Lab 7: Tạo CSDL SQL Server, tổng quan ADO.NET và kết nối</a></li><li data-search="sqlcommand, sqlparameter va cac phuong thuc thuc thi"><a href="lab-08.html">Lab 8: SqlCommand, SqlParameter và các phương thức thực thi</a></li><li data-search="doc, tim kiem va loc du lieu bang sqldatareader"><a href="lab-09.html">Lab 9: Đọc, tìm kiếm và lọc dữ liệu bằng SqlDataReader</a></li><li data-search="dataadapter, datatable, dataset va du lieu ngat ket noi"><a href="lab-10.html">Lab 10: DataAdapter, DataTable, DataSet và dữ liệu ngắt kết nối</a></li><li data-search="crud tham so hoa va stored procedure"><a href="lab-11.html">Lab 11: CRUD tham số hóa và stored procedure</a></li><li data-search="master-detail, transaction va hoan thien mo hinh ba lop"><a href="lab-12.html">Lab 12: Master-detail, transaction và hoàn thiện mô hình ba lớp</a></li><li data-search="tao bao cao co ban bang crystal reports"><a href="lab-13.html">Lab 13: Tạo báo cáo cơ bản bằng Crystal Reports</a></li><li data-search="bao cao tham so, nhom, thong ke va xuat excel"><a href="lab-14.html">Lab 14: Báo cáo tham số, nhóm, thống kê và xuất Excel</a></li><li data-search="xu ly loi, logging, cau hinh va dong goi ung dung"><a href="lab-15.html">Lab 15: Xử lý lỗi, logging, cấu hình và đóng gói ứng dụng</a></li><li data-search="xay dung ung dung winforms quan ly hoan chinh"><a href="lab-16.html">Lab 16: Xây dựng ứng dụng WinForms quản lý hoàn chỉnh</a></li></ul><p class="empty-result" hidden>Không có mục phù hợp.</p></aside><main class="article" id="noi-dung"><p class="eyebrow">HoangTN · Lập trình .NET</p><h1>Lab 11. CRUD tham số hóa và stored procedure</h1><div class="meta"><span>Trần Nguyên Hoàng</span><span>Cập nhật 27/10/2026</span></div><details class="page-toc"><summary>Trong bài này</summary><ol><li><a href="#muc-1">1. Mục tiêu cần đạt được</a></li><li><a href="#muc-2">2. Công cụ và dữ liệu chuẩn bị</a></li><li><a href="#muc-3">3. Liên kết trong chuỗi bài lab</a></li><li><a href="#muc-4">4. Chuẩn bị trước khi thực hành</a></li><li><a href="#muc-5">5. Bài tập có hướng dẫn và code mẫu</a></li><li><a href="#muc-6">6. Bài tập tự thực hiện - không có code gợi ý</a></li><li><a href="#muc-7">7. Sản phẩm nộp</a></li><li><a href="#muc-8">8. Đánh giá</a></li></ol></details><p class="lede">Bài tập Chương 4 · Truy cập dữ liệu với ADO.NET.</p><p><a href="chuong-4.html">Đọc lý thuyết liên quan →</a></p><div class="callout"><p>Mã mẫu minh họa từng bài, có thể cần ghép với lớp, Form hoặc CSDL ở lab trước. Không dán tất cả ví dụ cùng tên lớp vào một tệp. Chuỗi desktop dùng .NET Framework 4.8; chuẩn bị runtime Crystal Reports tương thích cho Lab 13–16.</p></div><section id="phan-1"><h2 id="muc-1">1. Mục tiêu cần đạt được</h2><ul><li>Xây dựng đầy đủ các Stored Procedure CRUD.</li><li>Cài đặt tầng DAL bằng SqlCommand và tham số hóa.</li><li>Kiểm tra nghiệp vụ ở tầng BUS.</li><li>Kết nối chức năng Thêm - Sửa - Xóa - Làm mới trên WinForms.</li></ul></section><section id="phan-2"><h2 id="muc-2">2. Công cụ và dữ liệu chuẩn bị</h2><ul><li>CSDL QLSinhVien.</li><li>Project Lab11_CRUD_StoredProcedure theo kiến trúc GUI-BUS-DAL.</li><li>SQL Server Management Studio.</li></ul></section><section id="phan-3"><h2 id="muc-3">3. Liên kết trong chuỗi bài lab</h2><p>Ngữ cảnh xuyên suốt: Hoàn thiện CRUD sinh viên theo mô hình 3 lớp. Lab 12 sẽ mở rộng quan hệ master- detail và các giao dịch nhiều bước.</p></section><section id="phan-4"><h2 id="muc-4">4. Chuẩn bị trước khi thực hành</h2><ul><li>Tổ chức solution thành DTO, DAL, BUS và GUI hoặc namespace tương ứng.</li><li>Tạo lớp SinhVienDTO không tham chiếu WinForms.</li><li>Sao lưu database trước khi tạo và sửa Stored Procedure.</li></ul></section><section id="phan-5"><h2 id="muc-5">5. Bài tập có hướng dẫn và code mẫu</h2><div class="exercise"><h3>1. Tạo Stored Procedure thêm sinh viên</h3><p>Yêu cầu: Tạo sp_SinhVien_Insert có kiểm tra trùng mã và trả mã lỗi phù hợp. Gợi ý triển khai: Dùng THROW để truyền lỗi nghiệp vụ về ứng dụng.</p><div class="code-wrap"><button class="copy" type="button" data-target="code-60">Sao chép</button><pre><code id="code-60" class="language-sql">  CREATE OR ALTER PROCEDURE sp_SinhVien_Insert
+    @MaSV VARCHAR(15), @HoTen NVARCHAR(100), @NgaySinh DATE,
+    @GioiTinh BIT, @MaKhoa VARCHAR(10), @DiemTB DECIMAL(4,2),
+    @Email VARCHAR(100) = NULL
+  AS
+  BEGIN
+    SET NOCOUNT ON;
+    IF EXISTS (SELECT 1 FROM SinhVien WHERE MaSV=@MaSV)
+      THROW 50001, N&#x27;Mã sinh viên đã tồn tại.&#x27;, 1;
+
+    INSERT INTO SinhVien(MaSV,HoTen,NgaySinh,GioiTinh,MaKhoa,DiemTB,Email)
+    VALUES(@MaSV,@HoTen,@NgaySinh,@GioiTinh,@MaKhoa,@DiemTB,@Email);
+  END;
+
+GO</code></pre></div></div><div class="exercise"><h3>2. Stored Procedure cập nhật và xóa</h3><p>Yêu cầu: Tạo sp_SinhVien_Update, sp_SinhVien_Delete; báo lỗi khi mã không tồn tại. Gợi ý triển khai: Không thay đổi khóa chính trong thủ tục cập nhật.</p><div class="code-wrap"><button class="copy" type="button" data-target="code-61">Sao chép</button><pre><code id="code-61" class="language-sql">CREATE OR ALTER PROCEDURE sp_SinhVien_Update
+  @MaSV VARCHAR(15), @HoTen NVARCHAR(100), @NgaySinh DATE,
+  @GioiTinh BIT, @MaKhoa VARCHAR(10), @DiemTB DECIMAL(4,2),
+  @Email VARCHAR(100) = NULL
+AS
+BEGIN
+  UPDATE SinhVien SET HoTen=@HoTen, NgaySinh=@NgaySinh,
+    GioiTinh=@GioiTinh, MaKhoa=@MaKhoa, DiemTB=@DiemTB, Email=@Email
+  WHERE MaSV=@MaSV;
+  IF @@ROWCOUNT=0 THROW 50002, N&#x27;Không tìm thấy sinh viên.&#x27;, 1;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE sp_SinhVien_Delete @MaSV VARCHAR(15)
+AS
+BEGIN
+  DELETE FROM SinhVien WHERE MaSV=@MaSV;
+  IF @@ROWCOUNT=0 THROW 50002, N&#x27;Không tìm thấy sinh viên.&#x27;, 1;
+END;
+GO</code></pre></div></div><div class="exercise"><h3>3. Tầng DAL gọi Stored Procedure</h3><p>Yêu cầu: Viết Insert(SinhVienDTO dto) và trả số dòng ảnh hưởng. Gợi ý triển khai: Dùng CommandType.StoredProcedure và using cho tài nguyên.</p><div class="code-wrap"><button class="copy" type="button" data-target="code-62">Sao chép</button><pre><code id="code-62" class="language-csharp">public int Insert(SinhVienDTO dto)
+{
+  using (SqlConnection conn = DbConnectionFactory.Create())
+  using (SqlCommand cmd = new SqlCommand(&quot;sp_SinhVien_Insert&quot;, conn))
+  {
+    cmd.CommandType = CommandType.StoredProcedure;
+    cmd.Parameters.Add(&quot;@MaSV&quot;, SqlDbType.VarChar, 15).Value = dto.MaSV;
+    cmd.Parameters.Add(&quot;@HoTen&quot;, SqlDbType.NVarChar, 100).Value = dto.HoTen;
+    cmd.Parameters.Add(&quot;@NgaySinh&quot;, SqlDbType.Date).Value = dto.NgaySinh;
+    cmd.Parameters.Add(&quot;@GioiTinh&quot;, SqlDbType.Bit).Value = dto.GioiTinh;
+    cmd.Parameters.Add(&quot;@MaKhoa&quot;, SqlDbType.VarChar, 10).Value = dto.MaKhoa;
+    cmd.Parameters.Add(&quot;@DiemTB&quot;, SqlDbType.Decimal).Value = dto.DiemTB;
+    cmd.Parameters.Add(&quot;@Email&quot;, SqlDbType.VarChar, 100).Value =
+       string.IsNullOrWhiteSpace(dto.Email) ? (object)DBNull.Value : dto.Email;
+    conn.Open();
+    return cmd.ExecuteNonQuery();
+  }
+}</code></pre></div></div><div class="exercise"><h3>4. Tầng BUS kiểm tra nghiệp vụ</h3><p>Yêu cầu: Kiểm tra mã, họ tên, tuổi, điểm và email trước khi gọi DAL. Gợi ý triển khai: BUS trả thông báo rõ ràng, không phụ thuộc control WinForms.</p><div class="code-wrap"><button class="copy" type="button" data-target="code-63">Sao chép</button><pre><code id="code-63" class="language-csharp">public void Add(SinhVienDTO dto)
+{
+  if (string.IsNullOrWhiteSpace(dto.MaSV))
+     throw new ArgumentException(&quot;Mã sinh viên không được rỗng.&quot;);
+  if (string.IsNullOrWhiteSpace(dto.HoTen))
+     throw new ArgumentException(&quot;Họ tên không được rỗng.&quot;);
+  if (dto.NgaySinh &gt; DateTime.Today.AddYears(-15))
+
+         throw new ArgumentException(&quot;Tuổi sinh viên chưa hợp lệ.&quot;);
+      if (dto.DiemTB &lt; 0 || dto.DiemTB &gt; 10)
+         throw new ArgumentException(&quot;Điểm phải thuộc [0,10].&quot;);
+      _dal.Insert(dto);
+  }</code></pre></div></div><div class="exercise"><h3>5. Kết nối CRUD trên Form</h3><p>Yêu cầu: Nút Thêm lấy dữ liệu từ control, gọi BUS, tải lại DataGridView và xử lý lỗi. Gợi ý triển khai: Không viết SQL trong Form.</p><div class="code-wrap"><button class="copy" type="button" data-target="code-64">Sao chép</button><pre><code id="code-64" class="language-csharp">private void btnThem_Click(object sender, EventArgs e)
+{
+  try
+  {
+    SinhVienDTO dto = new SinhVienDTO
+    {
+       MaSV = txtMaSV.Text.Trim(),
+       HoTen = txtHoTen.Text.Trim(),
+       NgaySinh = dtpNgaySinh.Value.Date,
+       GioiTinh = radNam.Checked,
+       MaKhoa = cboKhoa.SelectedValue.ToString(),
+       DiemTB = decimal.Parse(txtDiemTB.Text),
+       Email = txtEmail.Text.Trim()
+    };
+    _bus.Add(dto);
+    LoadStudents();
+    MessageBox.Show(&quot;Thêm thành công.&quot;);
+  }
+  catch (Exception ex)
+  {
+    MessageBox.Show(ex.Message, &quot;Lỗi&quot;, MessageBoxButtons.OK, MessageBoxIcon.Error);
+  }
+}</code></pre></div></div></section><section id="phan-6"><h2 id="muc-6">6. Bài tập tự thực hiện - không có code gợi ý</h2><div class="exercise"><h3>6. CRUD bảng Khoa</h3><p>Yêu cầu: Tạo Stored Procedure và giao diện CRUD khoa; không cho xóa khoa đang có sinh viên.</p></div><div class="exercise"><h3>7. Tìm kiếm bằng Stored Procedure</h3><p>Yêu cầu: Tạo thủ tục tìm theo từ khóa và khoa; trả tất cả khi tham số rỗng.</p></div><div class="exercise"><h3>8. Kiểm tra email duy nhất</h3><p>Yêu cầu: Bổ sung nghiệp vụ và ràng buộc CSDL bảo đảm email không trùng.</p></div><div class="exercise"><h3>9. Xóa mềm sinh viên</h3><p>Yêu cầu: Thêm cột IsActive; thay xóa vật lý bằng cập nhật trạng thái và lọc danh sách đang hoạt động.</p></div><div class="exercise"><h3>10. Chuẩn hóa xử lý lỗi</h3><p>Yêu cầu: Phân biệt lỗi nghiệp vụ, lỗi SQL và lỗi nhập liệu; thông báo thân thiện, ghi chi tiết cho lập trình viên.</p></div></section><section id="phan-7"><h2 id="muc-7">7. Sản phẩm nộp</h2><ul><li>Thư mục mã nguồn Lab11 có thể build và chạy.</li><li>Ảnh chụp kết quả từng bài tập hoặc tệp báo cáo ngắn.</li><li>Tệp README.txt mô tả cách chạy, dữ liệu thử và phần đã hoàn thành.</li></ul></section><section id="phan-8"><h2 id="muc-8">8. Đánh giá</h2><div class="table-scroll"><table><thead><tr><th>Mục</th><th>Tiêu chí</th><th>Điểm</th></tr></thead><tbody><tr><td>1</td><td>Bài tập 1-5 (có hướng dẫn)</td><td>5,0</td></tr><tr><td>2</td><td>Bài tập 6-10 (tự thực hiện)</td><td>4,0</td></tr><tr><td>3</td><td>Mã nguồn, giao diện, đặt tên và xử lý lỗi</td><td>0,5</td></tr><tr><td>4</td><td>Báo cáo kết quả và nộp đúng quy định</td><td>0,5</td></tr></tbody></table></div></section><p class="source">Biên tập từ bộ bài lab được cung cấp. Đọc <a href="tai-lieu.html">nguồn học liệu và tài liệu đối chiếu</a>.</p><nav class="lesson-nav" aria-label="Bài trước và bài sau"><a href="lab-10.html">← Lab 10</a><a href="lab-12.html">Lab 12 →</a></nav></main></div><footer>© 2026 Trần Nguyên Hoàng · HoangTN · Ghi chép nghiên cứu và học tập.</footer><button class="top-button" type="button" aria-label="Về đầu trang">↑</button></body></html>

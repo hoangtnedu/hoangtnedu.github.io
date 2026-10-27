@@ -1,0 +1,79 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lab 1. Làm quen Visual Studio và lập trình Console | HoangTN</title><meta name="author" content="Trần Nguyên Hoàng"><meta name="description" content="Bài thực hành 1: Làm quen Visual Studio và lập trình Console"><meta property="og:title" content="Lab 1. Làm quen Visual Studio và lập trình Console | HoangTN"><meta property="og:description" content="Bài thực hành 1: Làm quen Visual Studio và lập trình Console"><meta property="og:type" content="article"><link rel="canonical" href="https://hoangtnedu.github.io/dotnet/lab-01.html"><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/css/site.css"><link rel="stylesheet" href="../assets/css/dotnet.css"><script defer src="../assets/js/site.js"></script><script defer src="../assets/js/dotnet.js"></script></head><body class="dotnet"><a class="skip" href="#noi-dung">Đến nội dung</a><header class="top"><a class="brand" href="../index.html">HoangTN<span>Nghiên cứu và lập trình</span></a><nav aria-label="Điều hướng chính"><a href="../index.html">Bài viết</a><a href="../2026/10/27/floodai-mo-hinh-hoc-sau.html">FloodAI</a><a href="index.html" aria-current="page">Lập trình .NET</a><button class="mobile-nav" type="button" aria-controls="navigation" aria-expanded="false">Mục lục</button></nav></header><div class="progress" aria-hidden="true"></div><div class="layout"><aside class="sidebar" id="navigation" aria-label="Lộ trình .NET"><div class="profile"><strong>Trần Nguyên Hoàng</strong><p>Ghi chép lập trình · HoangTN</p><a href="../index.html">← Trang chủ</a></div><h2>Lập trình .NET</h2><label class="tiny" for="toc-search">Tìm chương hoặc lab</label><input type="search" id="toc-search" placeholder="ADO.NET, báo cáo, transaction…"><ul class="toc-list"><li data-search="tong quan lo trinh"><a class="" href="index.html">Tổng quan lộ trình</a></li><li data-search="chuong 1. nen tang .net va c#"><a class="" href="chuong-1.html">Chương 1. Nền tảng .NET và C#</a></li><li data-search="chuong 2. lap trinh huong doi tuong voi c#"><a class="" href="chuong-2.html">Chương 2. Lập trình hướng đối tượng với C#</a></li><li data-search="chuong 3. winforms va kien truc ba lop"><a class="" href="chuong-3.html">Chương 3. WinForms và kiến trúc ba lớp</a></li><li data-search="chuong 4. truy cap du lieu voi ado.net"><a class="" href="chuong-4.html">Chương 4. Truy cập dữ liệu với ADO.NET</a></li><li data-search="chuong 5. bao cao crystal reports va excel"><a class="" href="chuong-5.html">Chương 5. Báo cáo Crystal Reports và Excel</a></li><li data-search="chuong 6. xu ly loi, kiem thu va dong goi"><a class="" href="chuong-6.html">Chương 6. Xử lý lỗi, kiểm thử và đóng gói</a></li><li data-search="bo 16 bai thuc hanh"><a class="" href="bai-tap.html">Bộ 16 bài thực hành</a></li><li data-search="mo rong: web, ef core, ai, azure"><a class="" href="mo-rong-web.html">Mở rộng: Web, EF Core, AI, Azure</a></li><li data-search="tai lieu tham khao"><a class="" href="tai-lieu.html">Tài liệu tham khảo</a></li></ul><h2>Thực hành</h2><ul class="toc-list"><li data-search="lam quen visual studio va lap trinh console"><a href="lab-01.html">Lab 1: Làm quen Visual Studio và lập trình Console</a></li><li data-search="lop, doi tuong, constructor va dong goi"><a href="lab-02.html">Lab 2: Lớp, đối tượng, constructor và đóng gói</a></li><li data-search="ke thua, da hinh, lop truu tuong va interface"><a href="lab-03.html">Lab 3: Kế thừa, đa hình, lớp trừu tượng và interface</a></li><li data-search="thiet ke winforms va dieu khien co ban"><a href="lab-04.html">Lab 4: Thiết kế WinForms và điều khiển cơ bản</a></li><li data-search="xu ly su kien, kiem tra du lieu va ung dung da form"><a href="lab-05.html">Lab 5: Xử lý sự kiện, kiểm tra dữ liệu và ứng dụng đa Form</a></li><li data-search="datagridview, listview, treeview va mo hinh ba lop trong bo nho"><a href="lab-06.html">Lab 6: DataGridView, ListView, TreeView và mô hình ba lớp trong bộ nhớ</a></li><li data-search="tao csdl sql server, tong quan ado.net va ket noi"><a href="lab-07.html">Lab 7: Tạo CSDL SQL Server, tổng quan ADO.NET và kết nối</a></li><li data-search="sqlcommand, sqlparameter va cac phuong thuc thuc thi"><a href="lab-08.html">Lab 8: SqlCommand, SqlParameter và các phương thức thực thi</a></li><li data-search="doc, tim kiem va loc du lieu bang sqldatareader"><a href="lab-09.html">Lab 9: Đọc, tìm kiếm và lọc dữ liệu bằng SqlDataReader</a></li><li data-search="dataadapter, datatable, dataset va du lieu ngat ket noi"><a href="lab-10.html">Lab 10: DataAdapter, DataTable, DataSet và dữ liệu ngắt kết nối</a></li><li data-search="crud tham so hoa va stored procedure"><a href="lab-11.html">Lab 11: CRUD tham số hóa và stored procedure</a></li><li data-search="master-detail, transaction va hoan thien mo hinh ba lop"><a href="lab-12.html">Lab 12: Master-detail, transaction và hoàn thiện mô hình ba lớp</a></li><li data-search="tao bao cao co ban bang crystal reports"><a href="lab-13.html">Lab 13: Tạo báo cáo cơ bản bằng Crystal Reports</a></li><li data-search="bao cao tham so, nhom, thong ke va xuat excel"><a href="lab-14.html">Lab 14: Báo cáo tham số, nhóm, thống kê và xuất Excel</a></li><li data-search="xu ly loi, logging, cau hinh va dong goi ung dung"><a href="lab-15.html">Lab 15: Xử lý lỗi, logging, cấu hình và đóng gói ứng dụng</a></li><li data-search="xay dung ung dung winforms quan ly hoan chinh"><a href="lab-16.html">Lab 16: Xây dựng ứng dụng WinForms quản lý hoàn chỉnh</a></li></ul><p class="empty-result" hidden>Không có mục phù hợp.</p></aside><main class="article" id="noi-dung"><p class="eyebrow">HoangTN · Lập trình .NET</p><h1>Lab 1. Làm quen Visual Studio và lập trình Console</h1><div class="meta"><span>Trần Nguyên Hoàng</span><span>Cập nhật 27/10/2026</span></div><details class="page-toc"><summary>Trong bài này</summary><ol><li><a href="#muc-1">1. Mục tiêu cần đạt được</a></li><li><a href="#muc-2">2. Công cụ và dữ liệu chuẩn bị</a></li><li><a href="#muc-3">3. Liên kết trong chuỗi bài lab</a></li><li><a href="#muc-4">4. Chuẩn bị trước khi thực hành</a></li><li><a href="#muc-5">5. Bài tập có hướng dẫn và code mẫu</a></li><li><a href="#muc-6">6. Bài tập tự thực hiện - không có code gợi ý</a></li><li><a href="#muc-7">7. Sản phẩm nộp</a></li><li><a href="#muc-8">8. Đánh giá</a></li></ol></details><p class="lede">Bài tập Chương 1 · Nền tảng .NET và C#.</p><p><a href="chuong-1.html">Đọc lý thuyết liên quan →</a></p><div class="callout"><p>Mã mẫu minh họa từng bài, có thể cần ghép với lớp, Form hoặc CSDL ở lab trước. Không dán tất cả ví dụ cùng tên lớp vào một tệp. Chuỗi desktop dùng .NET Framework 4.8; chuẩn bị runtime Crystal Reports tương thích cho Lab 13–16.</p></div><section id="phan-1"><h2 id="muc-1">1. Mục tiêu cần đạt được</h2><ul><li>Tạo, biên dịch, chạy và gỡ lỗi một dự án C# Console trong Visual Studio.</li><li>Sử dụng biến, kiểu dữ liệu, toán tử, cấu trúc rẽ nhánh và cấu trúc lặp.</li><li>Kiểm tra dữ liệu nhập và xử lý ngoại lệ cơ bản bằng try-catch.</li><li>Hình thành quy tắc đặt tên, chú thích và tổ chức mã nguồn.</li></ul></section><section id="phan-2"><h2 id="muc-2">2. Công cụ và dữ liệu chuẩn bị</h2><ul><li>Visual Studio 2022 với workload .NET desktop development.</li><li>.NET Framework 4.8 hoặc .NET 8 cho ứng dụng Console.</li><li>Công cụ vẽ lưu đồ: draw.io/diagrams.net khi cần.</li></ul></section><section id="phan-3"><h2 id="muc-3">3. Liên kết trong chuỗi bài lab</h2><p>Ngữ cảnh xuyên suốt: Lab 1 tạo nền tảng cú pháp C#. Các bài toán về sinh viên và điểm học tập sẽ được tái sử dụng khi xây dựng lớp ở Lab 2.</p></section><section id="phan-4"><h2 id="muc-4">4. Chuẩn bị trước khi thực hành</h2><ul><li>Cài Visual Studio và xác nhận tạo được Console App.</li><li>Tạo Solution tên DotNetLabs, trong đó tạo project Lab01_Console.</li><li>Bật hiển thị số dòng và thử đặt breakpoint trong Visual Studio.</li></ul></section><section id="phan-5"><h2 id="muc-5">5. Bài tập có hướng dẫn và code mẫu</h2><div class="exercise"><h3>1. Tạo ứng dụng Console và nhập thông tin cá nhân</h3><p>Yêu cầu: Tạo dự án Lab01_Console. Nhập họ tên, năm sinh; tính tuổi gần đúng và hiển thị thông tin theo định dạng rõ ràng. Gợi ý triển khai: Dùng Console.ReadLine(), int.TryParse() và chuỗi nội suy.</p><div class="code-wrap"><button class="copy" type="button" data-target="code-10">Sao chép</button><pre><code id="code-10" class="language-csharp">   using System;
+
+   class Program
+   {
+     static void Main()
+     {
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        Console.Write(&quot;Họ và tên: &quot;);
+        string hoTen = Console.ReadLine();
+        Console.Write(&quot;Năm sinh: &quot;);
+        int namSinh;
+        if (!int.TryParse(Console.ReadLine(), out namSinh))
+
+        {
+            Console.WriteLine(&quot;Năm sinh không hợp lệ.&quot;);
+            return;
+        }
+        int tuoi = DateTime.Now.Year - namSinh;
+        Console.WriteLine(&quot;Xin chào {0}, tuổi gần đúng: {1}&quot;, hoTen, tuoi);
+    }
+}</code></pre></div></div><div class="exercise"><h3>2. Tính toán hình trụ</h3><p>Yêu cầu: Nhập bán kính và chiều cao; tính diện tích xung quanh và thể tích. Không chấp nhận số âm hoặc bằng 0. Gợi ý triển khai: Sử dụng Math.PI và kiểu double.</p><div class="code-wrap"><button class="copy" type="button" data-target="code-11">Sao chép</button><pre><code id="code-11" class="language-csharp">double r, h;
+Console.Write(&quot;Bán kính r = &quot;);
+if (!double.TryParse(Console.ReadLine(), out r) || r &lt;= 0) return;
+Console.Write(&quot;Chiều cao h = &quot;);
+if (!double.TryParse(Console.ReadLine(), out h) || h &lt;= 0) return;
+
+double dienTichXQ = 2 * Math.PI * r * h;
+double theTich = Math.PI * r * r * h;
+Console.WriteLine(&quot;Sxq = {0:N2}; V = {1:N2}&quot;, dienTichXQ, theTich);</code></pre></div></div><div class="exercise"><h3>3. Xếp loại kết quả học tập</h3><p>Yêu cầu: Nhập điểm từ 0 đến 10 và xếp loại: Xuất sắc, Giỏi, Khá, Trung bình, Yếu. Gợi ý triển khai: Kiểm tra miền giá trị trước khi dùng if-else.</p><div class="code-wrap"><button class="copy" type="button" data-target="code-12">Sao chép</button><pre><code id="code-12" class="language-csharp">double diem;
+if (!double.TryParse(Console.ReadLine(), out diem) || diem &lt; 0 || diem &gt; 10)
+{
+   Console.WriteLine(&quot;Điểm phải thuộc [0, 10].&quot;);
+}
+else if (diem &gt;= 9) Console.WriteLine(&quot;Xuất sắc&quot;);
+else if (diem &gt;= 8) Console.WriteLine(&quot;Giỏi&quot;);
+else if (diem &gt;= 6.5) Console.WriteLine(&quot;Khá&quot;);
+else if (diem &gt;= 5) Console.WriteLine(&quot;Trung bình&quot;);
+else Console.WriteLine(&quot;Yếu&quot;);</code></pre></div></div><div class="exercise"><h3>4. Menu xử lý bằng switch và vòng lặp</h3><p>Yêu cầu: Tạo menu lặp cho phép tính tổng 1..n, in bảng cửu chương hoặc thoát chương trình. Gợi ý triển khai: Dùng do-while và switch.</p><div class="code-wrap"><button class="copy" type="button" data-target="code-13">Sao chép</button><pre><code id="code-13" class="language-csharp">int chon;
+do
+{
+  Console.WriteLine(&quot;1. Tổng 1..n&quot;);
+  Console.WriteLine(&quot;2. Bảng cửu chương&quot;);
+  Console.WriteLine(&quot;0. Thoát&quot;);
+  int.TryParse(Console.ReadLine(), out chon);
+  switch (chon)
+  {
+     case 1:
+       Console.Write(&quot;n = &quot;);
+       int n = int.Parse(Console.ReadLine());
+       int tong = 0;
+       for (int i = 1; i &lt;= n; i++) tong += i;
+       Console.WriteLine(&quot;Tổng = &quot; + tong);
+       break;
+     case 2:
+
+         for (int i = 1; i &lt;= 10; i++)
+           Console.WriteLine(&quot;7 x {0} = {1}&quot;, i, 7 * i);
+         break;
+    }
+  } while (chon != 0);</code></pre></div></div><div class="exercise"><h3>5. Xử lý ngoại lệ phép chia</h3><p>Yêu cầu: Nhập hai số nguyên, thực hiện phép chia và xử lý lỗi định dạng, chia cho 0. Gợi ý triển khai: Bắt ngoại lệ cụ thể trước ngoại lệ tổng quát.</p><div class="code-wrap"><button class="copy" type="button" data-target="code-14">Sao chép</button><pre><code id="code-14" class="language-csharp">try
+{
+   Console.Write(&quot;a = &quot;);
+   int a = int.Parse(Console.ReadLine());
+   Console.Write(&quot;b = &quot;);
+   int b = int.Parse(Console.ReadLine());
+   Console.WriteLine(&quot;a / b = &quot; + (a / b));
+}
+catch (FormatException)
+{
+   Console.WriteLine(&quot;Dữ liệu phải là số nguyên.&quot;);
+}
+catch (DivideByZeroException)
+{
+   Console.WriteLine(&quot;Không thể chia cho 0.&quot;);
+}
+finally
+{
+   Console.WriteLine(&quot;Kết thúc phép tính.&quot;);
+}</code></pre></div></div></section><section id="phan-6"><h2 id="muc-6">6. Bài tập tự thực hiện - không có code gợi ý</h2><div class="exercise"><h3>6. Giải phương trình bậc hai</h3><p>Yêu cầu: Nhập a, b, c; xét đầy đủ các trường hợp và hiển thị nghiệm với 2 chữ số thập phân.</p></div><div class="exercise"><h3>7. Thống kê dãy số</h3><p>Yêu cầu: Nhập n số nguyên; tính tổng, trung bình, số lớn nhất, số nhỏ nhất và số lượng số chẵn.</p></div><div class="exercise"><h3>8. Kiểm tra số nguyên tố</h3><p>Yêu cầu: Nhập n và in các số nguyên tố không vượt quá n; tối ưu kiểm tra đến căn bậc hai.</p></div><div class="exercise"><h3>9. Đọc số từ 0 đến 99</h3><p>Yêu cầu: Sử dụng switch để chuyển số nguyên từ 0 đến 99 thành cách đọc tiếng Việt.</p></div><div class="exercise"><h3>10. Vẽ hình bằng ký tự</h3><p>Yêu cầu: Tạo menu vẽ tam giác vuông đặc, tam giác vuông rỗng và hình vuông rỗng bằng dấu *.</p></div></section><section id="phan-7"><h2 id="muc-7">7. Sản phẩm nộp</h2><ul><li>Thư mục mã nguồn Lab1 có thể build và chạy.</li><li>Ảnh chụp kết quả từng bài tập hoặc tệp báo cáo ngắn.</li><li>Tệp README.txt mô tả cách chạy, dữ liệu thử và phần đã hoàn thành.</li></ul></section><section id="phan-8"><h2 id="muc-8">8. Đánh giá</h2><div class="table-scroll"><table><thead><tr><th>Mục</th><th>Tiêu chí</th><th>Điểm</th></tr></thead><tbody><tr><td>1</td><td>Bài tập 1-5 (có hướng dẫn)</td><td>5,0</td></tr><tr><td>2</td><td>Bài tập 6-10 (tự thực hiện)</td><td>4,0</td></tr><tr><td>3</td><td>Mã nguồn, giao diện, đặt tên và xử lý lỗi</td><td>0,5</td></tr><tr><td>4</td><td>Báo cáo kết quả và nộp đúng quy định</td><td>0,5</td></tr></tbody></table></div></section><p class="source">Biên tập từ bộ bài lab được cung cấp. Đọc <a href="tai-lieu.html">nguồn học liệu và tài liệu đối chiếu</a>.</p><nav class="lesson-nav" aria-label="Bài trước và bài sau"><a href="bai-tap.html">← Danh sách lab</a><a href="lab-02.html">Lab 2 →</a></nav></main></div><footer>© 2026 Trần Nguyên Hoàng · HoangTN · Ghi chép nghiên cứu và học tập.</footer><button class="top-button" type="button" aria-label="Về đầu trang">↑</button></body></html>

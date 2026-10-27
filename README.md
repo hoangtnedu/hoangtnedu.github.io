@@ -31,3 +31,15 @@ Sửa bài HTML để thay đổi ngay nội dung đang hiển thị. Bản Mark
 Không có dữ liệu quan trắc thật hay trọng số mô hình đã huấn luyện trong gói. Các cấu hình và hoạt ảnh phục vụ minh họa, không thay thế thực nghiệm.
 
 Tài liệu GitHub Pages: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+
+
+## Lập trình .NET
+
+- Trang học liệu: `dotnet/index.html`.
+- 6 chương theo khung Lập trình .NET, 16 lab desktop và 160 bài tập.
+- 6 bài mở rộng M1–M6 về ASP.NET Core, EF Core, kiểm thử, bảo mật, AI và Azure.
+- Markdown lý thuyết và dữ liệu lab đã biên tập: `content/dotnet/`.
+- Tái tạo 26 trang bằng `python3 tools/build_dotnet.py` (Python 3, không cần thư viện ngoài).
+- HTML sinh ra được commit cùng nguồn; GitHub Pages phục vụ trực tiếp.
+- Môi trường lab: Windows, .NET Framework 4.8, SQL Server; Crystal Reports tương thích cho bài báo cáo. Phần web dùng project .NET hiện đại riêng.
+- Chỉ dùng nhận diện cá nhân HoangTN. Các tài liệu gốc có nhận diện tổ chức không được đưa vào chuyên mục. Nguồn đọc thêm được liên kết tại `dotnet/tai-lieu.html`.

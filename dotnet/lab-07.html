@@ -1,0 +1,75 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lab 7. Tạo CSDL SQL Server, tổng quan ADO.NET và kết nối | HoangTN</title><meta name="author" content="Trần Nguyên Hoàng"><meta name="description" content="Bài thực hành 7: Tạo CSDL SQL Server, tổng quan ADO.NET và kết nối"><meta property="og:title" content="Lab 7. Tạo CSDL SQL Server, tổng quan ADO.NET và kết nối | HoangTN"><meta property="og:description" content="Bài thực hành 7: Tạo CSDL SQL Server, tổng quan ADO.NET và kết nối"><meta property="og:type" content="article"><link rel="canonical" href="https://hoangtnedu.github.io/dotnet/lab-07.html"><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/css/site.css"><link rel="stylesheet" href="../assets/css/dotnet.css"><script defer src="../assets/js/site.js"></script><script defer src="../assets/js/dotnet.js"></script></head><body class="dotnet"><a class="skip" href="#noi-dung">Đến nội dung</a><header class="top"><a class="brand" href="../index.html">HoangTN<span>Nghiên cứu và lập trình</span></a><nav aria-label="Điều hướng chính"><a href="../index.html">Bài viết</a><a href="../2026/10/27/floodai-mo-hinh-hoc-sau.html">FloodAI</a><a href="index.html" aria-current="page">Lập trình .NET</a><button class="mobile-nav" type="button" aria-controls="navigation" aria-expanded="false">Mục lục</button></nav></header><div class="progress" aria-hidden="true"></div><div class="layout"><aside class="sidebar" id="navigation" aria-label="Lộ trình .NET"><div class="profile"><strong>Trần Nguyên Hoàng</strong><p>Ghi chép lập trình · HoangTN</p><a href="../index.html">← Trang chủ</a></div><h2>Lập trình .NET</h2><label class="tiny" for="toc-search">Tìm chương hoặc lab</label><input type="search" id="toc-search" placeholder="ADO.NET, báo cáo, transaction…"><ul class="toc-list"><li data-search="tong quan lo trinh"><a class="" href="index.html">Tổng quan lộ trình</a></li><li data-search="chuong 1. nen tang .net va c#"><a class="" href="chuong-1.html">Chương 1. Nền tảng .NET và C#</a></li><li data-search="chuong 2. lap trinh huong doi tuong voi c#"><a class="" href="chuong-2.html">Chương 2. Lập trình hướng đối tượng với C#</a></li><li data-search="chuong 3. winforms va kien truc ba lop"><a class="" href="chuong-3.html">Chương 3. WinForms và kiến trúc ba lớp</a></li><li data-search="chuong 4. truy cap du lieu voi ado.net"><a class="" href="chuong-4.html">Chương 4. Truy cập dữ liệu với ADO.NET</a></li><li data-search="chuong 5. bao cao crystal reports va excel"><a class="" href="chuong-5.html">Chương 5. Báo cáo Crystal Reports và Excel</a></li><li data-search="chuong 6. xu ly loi, kiem thu va dong goi"><a class="" href="chuong-6.html">Chương 6. Xử lý lỗi, kiểm thử và đóng gói</a></li><li data-search="bo 16 bai thuc hanh"><a class="" href="bai-tap.html">Bộ 16 bài thực hành</a></li><li data-search="mo rong: web, ef core, ai, azure"><a class="" href="mo-rong-web.html">Mở rộng: Web, EF Core, AI, Azure</a></li><li data-search="tai lieu tham khao"><a class="" href="tai-lieu.html">Tài liệu tham khảo</a></li></ul><h2>Thực hành</h2><ul class="toc-list"><li data-search="lam quen visual studio va lap trinh console"><a href="lab-01.html">Lab 1: Làm quen Visual Studio và lập trình Console</a></li><li data-search="lop, doi tuong, constructor va dong goi"><a href="lab-02.html">Lab 2: Lớp, đối tượng, constructor và đóng gói</a></li><li data-search="ke thua, da hinh, lop truu tuong va interface"><a href="lab-03.html">Lab 3: Kế thừa, đa hình, lớp trừu tượng và interface</a></li><li data-search="thiet ke winforms va dieu khien co ban"><a href="lab-04.html">Lab 4: Thiết kế WinForms và điều khiển cơ bản</a></li><li data-search="xu ly su kien, kiem tra du lieu va ung dung da form"><a href="lab-05.html">Lab 5: Xử lý sự kiện, kiểm tra dữ liệu và ứng dụng đa Form</a></li><li data-search="datagridview, listview, treeview va mo hinh ba lop trong bo nho"><a href="lab-06.html">Lab 6: DataGridView, ListView, TreeView và mô hình ba lớp trong bộ nhớ</a></li><li data-search="tao csdl sql server, tong quan ado.net va ket noi"><a href="lab-07.html">Lab 7: Tạo CSDL SQL Server, tổng quan ADO.NET và kết nối</a></li><li data-search="sqlcommand, sqlparameter va cac phuong thuc thuc thi"><a href="lab-08.html">Lab 8: SqlCommand, SqlParameter và các phương thức thực thi</a></li><li data-search="doc, tim kiem va loc du lieu bang sqldatareader"><a href="lab-09.html">Lab 9: Đọc, tìm kiếm và lọc dữ liệu bằng SqlDataReader</a></li><li data-search="dataadapter, datatable, dataset va du lieu ngat ket noi"><a href="lab-10.html">Lab 10: DataAdapter, DataTable, DataSet và dữ liệu ngắt kết nối</a></li><li data-search="crud tham so hoa va stored procedure"><a href="lab-11.html">Lab 11: CRUD tham số hóa và stored procedure</a></li><li data-search="master-detail, transaction va hoan thien mo hinh ba lop"><a href="lab-12.html">Lab 12: Master-detail, transaction và hoàn thiện mô hình ba lớp</a></li><li data-search="tao bao cao co ban bang crystal reports"><a href="lab-13.html">Lab 13: Tạo báo cáo cơ bản bằng Crystal Reports</a></li><li data-search="bao cao tham so, nhom, thong ke va xuat excel"><a href="lab-14.html">Lab 14: Báo cáo tham số, nhóm, thống kê và xuất Excel</a></li><li data-search="xu ly loi, logging, cau hinh va dong goi ung dung"><a href="lab-15.html">Lab 15: Xử lý lỗi, logging, cấu hình và đóng gói ứng dụng</a></li><li data-search="xay dung ung dung winforms quan ly hoan chinh"><a href="lab-16.html">Lab 16: Xây dựng ứng dụng WinForms quản lý hoàn chỉnh</a></li></ul><p class="empty-result" hidden>Không có mục phù hợp.</p></aside><main class="article" id="noi-dung"><p class="eyebrow">HoangTN · Lập trình .NET</p><h1>Lab 7. Tạo CSDL SQL Server, tổng quan ADO.NET và kết nối</h1><div class="meta"><span>Trần Nguyên Hoàng</span><span>Cập nhật 27/10/2026</span></div><details class="page-toc"><summary>Trong bài này</summary><ol><li><a href="#muc-1">1. Mục tiêu cần đạt được</a></li><li><a href="#muc-2">2. Công cụ và dữ liệu chuẩn bị</a></li><li><a href="#muc-3">3. Liên kết trong chuỗi bài lab</a></li><li><a href="#muc-4">4. Chuẩn bị trước khi thực hành</a></li><li><a href="#muc-5">5. Bài tập có hướng dẫn và code mẫu</a></li><li><a href="#muc-6">6. Bài tập tự thực hiện - không có code gợi ý</a></li><li><a href="#muc-7">7. Sản phẩm nộp</a></li><li><a href="#muc-8">8. Đánh giá</a></li></ol></details><p class="lede">Bài tập Chương 4 · Truy cập dữ liệu với ADO.NET.</p><p><a href="chuong-4.html">Đọc lý thuyết liên quan →</a></p><div class="callout"><p>Mã mẫu minh họa từng bài, có thể cần ghép với lớp, Form hoặc CSDL ở lab trước. Không dán tất cả ví dụ cùng tên lớp vào một tệp. Chuỗi desktop dùng .NET Framework 4.8; chuẩn bị runtime Crystal Reports tương thích cho Lab 13–16.</p></div><section id="phan-1"><h2 id="muc-1">1. Mục tiêu cần đạt được</h2><ul><li>Tạo cơ sở dữ liệu quan hệ cho bài toán quản lý sinh viên.</li><li>Thiết lập khóa chính, khóa ngoại, ràng buộc và dữ liệu mẫu.</li><li>Hiểu vai trò của Connection trong ADO.NET.</li><li>Tạo lớp kết nối SQL Server và kiểm tra trạng thái kết nối.</li></ul></section><section id="phan-2"><h2 id="muc-2">2. Công cụ và dữ liệu chuẩn bị</h2><ul><li>SQL Server 2019/2022 hoặc SQL Server Express.</li><li>SQL Server Management Studio.</li><li>Visual Studio 2022 - System.Data.SqlClient.</li><li>Project Lab07_ADONET_Connection.</li></ul></section><section id="phan-3"><h2 id="muc-3">3. Liên kết trong chuỗi bài lab</h2><p>Ngữ cảnh xuyên suốt: Thay lớp DAL lưu trong bộ nhớ ở Lab 6 bằng SQL Server. Cơ sở dữ liệu QLSinhVien được sử dụng liên tục từ Lab 7 đến Lab 16.</p></section><section id="phan-4"><h2 id="muc-4">4. Chuẩn bị trước khi thực hành</h2><ul><li>Cài SQL Server và SSMS; xác định tên instance.</li><li>Bật quyền kết nối phù hợp và tạo database thử.</li><li>Tạo project Lab07_ADONET_Connection, tham chiếu System.Configuration nếu dùng App.config.</li></ul></section><section id="phan-5"><h2 id="muc-5">5. Bài tập có hướng dẫn và code mẫu</h2><div class="exercise"><h3>1. Tạo cơ sở dữ liệu QLSinhVien</h3><p>Yêu cầu: Tạo database và chuyển ngữ cảnh sử dụng sang QLSinhVien. Gợi ý triển khai: Chạy từng khối lệnh và ghi nhận kết quả trong SSMS.</p><div class="code-wrap"><button class="copy" type="button" data-target="code-40">Sao chép</button><pre><code id="code-40" class="language-csharp">IF DB_ID(N&#x27;QLSinhVien&#x27;) IS NULL
+  CREATE DATABASE QLSinhVien;
+GO
+USE QLSinhVien;
+GO</code></pre></div></div><div class="exercise"><h3>2. Tạo bảng Khoa và SinhVien</h3><p>Yêu cầu: Tạo bảng có khóa chính, khóa ngoại và CHECK điểm thuộc [0,10]. Gợi ý triển khai: Dùng kiểu NVARCHAR cho dữ liệu tiếng Việt.</p><div class="code-wrap"><button class="copy" type="button" data-target="code-41">Sao chép</button><pre><code id="code-41" class="language-sql">  CREATE TABLE Khoa
+
+(
+     MaKhoa VARCHAR(10) PRIMARY KEY,
+     TenKhoa NVARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE SinhVien
+(
+   MaSV VARCHAR(15) PRIMARY KEY,
+   HoTen NVARCHAR(100) NOT NULL,
+   NgaySinh DATE NOT NULL,
+   GioiTinh BIT NOT NULL,
+   MaKhoa VARCHAR(10) NOT NULL,
+   DiemTB DECIMAL(4,2) NOT NULL DEFAULT 0,
+   Email VARCHAR(100) NULL,
+   CONSTRAINT CK_SinhVien_Diem CHECK (DiemTB BETWEEN 0 AND 10),
+   CONSTRAINT FK_SinhVien_Khoa FOREIGN KEY (MaKhoa) REFERENCES Khoa(MaKhoa)
+);</code></pre></div></div><div class="exercise"><h3>3. Tạo bảng HocPhan và DangKy</h3><p>Yêu cầu: Mô hình hóa quan hệ nhiều-nhiều giữa SinhVien và HocPhan. Gợi ý triển khai: Khóa chính của DangKy gồm MaSV và MaHP.</p><div class="code-wrap"><button class="copy" type="button" data-target="code-42">Sao chép</button><pre><code id="code-42" class="language-sql">CREATE TABLE HocPhan
+(
+   MaHP VARCHAR(10) PRIMARY KEY,
+   TenHP NVARCHAR(120) NOT NULL,
+   SoTinChi INT NOT NULL CHECK (SoTinChi BETWEEN 1 AND 6)
+);
+
+CREATE TABLE DangKy
+(
+   MaSV VARCHAR(15) NOT NULL,
+   MaHP VARCHAR(10) NOT NULL,
+   HocKy INT NOT NULL CHECK (HocKy BETWEEN 1 AND 3),
+   Diem DECIMAL(4,2) NULL CHECK (Diem BETWEEN 0 AND 10),
+   PRIMARY KEY (MaSV, MaHP),
+   FOREIGN KEY (MaSV) REFERENCES SinhVien(MaSV),
+   FOREIGN KEY (MaHP) REFERENCES HocPhan(MaHP)
+);</code></pre></div></div><div class="exercise"><h3>4. Thêm dữ liệu mẫu</h3><p>Yêu cầu: Thêm tối thiểu 3 khoa, 10 sinh viên, 5 học phần và dữ liệu đăng ký. Gợi ý triển khai: Dùng tiền tố N trước chuỗi Unicode.</p><div class="code-wrap"><button class="copy" type="button" data-target="code-43">Sao chép</button><pre><code id="code-43" class="language-sql">INSERT INTO Khoa(MaKhoa, TenKhoa) VALUES
+(&#x27;CNTT&#x27;, N&#x27;Công nghệ thông tin&#x27;),
+(&#x27;OTO&#x27;, N&#x27;Công nghệ kỹ thuật ô tô&#x27;),
+(&#x27;KT&#x27;, N&#x27;Kinh tế&#x27;);
+
+INSERT INTO SinhVien(MaSV, HoTen, NgaySinh, GioiTinh, MaKhoa, DiemTB, Email) VALUES
+(&#x27;SV001&#x27;, N&#x27;Nguyễn Văn An&#x27;, &#x27;2005-02-15&#x27;, 1, &#x27;CNTT&#x27;, 8.20, &#x27;an@example.invalid&#x27;),
+(&#x27;SV002&#x27;, N&#x27;Trần Thị Bình&#x27;, &#x27;2005-07-21&#x27;, 0, &#x27;CNTT&#x27;, 7.40, &#x27;binh@example.invalid&#x27;),
+(&#x27;SV003&#x27;, N&#x27;Lê Văn Cường&#x27;, &#x27;2004-12-03&#x27;, 1, &#x27;OTO&#x27;, 6.80, NULL);</code></pre></div></div><div class="exercise"><h3>5. Tạo lớp kết nối SQL Server</h3><p>Yêu cầu: Viết lớp DbConnectionFactory và nút Kiểm tra kết nối trên Form. Gợi ý triển khai: Thay tên máy chủ theo môi trường thực tế; luôn đóng kết nối.</p><div class="code-wrap"><button class="copy" type="button" data-target="code-44">Sao chép</button><pre><code id="code-44" class="language-csharp">using System.Data.SqlClient;
+
+public static class DbConnectionFactory
+
+  {
+      private const string ConnectionString =
+        @&quot;Data Source=.;Initial Catalog=QLSinhVien;Integrated Security=True&quot;;
+
+      public static SqlConnection Create()
+      {
+        return new SqlConnection(ConnectionString);
+      }
+  }
+
+  private void btnKiemTra_Click(object sender, EventArgs e)
+  {
+    try
+    {
+      using (SqlConnection conn = DbConnectionFactory.Create())
+      {
+        conn.Open();
+        MessageBox.Show(&quot;Kết nối thành công: &quot; + conn.Database);
+      }
+    }
+    catch (SqlException ex)
+    {
+      MessageBox.Show(&quot;Lỗi kết nối: &quot; + ex.Message);
+    }
+  }</code></pre></div></div></section><section id="phan-6"><h2 id="muc-6">6. Bài tập tự thực hiện - không có code gợi ý</h2><div class="exercise"><h3>6. Bổ sung ràng buộc dữ liệu</h3><p>Yêu cầu: Thêm UNIQUE Email, DEFAULT ngày đăng ký và CHECK học kỳ; thử dữ liệu vi phạm.</p></div><div class="exercise"><h3>7. Chuỗi kết nối SQL Authentication</h3><p>Yêu cầu: Tạo tài khoản SQL riêng cho ứng dụng, cấp quyền tối thiểu và kiểm tra kết nối.</p></div><div class="exercise"><h3>8. Đọc chuỗi kết nối từ App.config</h3><p>Yêu cầu: Không hard-code chuỗi kết nối trong mã nguồn; sử dụng ConfigurationManager.</p></div><div class="exercise"><h3>9. Trang trạng thái kết nối</h3><p>Yêu cầu: Hiển thị DataSource, Database, ServerVersion, State và thời gian kết nối.</p></div><div class="exercise"><h3>10. Sao lưu và phục hồi CSDL</h3><p>Yêu cầu: Thực hiện backup QLSinhVien, xóa một bản ghi thử và restore để kiểm chứng.</p></div></section><section id="phan-7"><h2 id="muc-7">7. Sản phẩm nộp</h2><ul><li>Tệp Lab07_QLSinhVien.sql có thể chạy từ đầu trên database mới.</li><li>Project WinForms có chức năng kiểm tra kết nối.</li><li>Ảnh sơ đồ quan hệ CSDL và kết quả truy vấn dữ liệu mẫu.</li><li>README ghi tên instance và cách thay chuỗi kết nối.</li></ul></section><section id="phan-8"><h2 id="muc-8">8. Đánh giá</h2><div class="table-scroll"><table><thead><tr><th>Mục</th><th>Tiêu chí</th><th>Điểm</th></tr></thead><tbody><tr><td>1</td><td>Bài tập 1-5 (có hướng dẫn)</td><td>5,0</td></tr><tr><td>2</td><td>Bài tập 6-10 (tự thực hiện)</td><td>4,0</td></tr><tr><td>3</td><td>Mã nguồn, giao diện, đặt tên và xử lý lỗi</td><td>0,5</td></tr><tr><td>4</td><td>Báo cáo kết quả và nộp đúng quy định</td><td>0,5</td></tr></tbody></table></div></section><p class="source">Biên tập từ bộ bài lab được cung cấp. Đọc <a href="tai-lieu.html">nguồn học liệu và tài liệu đối chiếu</a>.</p><nav class="lesson-nav" aria-label="Bài trước và bài sau"><a href="lab-06.html">← Lab 6</a><a href="lab-08.html">Lab 8 →</a></nav></main></div><footer>© 2026 Trần Nguyên Hoàng · HoangTN · Ghi chép nghiên cứu và học tập.</footer><button class="top-button" type="button" aria-label="Về đầu trang">↑</button></body></html>
