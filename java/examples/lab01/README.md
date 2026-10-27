@@ -19,3 +19,13 @@ App xử lý nhập/xuất, So chứa năm hàm tính toán. Nhập số thực 
 Giới hạn minh họa: tổng nghịch đảo n<=1000000; Fibonacci 1<=n<=93.
 
 HoangTN biên tập từ bài lab được cung cấp; chỉ dùng nhận diện cá nhân.
+
+## Kiểm thử tự động
+
+Từ thư mục chứa pom.xml, chạy `mvn clean verify` để chạy JUnit và tạo JAR.
+Từ thư mục gốc repository, chạy `python3 tools/smoke_java.py` để kiểm tra
+12 kịch bản nhập/xuất của JAR, gồm các bài toán, dữ liệu sai, phục hồi menu và EOF.
+
+Workflow `.github/workflows/java-examples.yml` chạy trên JDK 17 và 21 khi mã mẫu
+hoặc cấu hình kiểm tra thay đổi. Có thể chạy thủ công bằng Actions → Java examples CI → Run workflow.
+Mỗi job lưu JAR, báo cáo JUnit và báo cáo chạy JAR trong artifact riêng, giữ 7 ngày.

@@ -1,0 +1,65 @@
+name: Java examples CI
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'java/examples/**'
+      - 'tools/smoke_java.py'
+      - '.github/workflows/java-examples.yml'
+  pull_request:
+    paths:
+      - 'java/examples/**'
+      - 'tools/smoke_java.py'
+      - '.github/workflows/java-examples.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: java-examples-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lab01:
+    name: Lab 1 / JDK ${{ matrix.java }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        java: ['17', '21']
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Set up JDK
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+          cache: maven
+          cache-dependency-path: java/examples/lab01/pom.xml
+      - name: Show Java and Maven versions
+        run: |
+          java -version
+          javac -version
+          mvn -version
+      - name: Compile, test and package Lab 1
+        working-directory: java/examples/lab01
+        run: mvn --batch-mode --no-transfer-progress clean verify
+      - name: Run packaged JAR scenarios
+        run: python3 tools/smoke_java.py
+      - name: Save JAR and test reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: lab01-java-${{ matrix.java }}
+          retention-days: 7
+          if-no-files-found: warn
+          path: |
+            java/examples/lab01/target/*.jar
+            java/examples/lab01/target/surefire-reports/
+            java/examples/lab01/target/smoke-report.json
+

@@ -55,3 +55,11 @@ Tài liệu GitHub Pages: https://docs.github.com/en/pages/getting-started-with-
 - Phần Java SE dùng JDK 17/21; Jakarta EE dùng runtime Web Profile phù hợp; ví dụ Spring chọn Boot 3.5.x/JDK 21 và project riêng.
 - Đã viết lại nội dung và đổi package sang nhận diện cá nhân. Không phát hành tài liệu gốc có nhận diện tổ chức, mẫu slide, biểu mẫu hay PDF thương mại.
 - Trang nguồn tham khảo giải thích rõ phạm vi sử dụng sách Struts 1.x và Spring/Hibernate 2010, kèm liên kết tài liệu chính thức hiện hành.
+
+## Kiểm tra mã Java bằng GitHub Actions
+
+- Workflow `Java examples CI`: `.github/workflows/java-examples.yml`.
+- JDK 17 và 21: chạy Maven verify, JUnit cho 5 bài toán và 12 kịch bản chạy JAR.
+- Tự chạy khi thay đổi `java/examples/**`, script smoke hoặc workflow; hỗ trợ Run workflow thủ công.
+- Lưu JAR và báo cáo cho mỗi JDK trong artifact 7 ngày. Workflow chỉ đọc repository.
+- Hiện phạm vi kiểm tra là project Maven Lab 1; các đoạn minh họa Swing/Jakarta EE/Spring trong bài giảng chưa phải project chạy độc lập.
