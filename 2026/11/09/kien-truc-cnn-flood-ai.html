@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kiến trúc CNN qua 7 sơ đồ từ phân loại ảnh đến phân đoạn đường ngập | HoangTN</title>
+<meta name="description" content="Đọc kiến trúc VGG-16, ResNet, MobileNetV3, DeepLabV3+ và LinkNet qua 7 sơ đồ tensor, kèm PDF cho sinh viên.">
+<meta name="author" content="Trần Nguyên Hoàng">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kiến trúc CNN qua 7 sơ đồ từ phân loại ảnh đến phân đoạn đường ngập">
+<meta property="og:description" content="Đọc kiến trúc VGG-16, ResNet, MobileNetV3, DeepLabV3+ và LinkNet qua 7 sơ đồ tensor, kèm PDF cho sinh viên.">
+<meta property="og:url" content="https://hoangtnedu.github.io/2026/11/09/kien-truc-cnn-flood-ai.html">
+<meta property="og:image" content="https://hoangtnedu.github.io/assets/figures/cnn-flood-ai/deeplabv3plus.webp">
+<link rel="canonical" href="https://hoangtnedu.github.io/2026/11/09/kien-truc-cnn-flood-ai.html">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../../assets/css/site.css?v=20261030-vi1">
+<script defer src="../../../assets/js/site.js"></script>
+<style>
+.cnn-diagram { margin: 20px 0 32px; }
+.cnn-diagram .figure { padding: 4px; }
+.cnn-diagram figcaption { font-size: 14px; color: var(--muted); }
+</style>
+</head>
+<body>
+<a class="skip" href="#noi-dung">Đến nội dung</a>
+<header class="top">
+  <a class="brand" href="../../../index.html">HoangTN<span>Ghi chép nghiên cứu và lập trình</span></a>
+  <nav aria-label="Điều hướng chính">
+    <a href="../../../index.html">Trang chủ</a>
+    <a href="../04/floodai-nhap-mon-cho-sinh-vien.html">FloodAI nhập môn</a>
+    <a href="../../../dotnet/">.NET</a>
+    <a href="../../../java/">Java</a>
+    <button class="mobile-nav" type="button" aria-controls="navigation" aria-expanded="false">Mục lục</button>
+  </nav>
+</header>
+<div class="progress" aria-hidden="true"></div>
+<div class="layout">
+<aside class="sidebar" id="navigation" aria-label="Mục lục">
+  <div class="profile"><strong>Trần Nguyên Hoàng</strong><p>Giảng viên Công nghệ thông tin</p></div>
+  <h2>Mục lục</h2>
+  <ol class="toc-list">
+    <li><a href="#cach-doc">Cách đọc sơ đồ</a></li>
+    <li><a href="#vgg-16">1. VGG-16</a></li>
+<li><a href="#resnet-18">2. ResNet-18</a></li>
+<li><a href="#resnet-50">3. ResNet-50</a></li>
+<li><a href="#mobilenetv3-large">4. MobileNetV3-Large</a></li>
+<li><a href="#mobilenetv3-small">5. MobileNetV3-Small</a></li>
+<li><a href="#deeplabv3plus">6. DeepLabV3+ với ResNet-50</a></li>
+<li><a href="#linknet">7. LinkNet với ResNet-18</a></li>
+    <li><a href="#tai-lieu">Tài liệu tham khảo</a></li>
+  </ol>
+  <p><a href="../../../downloads/So_do_kien_truc_CNN_Flood_AI.pdf" download>Tải PDF · 7 trang</a></p>
+</aside>
+<main class="article" id="noi-dung">
+<p class="tiny">FloodAI · Thị giác máy tính · <time datetime="2026-11-09">09 tháng 11 năm 2026</time></p>
+<h1>Kiến trúc CNN qua 7 sơ đồ từ phân loại ảnh đến phân đoạn đường ngập</h1>
+<p class="lede">Cùng một ảnh camera, mô hình phân loại trả lời ảnh có đường ngập hay không. Mô hình phân đoạn trả lời vùng đường ngập nằm ở đâu bằng một mặt nạ theo pixel. Bảy sơ đồ dưới đây cho thấy đặc trưng đi qua từng khối và được đưa vào hai loại đầu ra đó như thế nào.</p>
+<div class="downloads"><a class="download" href="../../../downloads/So_do_kien_truc_CNN_Flood_AI.pdf" download>Tải bộ 7 sơ đồ PDF ↓</a></div>
+<section id="cach-doc" aria-labelledby="title-cach-doc">
+<h2 id="title-cach-doc">Cách đọc sơ đồ</h2>
+<p>Mỗi chồng tấm là một tensor đặc trưng. <strong>56 × 56 × 64</strong> nghĩa là 64 bản đồ đặc trưng, mỗi bản đồ có 56 hàng và 56 cột. Ảnh minh họa chung có kích thước 224 × 224 × 3. Nhấn vào hình để phóng to.</p>
+<p><strong>DCNN</strong> là tên chung cho mạng tích chập sâu. Năm sơ đồ đầu vẽ các cấu hình phân loại gốc. Khi dùng chúng làm <em>backbone</em> cho bài toán phân đoạn, decoder lấy các bản đồ đặc trưng còn giữ thông tin vị trí. Hai sơ đồ cuối minh họa cách các bản đồ đó được biến thành mặt nạ.</p>
+</section>
+<section id="vgg-16" aria-labelledby="title-vgg-16">
+<h2 id="title-vgg-16">1. VGG-16</h2>
+<p>VGG-16 xếp 13 lớp tích chập 3 × 3 vào năm khối. Max pooling giảm chiều cao và chiều rộng sau mỗi khối. Với ảnh 224 × 224, khối cuối cho bản đồ 7 × 7 × 512. Đầu phân loại gốc trải phẳng bản đồ này rồi đưa qua ba lớp kết nối đầy đủ.</p>
+<figure class="cnn-diagram">
+  <button type="button" class="figure" data-zoom="../../../assets/figures/cnn-flood-ai/vgg-16.webp" aria-label="Phóng to sơ đồ VGG-16">
+    <img src="../../../assets/figures/cnn-flood-ai/vgg-16.webp" width="2127" height="1192" loading="eager" decoding="async" alt="Ảnh RGB đi qua năm khối tích chập và pooling rồi tới đầu phân loại.">
+  </button>
+  <figcaption>Hình 1. VGG-16. <a href="../../../assets/figures/cnn-flood-ai/vgg-16.webp">Mở ảnh kích thước đầy đủ</a>.</figcaption>
+</figure>
+</section>
+<section id="resnet-18" aria-labelledby="title-resnet-18">
+<h2 id="title-resnet-18">2. ResNet-18</h2>
+<p>Bốn nhóm lần lượt có 2, 2, 2 và 2 khối BasicBlock. Trong mỗi khối, hai tích chập 3 × 3 học phần hiệu chỉnh của đầu vào. Đường tắt cộng đầu vào với nhánh chính, dùng phép chiếu khi kích thước cần khớp.</p>
+<figure class="cnn-diagram">
+  <button type="button" class="figure" data-zoom="../../../assets/figures/cnn-flood-ai/resnet-18.webp" aria-label="Phóng to sơ đồ ResNet-18">
+    <img src="../../../assets/figures/cnn-flood-ai/resnet-18.webp" width="2127" height="1192" loading="lazy" decoding="async" alt="Bốn nhóm BasicBlock và sơ đồ nhánh cộng trong một khối.">
+  </button>
+  <figcaption>Hình 2. ResNet-18. <a href="../../../assets/figures/cnn-flood-ai/resnet-18.webp">Mở ảnh kích thước đầy đủ</a>.</figcaption>
+</figure>
+</section>
+<section id="resnet-50" aria-labelledby="title-resnet-50">
+<h2 id="title-resnet-50">3. ResNet-50</h2>
+<p>Bốn nhóm lần lượt có 3, 4, 6 và 3 khối bottleneck. Mỗi khối dùng tích chập 1 × 1 để giảm số kênh trước phép tích chập 3 × 3, rồi dùng một lớp 1 × 1 để mở rộng kênh. Bản đồ cuối của cấu hình phân loại có 2.048 kênh.</p>
+<figure class="cnn-diagram">
+  <button type="button" class="figure" data-zoom="../../../assets/figures/cnn-flood-ai/resnet-50.webp" aria-label="Phóng to sơ đồ ResNet-50">
+    <img src="../../../assets/figures/cnn-flood-ai/resnet-50.webp" width="2127" height="1192" loading="lazy" decoding="async" alt="Bốn nhóm bottleneck và nhánh nối tắt bên trong một khối.">
+  </button>
+  <figcaption>Hình 3. ResNet-50. <a href="../../../assets/figures/cnn-flood-ai/resnet-50.webp">Mở ảnh kích thước đầy đủ</a>.</figcaption>
+</figure>
+</section>
+<section id="mobilenetv3-large" aria-labelledby="title-mobilenetv3-large">
+<h2 id="title-mobilenetv3-large">4. MobileNetV3-Large</h2>
+<p>Bản Large có 15 khối bottleneck. Trong một khối điển hình, tích chập 1 × 1 mở rộng kênh, tích chập depthwise lọc riêng từng kênh, rồi một phép tích chập 1 × 1 đưa đặc trưng về số kênh đầu ra. Một số khối dùng SE để điều chỉnh trọng số theo kênh.</p>
+<figure class="cnn-diagram">
+  <button type="button" class="figure" data-zoom="../../../assets/figures/cnn-flood-ai/mobilenetv3-large.webp" aria-label="Phóng to sơ đồ MobileNetV3-Large">
+    <img src="../../../assets/figures/cnn-flood-ai/mobilenetv3-large.webp" width="2127" height="1192" loading="lazy" decoding="async" alt="Sáu nhóm bottleneck và chi tiết khối inverted residual có SE tùy chọn.">
+  </button>
+  <figcaption>Hình 4. MobileNetV3-Large. <a href="../../../assets/figures/cnn-flood-ai/mobilenetv3-large.webp">Mở ảnh kích thước đầy đủ</a>.</figcaption>
+</figure>
+</section>
+<section id="mobilenetv3-small" aria-labelledby="title-mobilenetv3-small">
+<h2 id="title-mobilenetv3-small">5. MobileNetV3-Small</h2>
+<p>Bản Small dùng 11 khối bottleneck. Hãy so với bản Large ở hai mốc. Khối đầu của bản Small đã đưa độ phân giải xuống 56 × 56. Phép tích chập cuối trước pooling cho 576 kênh, so với 960 ở bản Large.</p>
+<figure class="cnn-diagram">
+  <button type="button" class="figure" data-zoom="../../../assets/figures/cnn-flood-ai/mobilenetv3-small.webp" aria-label="Phóng to sơ đồ MobileNetV3-Small">
+    <img src="../../../assets/figures/cnn-flood-ai/mobilenetv3-small.webp" width="2127" height="1192" loading="lazy" decoding="async" alt="Năm nhóm bottleneck từ bản đồ 56 × 56 tới bản đồ 7 × 7.">
+  </button>
+  <figcaption>Hình 5. MobileNetV3-Small. <a href="../../../assets/figures/cnn-flood-ai/mobilenetv3-small.webp">Mở ảnh kích thước đầy đủ</a>.</figcaption>
+</figure>
+</section>
+<section id="deeplabv3plus" aria-labelledby="title-deeplabv3plus">
+<h2 id="title-deeplabv3plus">6. DeepLabV3+ với ResNet-50</h2>
+<p>Backbone cung cấp hai mức đặc trưng. Nhánh sâu qua ASPP để thu ngữ cảnh ở nhiều tỉ lệ. Nhánh tầng sớm giữ chi tiết vị trí. Decoder ghép hai nhánh theo chiều kênh, tinh chỉnh rồi đưa dự đoán về kích thước ảnh để gán nhãn từng pixel.</p>
+<figure class="cnn-diagram">
+  <button type="button" class="figure" data-zoom="../../../assets/figures/cnn-flood-ai/deeplabv3plus.webp" aria-label="Phóng to sơ đồ DeepLabV3+ với ResNet-50">
+    <img src="../../../assets/figures/cnn-flood-ai/deeplabv3plus.webp" width="2127" height="1192" loading="lazy" decoding="async" alt="Nhánh ASPP và nhánh tầng sớm gặp nhau ở Concat trước khi tạo mặt nạ.">
+  </button>
+  <figcaption>Hình 6. DeepLabV3+ với ResNet-50. <a href="../../../assets/figures/cnn-flood-ai/deeplabv3plus.webp">Mở ảnh kích thước đầy đủ</a>.</figcaption>
+</figure>
+</section>
+<section id="linknet" aria-labelledby="title-linknet">
+<h2 id="title-linknet">7. LinkNet với ResNet-18</h2>
+<p>LinkNet gốc dùng ResNet-18. Decoder tăng độ phân giải theo từng mức, đồng thời cộng đặc trưng từ encoder tại các mức tương ứng. Nghiên cứu camera ngập được dẫn ở cuối bài dùng ResNet-50 cho cả LinkNet và DeepLabV3+ để so sánh hai kiến trúc phân đoạn.</p>
+<figure class="cnn-diagram">
+  <button type="button" class="figure" data-zoom="../../../assets/figures/cnn-flood-ai/linknet.webp" aria-label="Phóng to sơ đồ LinkNet với ResNet-18">
+    <img src="../../../assets/figures/cnn-flood-ai/linknet.webp" width="2127" height="1192" loading="lazy" decoding="async" alt="Encoder và decoder chạy theo hai hàng với các đường nối tắt tại bốn mức.">
+  </button>
+  <figcaption>Hình 7. LinkNet với ResNet-18. <a href="../../../assets/figures/cnn-flood-ai/linknet.webp">Mở ảnh kích thước đầy đủ</a>.</figcaption>
+</figure>
+</section>
+<section id="tai-lieu" aria-labelledby="title-tai-lieu">
+<h2 id="title-tai-lieu">Tài liệu tham khảo</h2>
+<ul>
+  <li><a href="https://arxiv.org/abs/1409.1556">Simonyan và Zisserman (2015), VGG</a>.</li>
+  <li><a href="https://openaccess.thecvf.com/content_cvpr_2016/html/He_Deep_Residual_Learning_CVPR_2016_paper.html">He và cộng sự (2016), ResNet</a>.</li>
+  <li><a href="https://openaccess.thecvf.com/content_ICCV_2019/html/Howard_Searching_for_MobileNetV3_ICCV_2019_paper.html">Howard và cộng sự (2019), MobileNetV3</a>.</li>
+  <li><a href="https://openaccess.thecvf.com/content_ECCV_2018/html/Liang-Chieh_Chen_Encoder-Decoder_with_Atrous_ECCV_2018_paper.html">Chen và cộng sự (2018), DeepLabV3+</a>.</li>
+  <li><a href="https://arxiv.org/abs/1707.03718">Chaurasia và Culurciello (2017), LinkNet</a>.</li>
+  <li><a href="https://doi.org/10.1016/j.envsoft.2023.105939">Phân đoạn vùng ngập từ ảnh camera giám sát (2024)</a>.</li>
+</ul>
+<p>Đọc tiếp <a href="../04/floodai-nhap-mon-cho-sinh-vien.html#cnn">mục CNN trong bài nhập môn FloodAI</a>.</p>
+</section>
+</main>
+</div>
+<footer>© 2026 Trần Nguyên Hoàng · HoangTN · Ghi chép nghiên cứu và học tập.</footer>
+<button class="top-button" type="button" aria-label="Về đầu trang">↑</button>
+<dialog id="figure-viewer" aria-label="Xem hình minh họa phóng to"><form method="dialog"><button>Đóng ×</button></form><img alt=""></dialog>
+</body>
+</html>
